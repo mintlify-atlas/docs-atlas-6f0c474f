@@ -1,0 +1,292 @@
+---
+title: Semantic HTML
+description: Learn how Oat UI uses semantic HTML and data attributes instead of class-based styling
+---
+
+Oat UI takes a semantic-first approach to styling, leveraging native HTML elements and data attributes instead of utility classes. This philosophy enforces best practices, reduces markup pollution, and creates more accessible interfaces by default.
+
+## Why Semantic HTML?
+
+Semantic HTML provides meaning to your markup, making it more accessible to assistive technologies and search engines. Oat UI extends this principle by styling semantic elements directly, eliminating the need for CSS class proliferation.
+
+**Traditional approach with classes:**
+```html
+<button class="btn btn-primary btn-large">
+  Submit
+</button>
+```
+
+**Oat UI approach with semantic HTML:**
+```html
+<button class="large">
+  Submit
+</button>
+```
+
+## Data Attributes for Variants
+
+Oat UI uses `data-*` attributes to indicate semantic variants, keeping your HTML clean and meaningful. This approach separates content from presentation while maintaining clarity.
+
+### Button Variants
+
+Buttons use `data-variant` to indicate their semantic purpose:
+
+```html
+<button>Primary</button>
+<button data-variant="secondary">Secondary</button>
+<button data-variant="danger">Danger</button>
+```
+
+<Info>
+  Data attributes like `data-variant="danger"` convey **semantic meaning** (this action is destructive), while classes like `.outline` or `.ghost` indicate **visual style** only.
+</Info>
+
+See button.css:34-45 for the implementation:
+
+```css
+&[data-variant="secondary"] {
+  --_hov: color-mix(in srgb, var(--secondary), black 10%);
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+&[data-variant="danger"] {
+  --_hov: color-mix(in srgb, var(--danger), black 15%);
+  background-color: var(--danger);
+  color: var(--danger-foreground);
+}
+```
+
+### Form Fields
+
+Form elements use `data-field` to create properly spaced and associated fields:
+
+```html
+<label data-field>
+  Name
+  <input type="text" placeholder="Enter your name" />
+</label>
+
+<label data-field>
+  Email
+  <input type="email" placeholder="you@example.com" />
+  <small data-hint>We'll never share your email</small>
+</label>
+```
+
+For validation errors, use `data-field="error"`:
+
+```html
+<div data-field="error">
+  <label for="email">Email</label>
+  <input 
+    type="email" 
+    id="email"
+    aria-invalid="true" 
+    aria-describedby="error-message" 
+    value="invalid-email" 
+  />
+  <div id="error-message" class="error" role="status">
+    Please enter a valid email address.
+  </div>
+</div>
+```
+
+## Automatic Styling of Native Elements
+
+Oat UI styles native HTML elements automatically without requiring any classes. This encourages the use of proper semantic markup.
+
+### Typography
+
+Headings, paragraphs, links, and text formatting elements are styled contextually:
+
+```html
+<h1>Main Heading</h1>
+<h2>Subheading</h2>
+<p>This is a paragraph with <strong>bold text</strong> and <em>italics</em>.</p>
+<a href="#">This is a link</a>
+<code>inline code</code>
+```
+
+From 00-base.css:39-99, elements receive default styling based on their semantic meaning.
+
+### Lists
+
+Ordered and unordered lists are styled automatically:
+
+```html
+<ul>
+  <li>First item</li>
+  <li>Second item</li>
+  <li>Third item</li>
+</ul>
+
+<ol>
+  <li>First step</li>
+  <li>Second step</li>
+  <li>Third step</li>
+</ol>
+```
+
+### Form Elements
+
+All form elements receive consistent styling without classes:
+
+```html
+<input type="text" placeholder="Enter text" />
+<select>
+  <option>Option A</option>
+  <option>Option B</option>
+</select>
+<textarea placeholder="Enter message"></textarea>
+```
+
+See form.css:15-49 for comprehensive form element styling.
+
+## Minimal Use of Classes
+
+While Oat UI prioritizes semantic HTML, classes are used sparingly for **visual variations** that don't carry semantic meaning:
+
+### Visual Style Classes
+
+```html
+<!-- Visual button styles -->
+<button class="outline">Outline Button</button>
+<button class="ghost">Ghost Button</button>
+
+<!-- Size variations -->
+<button class="small">Small</button>
+<button class="large">Large</button>
+```
+
+### Component Classes
+
+Some components require a class for identification since they don't have semantic HTML equivalents:
+
+```html
+<div class="card">
+  <h3>Card Title</h3>
+  <p>Card content goes here.</p>
+</div>
+```
+
+<Warning>
+  Use classes only when there's no semantic HTML alternative. Always prefer `<button>` over `<div class="button">`.
+</Warning>
+
+## Accessibility Benefits
+
+The semantic-first approach provides significant accessibility advantages:
+
+1. **Screen readers** can better understand and navigate your content
+2. **Keyboard navigation** works automatically with native elements
+3. **ARIA attributes** are more effective when paired with semantic HTML
+4. **Focus states** are handled consistently (see 00-base.css:177-180)
+
+```css
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use the right element for the job">
+    Always use semantic HTML elements (`<button>`, `<nav>`, `<article>`, etc.) instead of generic `<div>` or `<span>` elements with classes.
+
+    ```html
+    <!-- Good -->
+    <button>Click me</button>
+    
+    <!-- Bad -->
+    <div class="button">Click me</div>
+    ```
+  </Accordion>
+
+  <Accordion title="Let data attributes convey meaning">
+    Use `data-*` attributes for semantic variants that change the purpose or context of an element.
+
+    ```html
+    <button data-variant="danger">Delete Account</button>
+    ```
+  </Accordion>
+
+  <Accordion title="Use classes only for visual styling">
+    Reserve classes for purely visual variations that don't affect the semantic meaning.
+
+    ```html
+    <button class="outline">Cancel</button>
+    <button data-variant="danger" class="outline">Delete</button>
+    ```
+  </Accordion>
+
+  <Accordion title="Combine semantic HTML with ARIA">
+    Enhance accessibility by pairing semantic elements with appropriate ARIA attributes.
+
+    ```html
+    <input 
+      type="email" 
+      aria-invalid="true" 
+      aria-describedby="email-error"
+    />
+    <div id="email-error" role="status">
+      Invalid email format
+    </div>
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Examples from Components
+
+### Button Groups
+
+Semantic `<menu>` element with list items:
+
+```html
+<menu class="buttons">
+  <li><button class="outline">Left</button></li>
+  <li><button class="outline">Center</button></li>
+  <li><button class="outline">Right</button></li>
+</menu>
+```
+
+### Input Groups
+
+Semantic `<fieldset>` with the `.group` class:
+
+```html
+<fieldset class="group">
+  <legend>https://</legend>
+  <input type="url" placeholder="subdomain" />
+  <select aria-label="Select a subdomain">
+    <option>.example.com</option>
+    <option>.example.net</option>
+  </select>
+  <button>Go</button>
+</fieldset>
+```
+
+### Form Layout
+
+Semantic `<label>` elements wrapping inputs:
+
+```html
+<form>
+  <label data-field>
+    Full Name
+    <input type="text" placeholder="John Doe" />
+  </label>
+  
+  <label data-field>
+    <input type="checkbox" /> I agree to the terms
+  </label>
+  
+  <button type="submit">Submit</button>
+</form>
+```
+
+<Check>
+  By following Oat UI's semantic-first approach, you'll write cleaner HTML, create more accessible interfaces, and reduce the cognitive overhead of managing countless utility classes.
+</Check>

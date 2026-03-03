@@ -1,0 +1,404 @@
+---
+title: CSS Variables Reference
+description: Complete reference of all CSS variables available in Oat UI
+---
+
+Oat UI uses CSS variables (custom properties) for theming and customization. All variables are defined on the `:root` selector and can be overridden globally or per component.
+
+## Color System
+
+<Accordion title="Base Colors">
+
+### Background Colors
+
+```css
+--background: light-dark(#fff, #09090b);
+--foreground: light-dark(#09090b, #fafafa);
+```
+
+The main background and text colors for your application. These form the foundation of your color scheme.
+
+### Card Colors
+
+```css
+--card: light-dark(#fff, #18181b);
+--card-foreground: light-dark(#09090b, #fafafa);
+```
+
+Used for card components and elevated surfaces.
+
+### Faint Colors
+
+```css
+--faint: light-dark(#fafafa, #1e1e21);
+--faint-foreground: light-dark(#a1a1aa, #71717a);
+```
+
+Subtle background colors for minimal contrast elements.
+
+</Accordion>
+
+<Accordion title="Semantic Colors">
+
+### Primary
+
+```css
+--primary: light-dark(#574747, #fafafa);
+--primary-foreground: light-dark(#fafafa, #18181b);
+```
+
+Main brand color used for primary actions and emphasis.
+
+### Secondary
+
+```css
+--secondary: light-dark(#f4f4f5, #27272a);
+--secondary-foreground: light-dark(#574747, #fafafa);
+```
+
+Secondary actions and less prominent elements.
+
+### Muted
+
+```css
+--muted: light-dark(#f4f4f5, #27272a);
+--muted-foreground: light-dark(#71717a, #a1a1aa);
+```
+
+Muted elements, disabled states, and subtle text.
+
+### Accent
+
+```css
+--accent: light-dark(#f4f4f5, #27272a);
+```
+
+Accent color for highlighting and special elements.
+
+</Accordion>
+
+<Accordion title="Status Colors">
+
+### Danger
+
+```css
+--danger: light-dark(#d32f2f, #f4807b);
+--danger-foreground: light-dark(#fafafa, #18181b);
+```
+
+Destructive actions, errors, and critical alerts.
+
+### Success
+
+```css
+--success: light-dark(#008032, #6cc070);
+--success-foreground: light-dark(#fafafa, #18181b);
+```
+
+Successful operations and positive feedback.
+
+### Warning
+
+```css
+--warning: light-dark(#a65b00, #f0a030);
+--warning-foreground: #09090b;
+```
+
+Cautions, warnings, and important notices.
+
+</Accordion>
+
+<Accordion title="UI Colors">
+
+### Border
+
+```css
+--border: light-dark(#d4d4d8, #52525b);
+```
+
+Default border color for all components.
+
+### Input
+
+```css
+--input: light-dark(#d4d4d8, #52525b);
+```
+
+Border color for form inputs.
+
+### Ring
+
+```css
+--ring: light-dark(#574747, #d4d4d8);
+```
+
+Focus ring color for keyboard navigation.
+
+</Accordion>
+
+## Spacing Scale
+
+<Accordion title="Spacing Variables">
+
+Oat UI uses a consistent spacing scale based on `rem` units:
+
+```css
+--space-1: 0.25rem;   /* 4px */
+--space-2: 0.5rem;    /* 8px */
+--space-3: 0.75rem;   /* 12px */
+--space-4: 1rem;      /* 16px */
+--space-5: 1.25rem;   /* 20px */
+--space-6: 1.5rem;    /* 24px */
+--space-8: 2rem;      /* 32px */
+--space-10: 2.5rem;   /* 40px */
+--space-12: 3rem;     /* 48px */
+--space-14: 3.5rem;   /* 56px */
+--space-16: 4rem;     /* 64px */
+--space-18: 4.5rem;   /* 72px */
+```
+
+These are used for padding, margins, and gaps throughout components.
+
+### Usage Examples
+
+```css
+.gap-4 { gap: var(--space-4); }
+.mt-6 { margin-block-start: var(--space-6); }
+.p-4 { padding: var(--space-4); }
+```
+
+</Accordion>
+
+## Border Radius
+
+<Accordion title="Radius Variables">
+
+```css
+--radius-small: 0.125rem;   /* 2px */
+--radius-medium: 0.375rem;  /* 6px */
+--radius-large: 0.75rem;    /* 12px */
+--radius-full: 9999px;      /* Fully rounded */
+```
+
+Used for rounded corners on buttons, cards, inputs, and other components.
+
+### Usage Examples
+
+```css
+button { border-radius: var(--radius-medium); }
+card { border-radius: var(--radius-large); }
+.avatar { border-radius: var(--radius-full); }
+```
+
+</Accordion>
+
+## Typography
+
+<Accordion title="Font Families">
+
+```css
+--font-sans: system-ui, sans-serif;
+--font-mono: ui-monospace, Consolas, monospace;
+```
+
+System font stacks for sans-serif and monospace text. These provide excellent performance and native OS integration.
+
+</Accordion>
+
+<Accordion title="Font Sizes">
+
+Fluid typography scales responsively using `clamp()`:
+
+```css
+--text-1: clamp(1.75rem, 1.5rem + 1.1vw, 2.25rem);  /* 28-36px */
+--text-2: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);  /* 24-30px */
+--text-3: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);   /* 20-24px */
+--text-4: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); /* 18-20px */
+--text-5: 1.125rem;  /* 18px */
+--text-6: 1rem;      /* 16px */
+--text-7: 0.875rem;  /* 14px */
+--text-8: 0.75rem;   /* 12px */
+
+--text-regular: var(--text-6); /* Default body text */
+```
+
+### Heading Sizes
+
+- `--text-1`: `<h1>` headings
+- `--text-2`: `<h2>` headings
+- `--text-3`: `<h3>` headings
+- `--text-4`: `<h4>` headings
+- `--text-5`: `<h5>` headings
+- `--text-6`: `<h6>` headings and body text
+- `--text-7`: Small text, captions
+- `--text-8`: Extra small text, labels
+
+</Accordion>
+
+<Accordion title="Font Weights">
+
+```css
+--font-normal: 400;
+--font-medium: 500;
+--font-semibold: 600;
+--font-bold: 600;
+```
+
+Note: `--font-bold` uses 600 weight for better readability across different fonts.
+
+</Accordion>
+
+<Accordion title="Line Height">
+
+```css
+--leading-normal: 1.5;
+```
+
+Default line height for optimal readability.
+
+</Accordion>
+
+## Shadows
+
+<Accordion title="Shadow Variables">
+
+```css
+--shadow-small: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+--shadow-medium: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+--shadow-large: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+```
+
+Three levels of shadows for creating depth and hierarchy.
+
+### Usage Guidelines
+
+- **Small**: Subtle elevation for buttons, inputs
+- **Medium**: Cards, dropdowns, moderate elevation
+- **Large**: Modals, popovers, high elevation
+
+</Accordion>
+
+## Transitions
+
+<Accordion title="Transition Variables">
+
+```css
+--transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+--transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+```
+
+Standardized timing functions for smooth animations.
+
+- **Fast**: Quick interactions like hovers, focus states
+- **Normal**: Default transitions for most state changes
+
+Both use the same easing curve for consistency.
+
+</Accordion>
+
+## Z-Index Scale
+
+<Accordion title="Z-Index Variables">
+
+```css
+--z-dropdown: 50;
+--z-modal: 200;
+```
+
+Standardized z-index values for layering UI elements.
+
+### Layering Hierarchy
+
+1. Base content: `0` (default)
+2. Dropdowns, tooltips: `50` (`--z-dropdown`)
+3. Modals, dialogs: `200` (`--z-modal`)
+
+</Accordion>
+
+## Component-Specific
+
+<Accordion title="Component Variables">
+
+### Progress Bar Height
+
+```css
+--bar-height: 0.5rem; /* 8px */
+```
+
+Default height for progress bars and loading indicators.
+
+### Color Scheme
+
+```css
+color-scheme: light dark;
+```
+
+Enables automatic dark mode for browser UI elements like scrollbars and form controls.
+
+</Accordion>
+
+## Using CSS Variables
+
+### In CSS
+
+```css
+.my-component {
+  color: var(--foreground);
+  background: var(--card);
+  padding: var(--space-4);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-medium);
+  transition: all var(--transition);
+}
+```
+
+### In HTML (Inline Styles)
+
+```html
+<button style="--primary: #0066cc;">
+  Custom Primary Button
+</button>
+```
+
+### With JavaScript
+
+```javascript
+// Read a variable
+const primary = getComputedStyle(document.documentElement)
+  .getPropertyValue('--primary');
+
+// Set a variable
+document.documentElement.style.setProperty('--primary', '#0066cc');
+```
+
+## Overriding Variables
+
+Create a custom stylesheet after Oat's CSS:
+
+```html
+<link rel="stylesheet" href="oat.min.css">
+<link rel="stylesheet" href="custom.css">
+```
+
+```css
+/* custom.css */
+:root {
+  --primary: #0066cc;
+  --radius-medium: 0.5rem;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+```
+
+## Light-Dark Function
+
+Many color variables use the `light-dark()` CSS function:
+
+```css
+--primary: light-dark(#574747, #fafafa);
+```
+
+This automatically switches between:
+- First value (light mode): `#574747`
+- Second value (dark mode): `#fafafa`
+
+Based on the user's `prefers-color-scheme` setting.

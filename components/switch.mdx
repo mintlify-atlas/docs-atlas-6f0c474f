@@ -1,0 +1,115 @@
+---
+title: Switch
+description: Toggle switches using native HTML checkbox with role="switch". No JavaScript required.
+---
+
+Add `role="switch"` to a checkbox input for toggle switch styling. This provides accessible switch components using native HTML.
+
+## Basic Switch
+
+A simple toggle switch using a checkbox with the switch role.
+
+<CodeGroup>
+```html Switch
+<label>
+  <input type="checkbox" role="switch"> Notifications
+</label>
+<label>
+  <input type="checkbox" role="switch" checked> Confabulation
+</label>
+```
+</CodeGroup>
+
+## Unchecked
+
+Default unchecked state.
+
+```html
+<label>
+  <input type="checkbox" role="switch"> Notifications
+</label>
+```
+
+## Checked
+
+Add the `checked` attribute for the checked state.
+
+```html
+<label>
+  <input type="checkbox" role="switch" checked> Confabulation
+</label>
+```
+
+## Disabled State
+
+Switches can be disabled using the `disabled` attribute.
+
+<CodeGroup>
+```html Disabled
+<label>
+  <input type="checkbox" role="switch" disabled> Disabled off
+</label>
+<label>
+  <input type="checkbox" role="switch" checked disabled> Disabled on
+</label>
+```
+</CodeGroup>
+
+## Accessibility
+
+The switch component uses semantic HTML with proper ARIA roles:
+
+- Uses native `<input type="checkbox">` for keyboard and screen reader support
+- `role="switch"` provides the correct semantic meaning
+- Wrapping in `<label>` ensures the text is associated with the control
+- Supports standard keyboard interaction (Space to toggle)
+
+## Usage Notes
+
+<Info>
+  No JavaScript is required. The switch is a pure CSS implementation using the checkbox's native checked state.
+</Info>
+
+<Warning>
+  Always wrap switches in `<label>` elements to ensure proper click targets and accessibility.
+</Warning>
+
+## Styling
+
+Switches use CSS custom properties for theming:
+
+- `--primary` - Switch background when checked
+- `--background` - Switch thumb color
+- `--input` - Switch background when unchecked
+- `--radius-full` - Border radius for switch track and thumb
+- `--shadow-small` - Thumb shadow
+- `--transition` - Animation duration for thumb movement
+
+## Example Form
+
+Switches work seamlessly in forms:
+
+```html
+<form>
+  <fieldset>
+    <legend>Notification Settings</legend>
+    
+    <label data-field>
+      <input type="checkbox" role="switch" name="email" checked>
+      Email notifications
+    </label>
+    
+    <label data-field>
+      <input type="checkbox" role="switch" name="push">
+      Push notifications
+    </label>
+    
+    <label data-field>
+      <input type="checkbox" role="switch" name="sms">
+      SMS notifications
+    </label>
+  </fieldset>
+  
+  <button type="submit">Save Settings</button>
+</form>
+```

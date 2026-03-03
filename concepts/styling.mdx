@@ -1,0 +1,496 @@
+---
+title: CSS Styling Approach
+description: Understand Oat UI's modern CSS architecture and styling methodology
+---
+
+Oat UI leverages modern CSS features to provide a powerful, zero-dependency styling solution. The framework is built on CSS cascade layers, custom properties, and semantic selectors, delivering a minimal yet complete styling system.
+
+## Architecture Overview
+
+Oat UI's CSS is organized into a layered architecture that provides predictable specificity and easy customization.
+
+### Cascade Layers
+
+From 00-base.css:1 and 01-theme.css:1, Oat UI defines explicit cascade layers:
+
+```css
+@layer theme, base, components, animations, utilities;
+```
+
+<Info>
+  CSS cascade layers allow you to control specificity by organizing styles into named layers. Styles in later layers override earlier ones, regardless of selector specificity.
+</Info>
+
+**Layer hierarchy:**
+
+1. **theme** - CSS custom properties and design tokens
+2. **base** - Element defaults and resets
+3. **components** - Component-specific styles
+4. **animations** - Animation definitions
+5. **utilities** - Utility classes and overrides
+
+### Benefits
+
+<CardGroup cols={2}>
+  <Card title="Predictable Overrides" icon="layer-group">
+    Layer order determines precedence, not selector specificity. Your utility classes in the `utilities` layer will always override component styles.
+  </Card>
+  
+  <Card title="No Specificity Wars" icon="shield">
+    Avoid `!important` and complex selector chains. Layers handle precedence naturally.
+  </Card>
+  
+  <Card title="Easy Customization" icon="wrench">
+    Add your own styles in the appropriate layer without worrying about specificity conflicts.
+  </Card>
+  
+  <Card title="Clear Organization" icon="sitemap">
+    Styles are organized by purpose, making the codebase easy to navigate and maintain.
+  </Card>
+</CardGroup>
+
+## Modern CSS Features
+
+Oat UI embraces cutting-edge CSS features for a superior developer experience.
+
+### CSS Nesting
+
+Oat UI uses native CSS nesting for cleaner, more maintainable styles (from button.css:22-32):
+
+```css
+button {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+  
+  &:hover:not(:disabled) {
+    background-color: var(--_hov);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translate(1px, 1px);
+  }
+}
+```
+
+This native CSS nesting eliminates the need for preprocessors like Sass.
+
+### Custom Properties for State
+
+Oat UI uses scoped custom properties for component states (from button.css:3):
+
+```css
+button {
+  --_hov: color-mix(in srgb, var(--primary), white 25%);
+  
+  &:hover:not(:disabled) {
+    background-color: var(--_hov);
+  }
+}
+```
+
+<Info>
+  The `--_hov` variable uses an underscore prefix to indicate it's a private, component-scoped variable (not part of the public theming API).
+</Info>
+
+### Color Functions
+
+#### light-dark()
+
+Automatic theme adaptation (from 01-theme.css:5):
+
+```css
+--background: light-dark(#fff, #09090b);
+```
+
+#### color-mix()
+
+Dynamic color generation for hover states (from button.css:42):
+
+```css
+&[data-variant="danger"] {
+  --_hov: color-mix(in srgb, var(--danger), black 15%);
+}
+```
+
+#### rgb(from ...)
+
+Opacity manipulation while preserving color (from 00-base.css:97):
+
+```css
+a:hover {
+  color: rgb(from var(--primary) r g b / 0.8);
+}
+```
+
+### Logical Properties
+
+Oat UI uses logical properties for internationalization support (from 00-base.css:137):
+
+```css
+blockquote {
+  border-inline-start: 4px solid var(--border);
+  padding-inline-start: var(--space-4);
+}
+```
+
+<Info>
+  Logical properties like `inline-start` and `block-end` adapt automatically to different writing modes and text directions (LTR/RTL).
+</Info>
+
+**Common logical properties:**
+- `margin-block-start` / `margin-block-end` instead of `margin-top` / `margin-bottom`
+- `padding-inline-start` / `padding-inline-end` instead of `padding-left` / `padding-right`
+- `border-inline-start` instead of `border-left`
+
+## Selector Strategy
+
+Oat UI uses a deliberate selector strategy that balances specificity, performance, and maintainability.
+
+### :where() for Zero Specificity
+
+The `:where()` pseudo-class has zero specificity, making styles easy to override (from form.css:15):
+
+```css
+:where(input:not([type=checkbox], [type=radio], [type=range]), textarea, select) {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  /* ... */
+}
+```
+
+This allows you to override these styles with a simple class:
+
+```css
+.custom-input {
+  padding: var(--space-4); /* This wins despite lower specificity! */
+}
+```
+
+### :is() for Grouping
+
+The `:is()` pseudo-class groups selectors efficiently (from button.css:2):
+
+```css
+:is(button, [type=submit], [type=reset], [type=button], a.button) {
+  display: inline-flex;
+  /* Styles apply to all button-like elements */
+}
+```
+
+### Attribute Selectors for Variants
+
+Data attributes create semantic variants (from button.css:34, 41):
+
+```css
+button[data-variant="secondary"] {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+button[data-variant="danger"] {
+  background-color: var(--danger);
+  color: var(--danger-foreground);
+}
+```
+
+### :has() for Contextual Styling
+
+The `:has()` pseudo-class enables parent selectors (from form.css:7):
+
+```css
+label:has(input:where([type=checkbox], [type=radio])) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+```
+
+This changes the label layout when it contains a checkbox or radio button.
+
+## Responsive Design
+
+### Fluid Typography
+
+Oat UI uses `clamp()` for responsive typography without media queries (from 01-theme.css:52-54):
+
+```css
+--text-1: clamp(1.75rem, 1.5rem + 1.1vw, 2.25rem);
+--text-2: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+--text-3: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+```
+
+**How it works:**
+```css
+clamp(minimum, preferred, maximum)
+```
+
+- Text scales fluidly between minimum and maximum based on viewport width
+- No breakpoints needed
+- Accessible and user-friendly
+
+### Container-Based Sizing
+
+Oat UI uses relative units (rem, em, %) and avoids fixed pixel widths:
+
+```css
+max-width: 100%;  /* From 00-base.css:36 */
+```
+
+Components adapt naturally to their containers.
+
+## State Management
+
+### Interactive States
+
+From 00-base.css:177-185, Oat UI provides consistent state styling:
+
+```css
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+```
+
+### ARIA State Styling
+
+Styles respond to ARIA attributes for accessibility (from form.css:42-48):
+
+```css
+input:is([aria-invalid=true], :user-invalid) {
+  border-color: var(--danger);
+  
+  &:focus {
+    box-shadow: 0 0 0 2px rgb(from var(--danger) r g b / 0.2);
+  }
+}
+```
+
+### Data Attribute States
+
+Component states via data attributes (from form.css:252-255):
+
+```css
+[data-field="error"] .error {
+  display: block;
+  color: var(--danger);
+}
+```
+
+## Performance Optimizations
+
+### Transitions
+
+Targeted transitions for smooth interactions (from button.css:20):
+
+```css
+transition: background-color var(--transition-fast), 
+            opacity var(--transition-fast), 
+            transform var(--transition-fast);
+```
+
+<Warning>
+  Avoid transitioning properties like `width`, `height`, or `top` as they trigger layout recalculations. Prefer `transform` and `opacity` for better performance.
+</Warning>
+
+### Will-Change Sparingly
+
+Oat UI avoids `will-change` unless absolutely necessary, as it can harm performance when overused.
+
+### Minimal Repaints
+
+Using `transform` instead of positional properties (from button.css:31):
+
+```css
+&:active:not(:disabled) {
+  transform: translate(1px, 1px);
+}
+```
+
+## Resets and Normalization
+
+### Modern CSS Reset
+
+Oat UI includes a minimal reset (from 00-base.css:4-11):
+
+```css
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  margin: 0;
+}
+```
+
+### Font Smoothing
+
+Optimized text rendering (from 00-base.css:28):
+
+```css
+body {
+  -webkit-font-smoothing: antialiased;
+}
+```
+
+### Media Defaults
+
+Responsive media elements (from 00-base.css:35-37):
+
+```css
+img, picture, video, canvas, svg {
+  max-width: 100%;
+}
+```
+
+## Customization Patterns
+
+### Adding Custom Styles
+
+Create your own layer for custom utilities:
+
+```css
+@layer utilities {
+  .text-center {
+    text-align: center;
+  }
+  
+  .mt-4 {
+    margin-block-start: var(--space-4);
+  }
+}
+```
+
+### Extending Components
+
+Add component variants in the components layer:
+
+```css
+@layer components {
+  button.gradient {
+    background: linear-gradient(
+      135deg, 
+      var(--primary), 
+      var(--secondary)
+    );
+  }
+}
+```
+
+### Overriding Theme Defaults
+
+Simply redefine CSS custom properties:
+
+```css
+:root {
+  --primary: #3b82f6;
+  --radius-medium: 0.5rem;
+  --space-4: 1.25rem;
+}
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use the layer system">
+    Organize your custom CSS into the appropriate layer. This prevents specificity conflicts and makes overrides predictable.
+
+    ```css
+    @layer utilities {
+      /* Your utility classes */
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Leverage custom properties">
+    Use CSS variables for any value that might change or needs theming support.
+
+    ```css
+    .custom-component {
+      padding: var(--space-4);
+      color: var(--foreground);
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Prefer logical properties">
+    Use logical properties for better internationalization support.
+
+    ```css
+    /* Good */
+    margin-inline-start: var(--space-4);
+    
+    /* Avoid */
+    margin-left: var(--space-4);
+    ```
+  </Accordion>
+
+  <Accordion title="Use semantic selectors">
+    Target semantic HTML elements and data attributes rather than creating utility classes.
+
+    ```css
+    /* Good */
+    button[data-variant="danger"] { }
+    
+    /* Less ideal */
+    .btn-danger { }
+    ```
+  </Accordion>
+
+  <Accordion title="Minimize custom classes">
+    Let Oat UI's element styles do the work. Only add classes when absolutely necessary.
+
+    ```html
+    <!-- Good -->
+    <button>Click me</button>
+    
+    <!-- Unnecessary -->
+    <button class="button">Click me</button>
+    ```
+  </Accordion>
+
+  <Accordion title="Test in multiple browsers">
+    Oat UI uses modern CSS features. Ensure your target browsers support the features you're using.
+  </Accordion>
+</AccordionGroup>
+
+## Browser Support
+
+Oat UI targets modern, evergreen browsers and uses cutting-edge CSS features:
+
+- CSS Nesting
+- CSS Cascade Layers (`@layer`)
+- `light-dark()` function
+- `color-mix()` function  
+- `:has()` pseudo-class
+- `:where()` and `:is()` pseudo-classes
+- Logical properties
+- `clamp()` function
+
+<Warning>
+  Oat UI does not support Internet Explorer or older browser versions. It's designed for modern browsers (Chrome, Firefox, Safari, Edge) with automatic updates.
+</Warning>
+
+## File Size
+
+Oat UI's entire CSS library is approximately **8KB** minified and gzipped, making it one of the smallest full-featured UI frameworks available.
+
+The minimal footprint is achieved through:
+
+- **No preprocessor overhead** - Native CSS features only
+- **Semantic selectors** - Styling elements directly instead of utility classes
+- **CSS custom properties** - Single source of truth for design tokens
+- **Modern CSS** - Leveraging browser capabilities instead of polyfills
+
+<Check>
+  By understanding Oat UI's CSS architecture, you can write maintainable, performant styles that integrate seamlessly with the framework while keeping your bundle size minimal.
+</Check>

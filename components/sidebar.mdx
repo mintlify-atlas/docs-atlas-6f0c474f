@@ -1,0 +1,395 @@
+---
+title: Sidebar
+description: Responsive admin dashboard layout with sticky sidebar, optional top nav, and collapsible sections
+---
+
+The Sidebar component provides a responsive layout system for admin dashboards and documentation sites. It features a sticky sidebar that collapses on mobile and optional always-collapsible behavior.
+
+## Basic Usage
+
+Use `data-sidebar-layout` on a container (typically `<body>`) with `<aside data-sidebar>` for the sidebar and `<main>` for content.
+
+```html
+<div data-sidebar-layout>
+  <aside data-sidebar>
+    <nav>
+      <ul>
+        <li><a href="#" aria-current="page">Home</a></li>
+        <li><a href="#">Users</a></li>
+        <li>
+          <details open>
+            <summary>Settings</summary>
+            <ul>
+              <li><a href="#">General</a></li>
+              <li><a href="#">Security</a></li>
+              <li><a href="#">Billing</a></li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </nav>
+    <footer>
+      <button class="outline sm" style="width: 100%;">Logout</button>
+    </footer>
+  </aside>
+  <main>
+    <div style="padding: var(--space-3)">Main content area. Scrolls with the page body.</div>
+  </main>
+</div>
+```
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Sticky Positioning" icon="thumbtack">
+    Sidebar stays fixed while main content scrolls
+  </Card>
+  <Card title="Mobile Responsive" icon="mobile">
+    Becomes a slide-out overlay on screens ≤768px
+  </Card>
+  <Card title="Collapsible Sections" icon="folder-tree">
+    Use `<details>` elements for nested navigation
+  </Card>
+  <Card title="Always-Collapsible" icon="bars">
+    Optional mode to collapse sidebar on all screen sizes
+  </Card>
+</CardGroup>
+
+## Structure
+
+<Steps>
+  <Step title="Layout Container">
+    Add `data-sidebar-layout` to your container (usually `<body>`)
+  </Step>
+  <Step title="Sidebar Element">
+    Create `<aside data-sidebar>` with header, nav, and footer sections
+  </Step>
+  <Step title="Main Content">
+    Add `<main>` element for your page content
+  </Step>
+  <Step title="Toggle Button">
+    Include `<button data-sidebar-toggle>` to control sidebar visibility
+  </Step>
+</Steps>
+
+## Attributes
+
+<ParamField path="data-sidebar-layout" type="attribute" required>
+  Applied to the container element. Creates the grid layout for sidebar + main content.
+</ParamField>
+
+<ParamField path="data-sidebar-layout='always'" type="attribute">
+  Makes the sidebar collapsible at all screen sizes (not just mobile).
+</ParamField>
+
+<ParamField path="data-sidebar" type="attribute" required>
+  Applied to the `<aside>` element. Marks it as the sidebar.
+</ParamField>
+
+<ParamField path="data-sidebar-toggle" type="attribute" required>
+  Applied to a button. Toggles the sidebar open/closed.
+</ParamField>
+
+<ParamField path="data-sidebar-open" type="attribute">
+  Automatically applied to the layout when sidebar is collapsed (closed). Used internally.
+</ParamField>
+
+<ParamField path="data-topnav" type="attribute">
+  Applied to a `<nav>` element for a full-width sticky top navigation bar.
+</ParamField>
+
+## Always-Collapsible Mode
+
+Set `data-sidebar-layout="always"` to keep the toggle visible on all screen sizes:
+
+```html
+<body data-sidebar-layout="always">
+  <nav data-topnav>
+    <button data-sidebar-toggle aria-label="Toggle menu">☰</button>
+    <span>App Name</span>
+  </nav>
+  
+  <aside data-sidebar>
+    <!-- sidebar content -->
+  </aside>
+  
+  <main>
+    <!-- main content -->
+  </main>
+</body>
+```
+
+<Note>
+In always-collapsible mode, the toggle button remains visible on desktop screens, allowing users to collapse the sidebar for more content space.
+</Note>
+
+## With Top Navigation
+
+Add `data-topnav` to a nav element for a full-width sticky top navigation bar. The sidebar will adjust to sit below it.
+
+```html
+<body data-sidebar-layout>
+  <nav data-topnav>
+    <button data-sidebar-toggle aria-label="Toggle menu" class="outline">☰</button>
+    <span>App Name</span>
+  </nav>
+
+  <aside data-sidebar>
+    <header>Logo</header>
+    <nav>...navigation...</nav>
+    <footer>Actions</footer>
+  </aside>
+
+  <main>
+    Main page content.
+  </main>
+</body>
+```
+
+## Sidebar Sections
+
+The sidebar can contain three optional sections:
+
+### Header
+
+```html
+<aside data-sidebar>
+  <header>
+    <img src="logo.svg" alt="Company Logo" />
+    <h2>App Name</h2>
+  </header>
+  <!-- nav and footer -->
+</aside>
+```
+
+### Navigation
+
+```html
+<aside data-sidebar>
+  <nav>
+    <ul>
+      <li><a href="/" aria-current="page">Dashboard</a></li>
+      <li><a href="/users">Users</a></li>
+      <li>
+        <details>
+          <summary>Settings</summary>
+          <ul>
+            <li><a href="/settings/general">General</a></li>
+            <li><a href="/settings/security">Security</a></li>
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </nav>
+</aside>
+```
+
+### Footer
+
+```html
+<aside data-sidebar>
+  <!-- header and nav -->
+  <footer>
+    <button class="outline" style="width: 100%;">Sign Out</button>
+  </footer>
+</aside>
+```
+
+## Collapsible Navigation Groups
+
+Use `<details>` elements for collapsible navigation sections:
+
+```html
+<nav>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li>
+      <details open>
+        <summary>Products</summary>
+        <ul>
+          <li><a href="#">All Products</a></li>
+          <li><a href="#">Categories</a></li>
+          <li><a href="#">Inventory</a></li>
+        </ul>
+      </details>
+    </li>
+    <li>
+      <details>
+        <summary>Settings</summary>
+        <ul>
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">Preferences</a></li>
+        </ul>
+      </details>
+    </li>
+  </ul>
+</nav>
+```
+
+<Tip>
+Add the `open` attribute to `<details>` to have sections expanded by default.
+</Tip>
+
+## Responsive Behavior
+
+### Desktop (> 768px)
+
+- Sidebar is visible and sticky
+- Grid layout: `14rem` sidebar + `1fr` main content
+- Sidebar scrolls independently if content overflows
+
+### Mobile (≤ 768px)
+
+- Sidebar becomes a slide-out overlay
+- Hidden by default (off-screen)
+- Toggle button controls visibility
+- Clicking outside the sidebar closes it
+
+### Always-Collapsible Mode
+
+- Toggle button visible at all screen sizes
+- Sidebar can be collapsed on desktop
+- When collapsed: grid changes to `0px 1fr` (sidebar hidden)
+
+## JavaScript Behavior
+
+The sidebar uses a simple JavaScript handler for toggling:
+
+```javascript
+// Automatically included in Oat UI
+document.addEventListener('click', (e) => {
+  const toggle = e.target.closest('[data-sidebar-toggle]');
+  if (toggle) {
+    const layout = toggle.closest('[data-sidebar-layout]');
+    layout?.toggleAttribute('data-sidebar-open');
+  }
+});
+```
+
+## Active Page Indicator
+
+Use `aria-current="page"` on the active navigation link:
+
+```html
+<nav>
+  <ul>
+    <li><a href="/" aria-current="page">Home</a></li>
+    <li><a href="/users">Users</a></li>
+    <li><a href="/settings">Settings</a></li>
+  </ul>
+</nav>
+```
+
+## Styling
+
+The sidebar uses CSS Grid and custom properties:
+
+```css
+[data-sidebar-layout] {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  min-height: 100dvh;
+  gap: var(--space-4);
+}
+
+[data-sidebar] {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  background-color: var(--background);
+  border-inline-end: 1px solid var(--border);
+}
+```
+
+## Accessibility
+
+<AccordionGroup>
+  <Accordion title="Toggle Button">
+    Add `aria-label="Toggle menu"` to the toggle button for screen readers.
+  </Accordion>
+  
+  <Accordion title="Current Page">
+    Use `aria-current="page"` on the active navigation link to indicate the current page.
+  </Accordion>
+  
+  <Accordion title="Keyboard Navigation">
+    All interactive elements (links, buttons, details) are keyboard accessible.
+  </Accordion>
+  
+  <Accordion title="Focus Management">
+    When the sidebar opens on mobile, focus remains manageable and logical.
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Logical Structure" icon="sitemap">
+    Organize navigation in a clear hierarchy using nested lists and details
+  </Card>
+  <Card title="Consistent Width" icon="ruler">
+    Keep sidebar width reasonable (14rem default) for readability
+  </Card>
+  <Card title="Mobile First" icon="mobile">
+    Always test the slide-out behavior on mobile devices
+  </Card>
+  <Card title="Footer Actions" icon="chevron-down">
+    Place important actions (logout, settings) in the footer section
+  </Card>
+</CardGroup>
+
+## Full Example
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="path/to/oat.css">
+  <title>Admin Dashboard</title>
+</head>
+<body data-sidebar-layout="always">
+  <nav data-topnav>
+    <button data-sidebar-toggle aria-label="Toggle menu" class="outline">☰</button>
+    <a href="/">Dashboard</a>
+  </nav>
+
+  <aside data-sidebar>
+    <header>
+      <h2>My App</h2>
+    </header>
+    
+    <nav>
+      <ul>
+        <li><a href="/" aria-current="page">Home</a></li>
+        <li><a href="/analytics">Analytics</a></li>
+        <li>
+          <details open>
+            <summary>Settings</summary>
+            <ul>
+              <li><a href="/settings/profile">Profile</a></li>
+              <li><a href="/settings/team">Team</a></li>
+              <li><a href="/settings/billing">Billing</a></li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+    </nav>
+    
+    <footer>
+      <button class="outline small" style="width: 100%;">Sign Out</button>
+    </footer>
+  </aside>
+
+  <main>
+    <div style="padding: var(--space-6);">
+      <h1>Dashboard</h1>
+      <p>Main content goes here...</p>
+    </div>
+  </main>
+
+  <script src="path/to/oat.js"></script>
+</body>
+</html>
+```

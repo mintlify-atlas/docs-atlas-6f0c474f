@@ -1,0 +1,301 @@
+---
+title: Web Components
+description: Overview of Oat UI's web component architecture and OtBase class
+---
+
+Oat UI provides a lightweight base class for building custom web components with built-in lifecycle management, event handling, and utility methods.
+
+## OtBase Class
+
+All Oat UI web components extend the `OtBase` class, which provides common functionality for component initialization, cleanup, and DOM manipulation.
+
+### Lifecycle Methods
+
+#### init()
+
+Called once when the component is added to the DOM and ready for initialization. Override this method in your custom components to set up event listeners, query elements, and initialize state.
+
+```javascript
+import { OtBase } from 'oat-ui';
+
+class MyComponent extends OtBase {
+  init() {
+    // Component initialization logic
+    const button = this.$('button');
+    button.addEventListener('click', this);
+  }
+}
+
+customElements.define('my-component', MyComponent);
+```
+
+<Note>
+The `init()` method is guaranteed to be called only once, even if the component is moved in the DOM.
+</Note>
+
+#### cleanup()
+
+Called when the component is removed from the DOM. Override this method to remove event listeners, clear timers, or perform other cleanup tasks.
+
+```javascript
+class MyComponent extends OtBase {
+  #resizeHandler;
+
+  init() {
+    this.#resizeHandler = () => this.handleResize();
+    window.addEventListener('resize', this.#resizeHandler);
+  }
+
+  cleanup() {
+    window.removeEventListener('resize', this.#resizeHandler);
+  }
+}
+```
+
+### Event Handling
+
+#### handleEvent(event)
+
+Enables automatic event delegation. When you pass `this` as an event listener, the `handleEvent` method routes events to methods named `on{eventtype}`.
+
+```javascript
+class MyDropdown extends OtBase {
+  init() {
+    const menu = this.$('[popover]');
+    // Automatically calls this.ontoggle() when toggle event fires
+    menu.addEventListener('toggle', this);
+    menu.addEventListener('keydown', this);
+  }
+
+  ontoggle(event) {
+    console.log('Menu toggled:', event.newState);
+  }
+
+  onkeydown(event) {
+    console.log('Key pressed:', event.key);
+  }
+}
+```
+
+<ParamField path="event" type="Event" required>
+  The DOM event object
+</ParamField>
+
+### Keyboard Navigation
+
+#### keyNav(event, idx, len, prevKey, nextKey, homeEnd)
+
+Utility method for implementing roving keyboard navigation in lists and menus. Returns the next index to focus, or -1 if no navigation occurred.
+
+```javascript
+class MyTabs extends OtBase {
+  #tabs = [];
+
+  init() {
+    this.#tabs = this.$$('[role="tab"]');
+    this.$('[role="tablist"]').addEventListener('keydown', this);
+  }
+
+  onkeydown(event) {
+    const currentIndex = this.#tabs.indexOf(event.target);
+    const nextIndex = this.keyNav(
+      event,
+      currentIndex,
+      this.#tabs.length,
+      'ArrowLeft',  // Previous key
+      'ArrowRight', // Next key
+      false         // Don't handle Home/End
+    );
+
+    if (nextIndex >= 0) {
+      this.#tabs[nextIndex].focus();
+    }
+  }
+}
+```
+
+<ParamField path="event" type="KeyboardEvent" required>
+  The keyboard event object
+</ParamField>
+
+<ParamField path="idx" type="number" required>
+  Current index in the list (0-based)
+</ParamField>
+
+<ParamField path="len" type="number" required>
+  Total number of items in the list
+</ParamField>
+
+<ParamField path="prevKey" type="string" required>
+  Key name for previous item navigation (e.g., 'ArrowLeft', 'ArrowUp')
+</ParamField>
+
+<ParamField path="nextKey" type="string" required>
+  Key name for next item navigation (e.g., 'ArrowRight', 'ArrowDown')
+</ParamField>
+
+<ParamField path="homeEnd" type="boolean" default="false">
+  Whether to handle Home and End keys for jumping to first/last items
+</ParamField>
+
+**Returns:** `number` - The next index to focus (0 to len-1), or -1 if no navigation occurred
+
+### Custom Events
+
+#### emit(name, detail)
+
+Dispatches a custom event from the component with automatic bubbling and composition.
+
+```javascript
+class MyComponent extends OtBase {
+  selectItem(item) {
+    // Emit a custom event that bubbles up the DOM
+    this.emit('item-selected', { item, timestamp: Date.now() });
+  }
+}
+
+// Listen for the custom event
+document.querySelector('my-component').addEventListener('item-selected', (e) => {
+  console.log('Selected:', e.detail.item);
+});
+```
+
+<ParamField path="name" type="string" required>
+  The event name
+</ParamField>
+
+<ParamField path="detail" type="any" default="null">
+  Optional event data to pass to listeners via `event.detail`
+</ParamField>
+
+**Returns:** `boolean` - True if the event was not cancelled, false otherwise
+
+<Note>
+All custom events are created with `bubbles: true`, `composed: true`, and `cancelable: true`.
+</Note>
+
+### DOM Query Methods
+
+#### $(selector)
+
+Shorthand for `querySelector()` scoped to the component. Returns the first matching element within the component.
+
+```javascript
+class MyComponent extends OtBase {
+  init() {
+    const header = this.$('.header');
+    const button = this.$('button[type="submit"]');
+  }
+}
+```
+
+<ParamField path="selector" type="string" required>
+  CSS selector string
+</ParamField>
+
+**Returns:** `Element | null` - The first matching element, or null if not found
+
+#### $$(selector)
+
+Shorthand for `querySelectorAll()` scoped to the component. Returns an array of all matching elements.
+
+```javascript
+class MyComponent extends OtBase {
+  init() {
+    const items = this.$$('[role="menuitem"]');
+    console.log(`Found ${items.length} menu items`);
+
+    items.forEach(item => {
+      item.addEventListener('click', this.handleItemClick);
+    });
+  }
+}
+```
+
+<ParamField path="selector" type="string" required>
+  CSS selector string
+</ParamField>
+
+**Returns:** `Element[]` - Array of matching elements (empty array if none found)
+
+<Note>
+Unlike native `querySelectorAll()`, this method returns a real Array, not a NodeList.
+</Note>
+
+### Utility Methods
+
+#### uid()
+
+Generates a random unique identifier string. Useful for creating unique IDs for ARIA relationships.
+
+```javascript
+class MyComponent extends OtBase {
+  init() {
+    const button = this.$('button');
+    const panel = this.$('.panel');
+
+    // Generate unique IDs for ARIA
+    button.id = `btn-${this.uid()}`;
+    panel.id = `panel-${this.uid()}`;
+    button.setAttribute('aria-controls', panel.id);
+  }
+}
+```
+
+**Returns:** `string` - A random 8-character alphanumeric string
+
+## Built-in Components
+
+Oat UI includes several pre-built components that extend `OtBase`:
+
+<CardGroup cols={2}>
+  <Card title="Tabs" icon="folder-open" href="/components/tabs">
+    Accessible tab interface with keyboard navigation
+  </Card>
+  <Card title="Dropdown" icon="chevron-down" href="/components/dropdown">
+    Popover-based dropdown menus with smart positioning
+  </Card>
+</CardGroup>
+
+## Creating Custom Components
+
+Extend `OtBase` to create your own custom components:
+
+```javascript
+import { OtBase } from 'oat-ui';
+
+class MyAccordion extends OtBase {
+  #headers = [];
+  #panels = [];
+
+  init() {
+    this.#headers = this.$$('.accordion-header');
+    this.#panels = this.$$('.accordion-panel');
+
+    this.#headers.forEach((header, index) => {
+      header.addEventListener('click', () => this.toggle(index));
+    });
+  }
+
+  toggle(index) {
+    const isOpen = this.#panels[index].hasAttribute('open');
+    this.#panels[index].toggleAttribute('open');
+    this.emit('accordion-change', { index, isOpen: !isOpen });
+  }
+
+  cleanup() {
+    // Cleanup if needed
+  }
+}
+
+customElements.define('my-accordion', MyAccordion);
+```
+
+## Browser Support
+
+Oat UI web components work in all modern browsers that support:
+- Custom Elements (Web Components)
+- ES6 classes and private fields
+- Popover API (with polyfill for older browsers)
+
+<Check>Oat UI includes automatic polyfills for Safari's `commandfor` attribute.</Check>

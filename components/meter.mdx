@@ -1,0 +1,163 @@
+---
+title: "Meter"
+description: "Measurements using the semantic <meter> element."
+---
+
+Use `<meter>` for values within a known range. The browser automatically shows colors based on the value and thresholds defined by `low`, `high`, and `optimum` attributes.
+
+## Basic Usage
+
+```html
+<meter value="0.8" min="0" max="1" low="0.3" high="0.7" optimum="1"></meter>
+<meter value="0.5" min="0" max="1" low="0.3" high="0.7" optimum="1"></meter>
+<meter value="0.2" min="0" max="1" low="0.3" high="0.7" optimum="1"></meter>
+```
+
+## Attributes
+
+### value (required)
+
+The current measurement value:
+
+```html
+<meter value="75" max="100"></meter>
+```
+
+### min and max
+
+Define the range boundaries (defaults: min=0, max=1):
+
+```html
+<meter value="50" min="0" max="100"></meter>
+```
+
+### low and high
+
+Define threshold boundaries for the measurement:
+
+```html
+<meter value="60" min="0" max="100" low="30" high="70"></meter>
+```
+
+### optimum
+
+Defines the ideal value. The browser uses this to determine color:
+
+```html
+<!-- High values are optimal (green when value is high) -->
+<meter value="80" min="0" max="100" low="30" high="70" optimum="100"></meter>
+
+<!-- Low values are optimal (green when value is low) -->
+<meter value="20" min="0" max="100" low="30" high="70" optimum="0"></meter>
+```
+
+## Color Logic
+
+The meter automatically displays colors based on the value relative to thresholds:
+
+- **Green (Optimum)** - Value is in the optimal range
+- **Yellow (Suboptimal)** - Value is acceptable but not ideal  
+- **Red (Critical)** - Value is in a critical range
+
+### Example: Storage Usage
+
+```html
+<!-- Low usage = good (green) -->
+<meter value="20" min="0" max="100" low="50" high="80" optimum="0"></meter>
+
+<!-- Medium usage = warning (yellow) -->
+<meter value="65" min="0" max="100" low="50" high="80" optimum="0"></meter>
+
+<!-- High usage = critical (red) -->
+<meter value="95" min="0" max="100" low="50" high="80" optimum="0"></meter>
+```
+
+### Example: Performance Score
+
+```html
+<!-- High score = good (green) -->
+<meter value="90" min="0" max="100" low="30" high="70" optimum="100"></meter>
+
+<!-- Medium score = warning (yellow) -->
+<meter value="50" min="0" max="100" low="30" high="70" optimum="100"></meter>
+
+<!-- Low score = critical (red) -->
+<meter value="15" min="0" max="100" low="30" high="70" optimum="100"></meter>
+```
+
+## Styling
+
+Meters include:
+- Full width by default
+- Customizable height via `--bar-height` CSS variable
+- Rounded corners (pill shape)
+- Automatic color coding (green, yellow, red)
+- Muted background
+
+### Custom Height
+
+```html
+<meter value="0.7" max="1" style="--bar-height: 8px;"></meter>
+<meter value="0.7" max="1" style="--bar-height: 16px;"></meter>
+```
+
+### Custom Width
+
+```html
+<meter value="0.7" max="1" style="width: 200px;"></meter>
+```
+
+## Use Cases
+
+- **Disk usage** - Show storage space used
+- **Battery level** - Display charge remaining
+- **Temperature** - Show current temperature in a range
+- **Performance metrics** - Display scores or ratings
+- **Capacity** - Show how full something is
+
+## Dynamic Updates
+
+Update meter values with JavaScript:
+
+```js
+const meter = document.querySelector('meter');
+meter.value = 0.75;
+
+// Example: Update disk usage
+fetch('/api/disk-usage')
+  .then(r => r.json())
+  .then(data => {
+    meter.value = data.used;
+    meter.max = data.total;
+  });
+```
+
+## With Labels
+
+Add labels for better context:
+
+```html
+<label for="disk-usage">Disk Usage: <strong>75%</strong></label>
+<meter id="disk-usage" value="75" max="100" low="50" high="80" optimum="0"></meter>
+```
+
+## Accessibility
+
+The `<meter>` element is automatically accessible with:
+- Proper ARIA role
+- Screen reader announcements of value and range
+- Semantic HTML meaning
+
+Always include a visible label or surrounding text to explain what is being measured:
+
+```html
+<div>
+  <label for="cpu-temp">CPU Temperature</label>
+  <meter id="cpu-temp" value="65" min="0" max="100" low="60" high="80" optimum="50"></meter>
+  <span>65°C</span>
+</div>
+```
+
+<Note>
+  For showing progress of ongoing operations, use the [Progress](/components/progress) component instead.
+</Note>

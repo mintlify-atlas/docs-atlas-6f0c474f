@@ -1,0 +1,394 @@
+---
+title: Theming System
+description: Learn how Oat UI's theming system works with CSS variables and automatic dark mode
+---
+
+Oat UI's theming system is built on CSS custom properties (variables) and leverages the modern `light-dark()` CSS function for automatic theme switching based on user preferences.
+
+## Automatic Light and Dark Modes
+
+Oat UI automatically adapts to the user's system color scheme preference without requiring JavaScript or manual theme switching.
+
+```css
+:root {
+  color-scheme: light dark;
+  
+  --background: light-dark(#fff, #09090b);
+  --foreground: light-dark(#09090b, #fafafa);
+}
+```
+
+The `color-scheme` property tells the browser to use the appropriate theme, while `light-dark()` automatically selects the correct color value based on the user's preference.
+
+<Info>
+  The `light-dark(light-value, dark-value)` function is a modern CSS feature that eliminates the need for `@media (prefers-color-scheme: dark)` queries.
+</Info>
+
+## Color System
+
+Oat UI uses a comprehensive color palette defined in 01-theme.css:5-26. All colors are semantic, making it easy to maintain consistent theming across your application.
+
+### Semantic Color Variables
+
+<AccordionGroup>
+  <Accordion title="Background & Foreground">
+    Base colors for backgrounds and text:
+
+    ```css
+    --background: light-dark(#fff, #09090b);
+    --foreground: light-dark(#09090b, #fafafa);
+    ```
+
+    Used for the main page background and body text color.
+  </Accordion>
+
+  <Accordion title="Card Colors">
+    Elevated surfaces like cards and modals:
+
+    ```css
+    --card: light-dark(#fff, #18181b);
+    --card-foreground: light-dark(#09090b, #fafafa);
+    ```
+
+    Example usage:
+    ```html
+    <div class="card">
+      <h3>Card Title</h3>
+      <p>Card content</p>
+    </div>
+    ```
+  </Accordion>
+
+  <Accordion title="Primary Colors">
+    For primary actions and interactive elements:
+
+    ```css
+    --primary: light-dark(#574747, #fafafa);
+    --primary-foreground: light-dark(#fafafa, #18181b);
+    ```
+
+    Applied to buttons by default:
+    ```html
+    <button>Primary Button</button>
+    ```
+  </Accordion>
+
+  <Accordion title="Secondary Colors">
+    For secondary actions:
+
+    ```css
+    --secondary: light-dark(#f4f4f5, #27272a);
+    --secondary-foreground: light-dark(#574747, #fafafa);
+    ```
+
+    Example:
+    ```html
+    <button data-variant="secondary">Secondary</button>
+    ```
+  </Accordion>
+
+  <Accordion title="Muted Colors">
+    For less prominent content:
+
+    ```css
+    --muted: light-dark(#f4f4f5, #27272a);
+    --muted-foreground: light-dark(#71717a, #a1a1aa);
+    ```
+
+    Used for disabled states and hints.
+  </Accordion>
+
+  <Accordion title="Faint Colors">
+    For very subtle backgrounds:
+
+    ```css
+    --faint: light-dark(#fafafa, #1e1e21);
+    --faint-foreground: light-dark(#a1a1aa, #71717a);
+    ```
+
+    Used for code blocks and subtle highlights.
+  </Accordion>
+
+  <Accordion title="Accent Colors">
+    For hover states and emphasis:
+
+    ```css
+    --accent: light-dark(#f4f4f5, #27272a);
+    ```
+  </Accordion>
+
+  <Accordion title="Status Colors">
+    Semantic colors for user feedback:
+
+    ```css
+    --danger: light-dark(#d32f2f, #f4807b);
+    --danger-foreground: light-dark(#fafafa, #18181b);
+    
+    --success: light-dark(#008032, #6cc070);
+    --success-foreground: light-dark(#fafafa, #18181b);
+    
+    --warning: light-dark(#a65b00, #f0a030);
+    --warning-foreground: #09090b;
+    ```
+
+    Examples:
+    ```html
+    <button data-variant="danger">Delete</button>
+    <div class="alert" data-variant="success">Success!</div>
+    ```
+  </Accordion>
+
+  <Accordion title="Border & Input Colors">
+    For borders and form elements:
+
+    ```css
+    --border: light-dark(#d4d4d8, #52525b);
+    --input: light-dark(#d4d4d8, #52525b);
+    --ring: light-dark(#574747, #d4d4d8);
+    ```
+
+    The `--ring` variable is used for focus outlines.
+  </Accordion>
+</AccordionGroup>
+
+## Design Tokens
+
+Beyond colors, Oat UI provides a complete set of design tokens for spacing, typography, shadows, and more.
+
+### Spacing Scale
+
+A consistent spacing scale based on rem units (01-theme.css:29-40):
+
+```css
+--space-1: 0.25rem;   /* 4px */
+--space-2: 0.5rem;    /* 8px */
+--space-3: 0.75rem;   /* 12px */
+--space-4: 1rem;      /* 16px */
+--space-5: 1.25rem;   /* 20px */
+--space-6: 1.5rem;    /* 24px */
+--space-8: 2rem;      /* 32px */
+--space-10: 2.5rem;   /* 40px */
+--space-12: 3rem;     /* 48px */
+--space-14: 3.5rem;   /* 56px */
+--space-16: 4rem;     /* 64px */
+--space-18: 4.5rem;   /* 72px */
+```
+
+**Usage example:**
+```css
+.custom-component {
+  padding: var(--space-4);
+  margin-block-end: var(--space-6);
+}
+```
+
+### Border Radius
+
+Consistent border radius values (01-theme.css:42-45):
+
+```css
+--radius-small: 0.125rem;   /* 2px */
+--radius-medium: 0.375rem;  /* 6px */
+--radius-large: 0.75rem;    /* 12px */
+--radius-full: 9999px;      /* Fully rounded */
+```
+
+### Typography
+
+#### Font Families
+
+```css
+--font-sans: system-ui, sans-serif;
+--font-mono: ui-monospace, Consolas, monospace;
+```
+
+#### Font Sizes
+
+Fluid typography with responsive scaling (01-theme.css:52-60):
+
+```css
+--text-1: clamp(1.75rem, 1.5rem + 1.1vw, 2.25rem);  /* h1 */
+--text-2: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);  /* h2 */
+--text-3: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);   /* h3 */
+--text-4: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); /* h4 */
+--text-5: 1.125rem;   /* 18px */
+--text-6: 1rem;       /* 16px - base */
+--text-7: 0.875rem;   /* 14px - small */
+--text-8: 0.75rem;    /* 12px - tiny */
+--text-regular: var(--text-6);
+```
+
+<Info>
+  The `clamp()` function provides fluid typography that scales smoothly between minimum and maximum values based on viewport width.
+</Info>
+
+#### Font Weights
+
+```css
+--font-normal: 400;
+--font-medium: 500;
+--font-semibold: 600;
+--font-bold: 600;
+```
+
+#### Line Height
+
+```css
+--leading-normal: 1.5;
+```
+
+### Shadows
+
+Three levels of elevation (01-theme.css:69-71):
+
+```css
+--shadow-small: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+--shadow-medium: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+--shadow-large: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+```
+
+### Transitions
+
+Consistent animation timing (01-theme.css:73-74):
+
+```css
+--transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+--transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+```
+
+### Z-Index
+
+Layering system (01-theme.css:76-77):
+
+```css
+--z-dropdown: 50;
+--z-modal: 200;
+```
+
+## Using Theme Variables
+
+Theme variables are available globally and can be used in your custom CSS:
+
+### Example: Custom Component
+
+```css
+.custom-banner {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-medium);
+  transition: transform var(--transition-fast);
+}
+
+.custom-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-large);
+}
+```
+
+### Example: Custom Colors with Dynamic Opacity
+
+Oat UI uses the modern `rgb(from ...)` syntax for dynamic color manipulation:
+
+```css
+/* From button.css:97 */
+a {
+  color: var(--primary);
+  &:hover {
+    color: rgb(from var(--primary) r g b / 0.8);
+  }
+}
+```
+
+This creates a hover state with 80% opacity while preserving the color in both light and dark modes.
+
+### Example: Color Mixing
+
+Buttons use `color-mix()` for hover states (from button.css:3):
+
+```css
+--_hov: color-mix(in srgb, var(--primary), white 25%);
+```
+
+<Warning>
+  The `light-dark()`, `rgb(from ...)`, and `color-mix()` functions require modern browsers. Oat UI targets evergreen browsers and doesn't include fallbacks for older browsers.
+</Warning>
+
+## Customizing the Theme
+
+To customize Oat UI's theme, override the CSS variables in your own stylesheet:
+
+```css
+:root {
+  /* Override primary colors */
+  --primary: light-dark(#3b82f6, #60a5fa);
+  --primary-foreground: light-dark(#ffffff, #1e293b);
+  
+  /* Override spacing */
+  --space-4: 1.25rem;
+  
+  /* Override border radius */
+  --radius-medium: 0.5rem;
+}
+```
+
+### Scoped Theme Overrides
+
+You can also create scoped theme variations:
+
+```css
+.theme-ocean {
+  --primary: light-dark(#0ea5e9, #38bdf8);
+  --primary-foreground: light-dark(#ffffff, #0c4a6e);
+  --secondary: light-dark(#06b6d4, #22d3ee);
+}
+```
+
+```html
+<div class="theme-ocean">
+  <button>Ocean Theme Button</button>
+</div>
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Always use semantic variables" icon="palette">
+    Use `var(--primary)` instead of hardcoded colors like `#574747`. This ensures your custom components adapt to theme changes.
+  </Card>
+  
+  <Card title="Respect the spacing scale" icon="ruler">
+    Use spacing variables (`var(--space-4)`) instead of arbitrary values. This maintains visual consistency.
+  </Card>
+  
+  <Card title="Leverage color functions" icon="wand-magic-sparkle">
+    Use `color-mix()` and `rgb(from ...)` to create color variations that work in both light and dark modes.
+  </Card>
+  
+  <Card title="Test in both modes" icon="circle-half-stroke">
+    Always verify your custom styles work correctly in both light and dark color schemes.
+  </Card>
+</CardGroup>
+
+## Layer System
+
+Oat UI uses CSS cascade layers to manage specificity (from 01-theme.css:1 and 00-base.css:1):
+
+```css
+@layer theme, base, components, animations, utilities;
+```
+
+This allows you to easily override styles without fighting specificity battles:
+
+```css
+@layer utilities {
+  .my-custom-class {
+    /* Your overrides here */
+  }
+}
+```
+
+<Check>
+  By understanding and leveraging Oat UI's theming system, you can create consistent, accessible, and beautiful interfaces that automatically adapt to user preferences.
+</Check>

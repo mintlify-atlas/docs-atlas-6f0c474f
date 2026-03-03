@@ -1,80 +1,400 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quick Start
+description: Build your first web page with Oat UI in minutes with this comprehensive guide and working examples.
 ---
 
-## Get started in three steps
+This guide will help you create your first web page using Oat UI. You'll learn the basics of using semantic HTML with automatic styling.
 
-Get your documentation site running locally and make your first customization.
+## Your First Oat UI Page
 
-### Step 1: Set up your local environment
+Here's a complete, working HTML page that demonstrates Oat UI's core features:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+```html index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Oat UI App</title>
+  
+  <!-- Oat UI CSS and JS -->
+  <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css">
+  <script src="https://unpkg.com/@knadh/oat/oat.min.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <h1>Hello World</h1>
+    <p>This paragraph is styled automatically with Oat UI.</p>
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+    <!-- Buttons work out of the box -->
+    <button>Click me</button>
+    <button data-variant="secondary">Secondary</button>
+    <button class="outline">Outline</button>
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+    <!-- Alerts use semantic role attribute -->
+    <div role="alert" data-variant="success">
+      <strong>Success!</strong> Your changes have been saved.
+    </div>
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    <!-- Cards use semantic article tag -->
+    <article class="card">
+      <header>
+        <h3>Card Title</h3>
+        <p>Card description goes here.</p>
+      </header>
+      <p>This is the card content. It can contain any HTML.</p>
+    </article>
+  </main>
+</body>
+</html>
+```
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+<Tip>
+  Save this as `index.html` and open it in your browser. No build step or server required!
+</Tip>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+## Understanding Semantic Styling
 
-### Step 3: Go live
+Oat UI is designed around semantic HTML. Elements are styled automatically based on their semantic meaning:
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+<Steps>
+  <Step title="Native elements are styled by default">
+    Elements like `<button>`, `<input>`, `<table>`, and headings are styled without any classes:
+    
+    ```html
+    <button>Primary Button</button>
+    <input type="text" placeholder="Styled automatically" />
+    <h1>Styled heading</h1>
+    <p>Styled paragraph with proper spacing.</p>
+    ```
+  </Step>
+  
+  <Step title="Use data attributes for variants">
+    Semantic variants use `data-variant` instead of classes:
+    
+    ```html
+    <button data-variant="primary">Primary</button>
+    <button data-variant="secondary">Secondary</button>
+    <button data-variant="danger">Danger</button>
+    
+    <div role="alert" data-variant="success">Success alert</div>
+    <div role="alert" data-variant="warning">Warning alert</div>
+    <div role="alert" data-variant="error">Error alert</div>
+    ```
+  </Step>
+  
+  <Step title="Minimal classes for visual styles">
+    Only use classes for visual modifications, not semantic meaning:
+    
+    ```html
+    <button class="outline">Outline style</button>
+    <button class="small">Small size</button>
+    <button class="large">Large size</button>
+    <article class="card">Card container</article>
+    ```
+  </Step>
+</Steps>
 
-## Next steps
+## Complete Example with Multiple Components
 
-Now that you have your docs running, explore these key features:
+Here's a more comprehensive example showing various Oat UI components:
 
-<CardGroup cols={2}>
+<CodeGroup>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+```html Full Example
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oat UI Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css">
+  <script src="https://unpkg.com/@knadh/oat/oat.min.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Dashboard</h1>
+      <p class="text-light">Welcome to your Oat UI application</p>
+    </header>
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+    <!-- Alert Messages -->
+    <div role="alert" data-variant="success">
+      <strong>Success!</strong> Your changes have been saved.
+    </div>
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+    <!-- Grid Layout with Cards -->
+    <div class="grid">
+      <article class="card">
+        <header>
+          <h3>Light like an oat flake</h3>
+        </header>
+        <p><strong>6KB</strong> CSS, <strong>2.2KB</strong> JS, minified + gzipped.</p>
+        <p>That's it.</p>
+      </article>
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+      <article class="card">
+        <header>
+          <h3>Zero dependencies</h3>
+        </header>
+        <p>Fully-standalone with no dependencies on any JS or CSS frameworks or libraries.</p>
+      </article>
 
-</CardGroup>
+      <article class="card">
+        <header>
+          <h3>Semantic HTML</h3>
+        </header>
+        <p>Native elements like <code>&lt;button&gt;</code>, <code>&lt;input&gt;</code>, 
+        <code>&lt;dialog&gt;</code> are styled directly. No classes.</p>
+      </article>
+    </div>
+
+    <!-- Form Elements -->
+    <section>
+      <h2>Contact Form</h2>
+      <form>
+        <label>
+          Name
+          <input type="text" placeholder="Enter your name" required />
+        </label>
+
+        <label>
+          Email
+          <input type="email" placeholder="your@email.com" required />
+        </label>
+
+        <label>
+          Message
+          <textarea placeholder="Your message" rows="4"></textarea>
+        </label>
+
+        <div class="hstack">
+          <button type="submit">Submit</button>
+          <button type="reset" class="outline">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Button Groups -->
+    <section>
+      <h2>Button Variations</h2>
+      
+      <h3>Variants</h3>
+      <div class="hstack">
+        <button>Primary</button>
+        <button data-variant="secondary">Secondary</button>
+        <button data-variant="danger">Danger</button>
+        <button class="outline">Outline</button>
+        <button class="ghost">Ghost</button>
+      </div>
+
+      <h3>Sizes</h3>
+      <div class="hstack">
+        <button class="small">Small</button>
+        <button>Default</button>
+        <button class="large">Large</button>
+      </div>
+
+      <h3>Button Group</h3>
+      <menu class="buttons">
+        <li><button class="outline">Left</button></li>
+        <li><button class="outline">Center</button></li>
+        <li><button class="outline">Right</button></li>
+      </menu>
+    </section>
+
+    <!-- Table -->
+    <section>
+      <h2>Data Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Type</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Button</td>
+            <td>Element</td>
+            <td>0.5KB</td>
+          </tr>
+          <tr>
+            <td>Card</td>
+            <td>Element</td>
+            <td>0.3KB</td>
+          </tr>
+          <tr>
+            <td>Tabs</td>
+            <td>WebComponent</td>
+            <td>1.2KB</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
+```
+
+</CodeGroup>
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  Copy this entire example and save it as an HTML file. It demonstrates buttons, cards, forms, tables, and layouts - all working out of the box!
 </Note>
+
+## Layout Utilities
+
+Oat UI includes simple layout utilities for common patterns:
+
+### Container
+
+```html
+<main class="container">
+  <!-- Content is centered with max-width -->
+</main>
+```
+
+### Grid System
+
+```html
+<!-- Auto-responsive grid -->
+<div class="grid">
+  <div>Column 1</div>
+  <div>Column 2</div>
+  <div>Column 3</div>
+</div>
+
+<!-- Fixed columns -->
+<div class="row">
+  <div class="col-6">Half width</div>
+  <div class="col-6">Half width</div>
+</div>
+```
+
+### Stack Utilities
+
+```html
+<!-- Horizontal stack -->
+<div class="hstack">
+  <button>Button 1</button>
+  <button>Button 2</button>
+</div>
+
+<!-- Vertical stack -->
+<div class="vstack">
+  <p>Item 1</p>
+  <p>Item 2</p>
+</div>
+```
+
+## Theme Customization
+
+Oat UI automatically supports light and dark themes based on system preferences. The theme uses CSS custom properties that you can override:
+
+```css
+:root {
+  /* Override theme colors */
+  --primary: #574747;
+  --background: #fff;
+  --foreground: #09090b;
+  --border: #d4d4d8;
+  
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-4: 1rem;
+  
+  /* Border radius */
+  --radius-small: 0.125rem;
+  --radius-medium: 0.375rem;
+  --radius-large: 0.75rem;
+}
+```
+
+<Tip>
+  Oat UI uses the `light-dark()` CSS function for automatic theme switching. No JavaScript required!
+</Tip>
+
+## Interactive Components
+
+Some components are Web Components that provide interactive functionality:
+
+### Tabs
+
+```html
+<ot-tabs>
+  <button data-tab="tab1">Tab 1</button>
+  <button data-tab="tab2">Tab 2</button>
+  <button data-tab="tab3">Tab 3</button>
+  
+  <div data-tab-content="tab1">Content 1</div>
+  <div data-tab-content="tab2">Content 2</div>
+  <div data-tab-content="tab3">Content 3</div>
+</ot-tabs>
+```
+
+### Dropdown
+
+```html
+<ot-dropdown>
+  <button popovertarget="menu-id" class="outline">
+    Menu
+  </button>
+  <menu popover id="menu-id">
+    <a href="#" role="menuitem">Item 1</a>
+    <a href="#" role="menuitem">Item 2</a>
+    <a href="#" role="menuitem">Item 3</a>
+  </menu>
+</ot-dropdown>
+```
+
+### Toast Notifications
+
+```html
+<button onclick="window.ot.toast('Hello!', 'success')">
+  Show Toast
+</button>
+
+<script>
+  // JavaScript API for toasts
+  window.ot.toast('Success message', 'success');
+  window.ot.toast('Error message', 'error');
+  window.ot.toast('Warning message', 'warning');
+  window.ot.toast('Info message', 'info');
+</script>
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Components Reference"
+    icon="book"
+    href="/components/button"
+  >
+    Explore all available components with examples
+  </Card>
+  <Card
+    title="Customization Guide"
+    icon="paintbrush"
+    href="/guides/customization"
+  >
+    Learn how to customize themes and styles
+  </Card>
+  <Card
+    title="Web Components"
+    icon="sparkles"
+    href="/api/web-components"
+  >
+    Deep dive into interactive components
+  </Card>
+  <Card
+    title="GitHub Repository"
+    icon="github"
+    href="https://github.com/knadh/oat"
+  >
+    View source code and contribute
+  </Card>
+</CardGroup>

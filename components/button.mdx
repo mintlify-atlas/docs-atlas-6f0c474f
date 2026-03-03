@@ -1,0 +1,148 @@
+---
+title: Button
+description: Button component with multiple variants, sizes, and states
+---
+
+The `<button>` element is styled by default. Use `data-variant` attributes for semantic variants and classes for visual styles.
+
+## Variants
+
+Buttons support multiple semantic variants using the `data-variant` attribute.
+
+<CodeGroup>
+```html Default
+<button>Primary</button>
+<button data-variant="secondary">Secondary</button>
+<button data-variant="danger">Danger</button>
+<button class="outline">Outline</button>
+<button data-variant="danger" class="outline">Danger</button>
+<button class="ghost">Ghost</button>
+<button disabled>Disabled</button>
+```
+</CodeGroup>
+
+### Primary
+
+The default button style with primary brand color.
+
+```html
+<button>Primary</button>
+```
+
+### Secondary
+
+Use `data-variant="secondary"` for secondary actions.
+
+```html
+<button data-variant="secondary">Secondary</button>
+```
+
+### Danger
+
+Use `data-variant="danger"` for destructive actions.
+
+```html
+<button data-variant="danger">Danger</button>
+```
+
+### Outline
+
+Use the `.outline` class for buttons with transparent backgrounds.
+
+```html
+<button class="outline">Outline</button>
+<button data-variant="danger" class="outline">Danger Outline</button>
+```
+
+### Ghost
+
+Use the `.ghost` class for minimal buttons without borders.
+
+```html
+<button class="ghost">Ghost</button>
+```
+
+## Sizes
+
+Buttons support three sizes: small, default, and large.
+
+<CodeGroup>
+```html Sizes
+<button class="small">Small</button>
+<button>Default</button>
+<button class="large">Large</button>
+```
+</CodeGroup>
+
+### Small
+
+Use the `.small` class for compact buttons.
+
+```html
+<button class="small">Small</button>
+```
+
+### Large
+
+Use the `.large` class for prominent buttons.
+
+```html
+<button class="large">Large</button>
+```
+
+## As Link
+
+Add the `.button` class to anchor tags to style them as buttons.
+
+```html
+<a href="#button" class="button">Hyperlink</a>
+```
+
+## Button Group
+
+Wrap buttons in `<menu class="buttons">` to create connected button groups.
+
+<CodeGroup>
+```html Button Group
+<menu class="buttons">
+  <li><button class="outline">Left</button></li>
+  <li><button class="outline">Center</button></li>
+  <li><button class="outline">Right</button></li>
+</menu>
+```
+</CodeGroup>
+
+## States
+
+### Disabled
+
+Use the `disabled` attribute to disable buttons.
+
+```html
+<button disabled>Disabled</button>
+```
+
+## CSS Classes
+
+<ParamField path="data-variant" type="string">
+  Semantic variant: `secondary`, `danger`
+</ParamField>
+
+<ParamField path="class" type="string">
+  Visual styles: `small`, `large`, `outline`, `ghost`, `icon`
+</ParamField>
+
+## Styling
+
+Buttons use CSS custom properties for theming:
+
+- `--primary` - Primary button background
+- `--primary-foreground` - Primary button text color
+- `--secondary` - Secondary button background
+- `--secondary-foreground` - Secondary button text color
+- `--danger` - Danger button background
+- `--danger-foreground` - Danger button text color
+- `--accent` - Hover state for outline/ghost buttons
+- `--border` - Border color for outline buttons
+- `--radius-medium` - Button border radius
+- `--transition-fast` - Transition duration

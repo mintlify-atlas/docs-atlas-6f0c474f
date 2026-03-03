@@ -1,0 +1,591 @@
+---
+title: Best Practices
+description: Guidelines for building accessible, performant, and maintainable applications with Oat UI
+---
+
+Follow these best practices to get the most out of Oat UI while building accessible, performant, and maintainable web applications.
+
+## Semantic HTML
+
+Oat UI is designed around semantic HTML. Use the correct HTML elements for their intended purpose.
+
+### Use Semantic Elements
+
+```html
+<!-- Good: Semantic structure -->
+<article>
+  <header>
+    <h1>Article Title</h1>
+    <time datetime="2024-01-15">January 15, 2024</time>
+  </header>
+  
+  <p>Article content...</p>
+  
+  <footer>
+    <address>By John Doe</address>
+  </footer>
+</article>
+
+<!-- Avoid: Non-semantic divs -->
+<div class="article">
+  <div class="header">
+    <div class="title">Article Title</div>
+    <div class="date">January 15, 2024</div>
+  </div>
+  <div class="content">Article content...</div>
+</div>
+```
+
+### Button vs Link
+
+Use `<button>` for actions and `<a>` for navigation:
+
+```html
+<!-- Good: Button for actions -->
+<button onclick="saveData()">Save</button>
+<button onclick="dialog.showModal()">Open Dialog</button>
+
+<!-- Good: Link for navigation -->
+<a href="/about">About Us</a>
+<a href="#section">Jump to Section</a>
+
+<!-- Avoid: Link as button -->
+<a href="#" onclick="saveData()">Save</a>
+
+<!-- Avoid: Button as link -->
+<button onclick="location.href='/about'">About Us</button>
+```
+
+### Form Elements
+
+Always use proper form elements with labels:
+
+```html
+<!-- Good: Proper form structure -->
+<form>
+  <label for="email">Email address</label>
+  <input type="email" id="email" name="email" required>
+  
+  <label for="message">Message</label>
+  <textarea id="message" name="message" rows="4"></textarea>
+  
+  <button type="submit">Send</button>
+</form>
+
+<!-- Avoid: Missing labels -->
+<input type="email" placeholder="Email">
+<textarea placeholder="Message"></textarea>
+```
+
+## Accessibility
+
+### ARIA Labels
+
+Provide accessible labels for all interactive elements:
+
+```html
+<!-- Icon buttons need labels -->
+<button aria-label="Close dialog">
+  <span aria-hidden="true">&times;</span>
+</button>
+
+<!-- Images need alt text -->
+<img src="chart.png" alt="Sales data for Q4 2024">
+
+<!-- Decorative images -->
+<img src="decoration.png" alt="" role="presentation">
+```
+
+### Keyboard Navigation
+
+Ensure all interactive elements are keyboard accessible:
+
+```html
+<!-- Native elements are keyboard accessible by default -->
+<button>Click me</button>
+<a href="#">Link</a>
+
+<!-- Custom interactive elements need tabindex and keyboard handlers -->
+<div 
+  role="button" 
+  tabindex="0"
+  onclick="handleClick()"
+  onkeydown="if(event.key === 'Enter' || event.key === ' ') handleClick()">
+  Custom Button
+</div>
+```
+
+### Focus Management
+
+Manage focus appropriately in dynamic interfaces:
+
+```javascript
+// When opening a modal, move focus to it
+const dialog = document.querySelector('dialog');
+dialog.showModal();
+dialog.focus();
+
+// When closing, return focus to trigger
+const openButton = document.querySelector('#open-dialog');
+dialog.addEventListener('close', () => {
+  openButton.focus();
+});
+```
+
+### Color Contrast
+
+Ensure sufficient contrast ratios (WCAG AA minimum):
+
+- **Normal text**: 4.5:1 contrast ratio
+- **Large text** (18pt+): 3:1 contrast ratio
+- **UI components**: 3:1 contrast ratio
+
+```css
+/* Good: High contrast */
+:root {
+  --foreground: light-dark(#09090b, #fafafa);
+  --background: light-dark(#fff, #09090b);
+}
+
+/* Avoid: Low contrast */
+:root {
+  --foreground: light-dark(#aaa, #666);
+  --background: light-dark(#fff, #555);
+}
+```
+
+Test contrast at [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/).
+
+### Screen Reader Support
+
+Provide context for screen reader users:
+
+```html
+<!-- Loading states -->
+<button aria-busy="true" aria-live="polite">
+  <span role="status">Loading...</span>
+</button>
+
+<!-- Dynamic content -->
+<div role="alert" aria-live="assertive">
+  Error: Please fill out all required fields
+</div>
+
+<!-- Hidden content -->
+<span class="sr-only">Additional context for screen readers</span>
+```
+
+```css
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+```
+
+## Performance
+
+### Minimize CSS Overrides
+
+Work with Oat's defaults instead of overriding extensively:
+
+```css
+/* Good: Use CSS variables */
+:root {
+  --primary: #0066cc;
+  --radius-medium: 0.5rem;
+}
+
+/* Avoid: Overriding component styles */
+button {
+  background: #0066cc !important;
+  border-radius: 0.5rem !important;
+}
+```
+
+### Load Order
+
+Load Oat CSS early, custom CSS after:
+
+```html
+<head>
+  <!-- 1. Oat UI -->
+  <link rel="stylesheet" href="oat.min.css">
+  
+  <!-- 2. Your customizations -->
+  <link rel="stylesheet" href="custom.css">
+  
+  <!-- 3. Page-specific styles -->
+  <style>
+    /* Critical inline styles */
+  </style>
+</head>
+```
+
+### Lazy Load Images
+
+```html
+<img src="image.jpg" alt="Description" loading="lazy">
+```
+
+### Minimize JavaScript
+
+Oat UI components use minimal JavaScript. Only load what you need:
+
+```html
+<!-- Load only Oat's JavaScript -->
+<script src="oat.min.js" defer></script>
+
+<!-- For static sites, you may not need JavaScript at all -->
+```
+
+### Use Native Elements
+
+Native elements are faster and more accessible:
+
+```html
+<!-- Good: Native dialog -->
+<dialog>
+  <h2>Modal Title</h2>
+  <p>Content...</p>
+  <button onclick="this.closest('dialog').close()">Close</button>
+</dialog>
+
+<!-- Avoid: Custom modal implementation -->
+<div class="modal-overlay">
+  <div class="modal-container">
+    <!-- Complex JavaScript required -->
+  </div>
+</div>
+```
+
+## Component Usage
+
+### Cards
+
+Use the `<card>` element for grouped content:
+
+```html
+<card>
+  <h3>Card Title</h3>
+  <p>Card content with related information.</p>
+  <button>Action</button>
+</card>
+```
+
+### Alerts
+
+Provide context with semantic alerts:
+
+```html
+<!-- Success message -->
+<alert data-type="success">
+  <strong>Success!</strong> Your changes have been saved.
+</alert>
+
+<!-- Error message -->
+<alert data-type="danger">
+  <strong>Error!</strong> Please check the form and try again.
+</alert>
+
+<!-- Warning -->
+<alert data-type="warning">
+  <strong>Warning!</strong> This action cannot be undone.
+</alert>
+```
+
+### Buttons
+
+Use appropriate button variants:
+
+```html
+<!-- Primary action -->
+<button>Save Changes</button>
+
+<!-- Secondary action -->
+<button data-variant="secondary">Cancel</button>
+
+<!-- Danger action -->
+<button data-variant="danger">Delete</button>
+
+<!-- Link-style button -->
+<button data-variant="link">Learn more</button>
+```
+
+### Forms
+
+Group related inputs with fieldsets:
+
+```html
+<form>
+  <fieldset>
+    <legend>Personal Information</legend>
+    
+    <label for="name">Full name</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="email">Email address</label>
+    <input type="email" id="email" name="email" required>
+  </fieldset>
+  
+  <fieldset>
+    <legend>Preferences</legend>
+    
+    <label>
+      <input type="checkbox" name="newsletter">
+      Subscribe to newsletter
+    </label>
+  </fieldset>
+  
+  <button type="submit">Submit</button>
+</form>
+```
+
+## Layout Patterns
+
+### Use Utility Classes
+
+Oat includes utility classes for common layouts:
+
+```html
+<!-- Horizontal stack -->
+<div class="hstack">
+  <button>Action 1</button>
+  <button>Action 2</button>
+  <button>Action 3</button>
+</div>
+
+<!-- Vertical stack -->
+<div class="vstack">
+  <h2>Title</h2>
+  <p>Content...</p>
+  <button>Action</button>
+</div>
+
+<!-- Flexbox utilities -->
+<div class="flex items-center justify-between">
+  <h2>Title</h2>
+  <button>Action</button>
+</div>
+```
+
+### Grid Layouts
+
+Use Oat's grid system for responsive layouts:
+
+```html
+<grid>
+  <card>Item 1</card>
+  <card>Item 2</card>
+  <card>Item 3</card>
+</grid>
+```
+
+The grid automatically adjusts columns based on screen size.
+
+### Responsive Design
+
+Oat is mobile-first. Add responsive overrides as needed:
+
+```css
+/* Mobile first (default) */
+.container {
+  padding: var(--space-4);
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .container {
+    padding: var(--space-6);
+  }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+  .container {
+    padding: var(--space-8);
+  }
+}
+```
+
+## Code Organization
+
+### Structure Your HTML
+
+Maintain a clear document structure:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Title</title>
+  
+  <link rel="stylesheet" href="oat.min.css">
+  <link rel="stylesheet" href="custom.css">
+</head>
+<body>
+  <header>
+    <!-- Site header -->
+  </header>
+  
+  <main>
+    <!-- Main content -->
+  </main>
+  
+  <footer>
+    <!-- Site footer -->
+  </footer>
+  
+  <script src="oat.min.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
+```
+
+### Organize Custom CSS
+
+Group related customizations:
+
+```css
+/* custom.css */
+
+/* ==================== */
+/* Theme Variables */
+/* ==================== */
+:root {
+  --primary: #0066cc;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+/* ==================== */
+/* Layout */
+/* ==================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+/* ==================== */
+/* Components */
+/* ==================== */
+.custom-card {
+  /* ... */
+}
+
+/* ==================== */
+/* Utilities */
+/* ==================== */
+.text-balance {
+  text-wrap: balance;
+}
+```
+
+## Testing
+
+### Test Checklist
+
+- [ ] **Keyboard navigation**: Tab through all interactive elements
+- [ ] **Screen reader**: Test with VoiceOver (Mac) or NVDA (Windows)
+- [ ] **Mobile**: Test on actual mobile devices
+- [ ] **Dark mode**: Test both light and dark color schemes
+- [ ] **Reduced motion**: Test with reduced motion enabled
+- [ ] **Color contrast**: Verify all text meets WCAG AA standards
+- [ ] **Form validation**: Test with invalid inputs
+- [ ] **Loading states**: Test slow connections
+
+### Browser Testing
+
+Test in modern browsers:
+
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+
+Oat UI uses modern CSS features that require recent browser versions.
+
+## Common Mistakes to Avoid
+
+### Don't Use Non-Semantic Markup
+
+```html
+<!-- Avoid -->
+<div onclick="submit()">Submit</div>
+
+<!-- Use -->
+<button onclick="submit()">Submit</button>
+```
+
+### Don't Skip Labels
+
+```html
+<!-- Avoid -->
+<input type="text" placeholder="Email">
+
+<!-- Use -->
+<label for="email">Email</label>
+<input type="email" id="email" name="email">
+```
+
+### Don't Override with !important
+
+```css
+/* Avoid */
+button {
+  background: blue !important;
+}
+
+/* Use CSS variables */
+:root {
+  --primary: blue;
+}
+```
+
+### Don't Inline Styles (Except Variables)
+
+```html
+<!-- Avoid -->
+<button style="background: blue; padding: 10px; border-radius: 5px;">
+  Button
+</button>
+
+<!-- Use classes or CSS variables -->
+<button style="--primary: blue;">
+  Button
+</button>
+```
+
+### Don't Disable Focus Outlines
+
+```css
+/* Never do this */
+* {
+  outline: none;
+}
+
+/* Use Oat's focus ring variable instead */
+:root {
+  --ring: #0066cc;
+}
+```
+
+## Summary
+
+1. **Use semantic HTML** - Let elements do what they're designed for
+2. **Prioritize accessibility** - Build for everyone
+3. **Leverage CSS variables** - Customize without overriding
+4. **Keep it simple** - Oat is minimal by design
+5. **Test thoroughly** - Keyboard, screen readers, mobile
+6. **Respect user preferences** - Dark mode, reduced motion
+7. **Use native elements** - They're fast, accessible, and work everywhere
+
+Following these practices will help you build better web applications with Oat UI.

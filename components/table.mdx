@@ -1,0 +1,108 @@
+---
+title: 'Table'
+description: 'Data tables with automatic styling, hover states, and responsive horizontal scrolling'
+---
+
+Tables are styled automatically with no additional classes required. Use semantic `<thead>` and `<tbody>` elements. Wrap your table in a `.table` container to enable horizontal scrolling on small screens.
+
+## Basic Table
+
+<CodeGroup>
+```html HTML
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Alice Johnson</td>
+        <td>alice@example.com</td>
+        <td>Admin</td>
+        <td><span class="badge success">Active</span></td>
+      </tr>
+      <tr>
+        <td>Bob Smith</td>
+        <td>bob@example.com</td>
+        <td>Editor</td>
+        <td><span class="badge">Active</span></td>
+      </tr>
+      <tr>
+        <td>Carol White</td>
+        <td>carol@example.com</td>
+        <td>Viewer</td>
+        <td><span class="badge secondary">Pending</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+</CodeGroup>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Responsive Scrolling" icon="mobile">
+    The `.table` wrapper enables horizontal scrolling on screens smaller than 320px
+  </Card>
+  <Card title="Hover States" icon="hand-pointer">
+    Rows automatically highlight on hover with a subtle background color transition
+  </Card>
+  <Card title="Semantic Structure" icon="code">
+    Uses proper `<thead>`, `<tbody>`, `<th>`, and `<td>` elements for accessibility
+  </Card>
+  <Card title="Auto-styled" icon="sparkles">
+    No classes needed on table elements - styling is automatic
+  </Card>
+</CardGroup>
+
+## Styling Details
+
+<AccordionGroup>
+  <Accordion title="Header Styling">
+    - Text aligned to start (left in LTR languages)
+    - Medium font weight
+    - Muted foreground color
+    - Bottom border separator
+    - Padding: `var(--space-3)` vertical, `var(--space-2)` horizontal
+  </Accordion>
+  
+  <Accordion title="Body Styling">
+    - Row hover effect with muted background
+    - Border between rows (except last row)
+    - Smooth transition for hover states
+    - Automatic word wrapping for long content
+    - Font size: `var(--text-7)`
+  </Accordion>
+  
+  <Accordion title="Responsive Behavior">
+    - Minimum width of 320px
+    - Full width by default
+    - Horizontal scroll when content overflows
+    - Border collapse for clean borders
+  </Accordion>
+</AccordionGroup>
+
+## Accessibility
+
+- Uses semantic HTML table elements
+- Proper `<thead>` and `<tbody>` structure for screen readers
+- Text overflow handling with word wrapping
+- High contrast borders for visual clarity
+
+## CSS Variables
+
+The table component uses these CSS variables:
+
+- `--text-7` - Font size
+- `--space-2`, `--space-3` - Padding values
+- `--border` - Border color
+- `--muted` - Hover background color
+- `--muted-foreground` - Header text color
+- `--transition-fast` - Hover transition duration
+- `--font-medium` - Header font weight

@@ -1,0 +1,274 @@
+---
+title: Form
+description: Form elements including inputs, selects, textareas, checkboxes, and radios
+---
+
+Form elements are styled automatically. Wrap inputs in `<label>` elements for proper association and accessibility.
+
+## Form Elements
+
+A complete example showing all form element types.
+
+<CodeGroup>
+```html Form Elements
+<form>
+  <label data-field>
+    Name
+    <input type="text" placeholder="Enter your name" />
+  </label>
+
+  <label data-field>
+    Email
+    <input type="email" placeholder="you@example.com" />
+  </label>
+
+  <label data-field>
+    Password
+    <input type="password" placeholder="Password" aria-describedby="password-hint" />
+    <small id="password-hint" data-hint>This is a small hint</small>
+  </label>
+
+  <div data-field>
+    <label>Select</label>
+    <select aria-label="Select an option">
+      <option value="">Select an option</option>
+      <option value="a">Option A</option>
+      <option value="b">Option B</option>
+      <option value="c">Option C</option>
+    </select>
+  </div>
+
+  <label data-field>
+    Message
+    <textarea placeholder="Your message..."></textarea>
+  </label>
+
+  <label data-field>
+    <input type="checkbox" /> I agree to the terms
+  </label>
+
+  <fieldset class="hstack">
+    <legend>Preference</legend>
+    <label><input type="radio" name="pref">Option A</label>
+    <label><input type="radio" name="pref">Option B</label>
+    <label><input type="radio" name="pref">Option C</label>
+  </fieldset>
+
+  <button type="submit">Submit</button>
+</form>
+```
+</CodeGroup>
+
+## Text Input
+
+Basic text input with label.
+
+```html
+<label data-field>
+  Name
+  <input type="text" placeholder="Enter your name" />
+</label>
+```
+
+## Email Input
+
+```html
+<label data-field>
+  Email
+  <input type="email" placeholder="you@example.com" />
+</label>
+```
+
+## Password Input
+
+Password input with hint text.
+
+```html
+<label data-field>
+  Password
+  <input type="password" placeholder="Password" aria-describedby="password-hint" />
+  <small id="password-hint" data-hint>Use at least 8 characters</small>
+</label>
+```
+
+## Select Dropdown
+
+Select elements with custom styling.
+
+```html
+<div data-field>
+  <label>Select</label>
+  <select aria-label="Select an option">
+    <option value="">Select an option</option>
+    <option value="a">Option A</option>
+    <option value="b">Option B</option>
+    <option value="c">Option C</option>
+  </select>
+</div>
+```
+
+## Textarea
+
+Multi-line text input with vertical resize.
+
+```html
+<label data-field>
+  Message
+  <textarea placeholder="Your message..."></textarea>
+</label>
+```
+
+## Checkbox
+
+Checkboxes with inline labels.
+
+```html
+<label data-field>
+  <input type="checkbox" /> I agree to the terms
+</label>
+```
+
+## Radio Buttons
+
+Radio buttons grouped in a fieldset.
+
+```html
+<fieldset class="hstack">
+  <legend>Preference</legend>
+  <label><input type="radio" name="pref">Option A</label>
+  <label><input type="radio" name="pref">Option B</label>
+  <label><input type="radio" name="pref">Option C</label>
+</fieldset>
+```
+
+## Range Slider
+
+Range input with custom thumb styling.
+
+```html
+<label data-field>
+  Volume
+  <input type="range" min="0" max="100" value="50" />
+</label>
+```
+
+## File Input
+
+```html
+<label data-field>
+  File<br />
+  <input type="file" placeholder="Pick a file..." />
+</label>
+```
+
+## Date and Time Inputs
+
+```html
+<label data-field>
+  Date and time
+  <input type="datetime-local" />
+</label>
+
+<label data-field>
+  Date
+  <input type="date" />
+</label>
+```
+
+## Disabled State
+
+Disabled inputs have reduced opacity and no pointer interaction.
+
+```html
+<label data-field>
+  Disabled
+  <input type="text" placeholder="Disabled" disabled />
+</label>
+```
+
+## Input Group
+
+Use `<fieldset class="group">` to combine inputs with buttons or labels.
+
+<CodeGroup>
+```html Input Group
+<fieldset class="group">
+  <legend>https://</legend>
+  <input type="url" placeholder="subdomain">
+  <select placeholder="Select" aria-label="Select a subdomain">
+    <option>.example.com</option>
+    <option>.example.net</option>
+  </select>
+  <button>Go</button>
+</fieldset>
+
+<fieldset class="group">
+  <input type="text" placeholder="Search" />
+  <button>Go</button>
+</fieldset>
+```
+</CodeGroup>
+
+## Validation
+
+### Hint Text
+
+Add hint text with `data-hint` attribute on small elements.
+
+```html
+<label data-field>
+  Password
+  <input type="password" aria-describedby="password-hint" />
+  <small id="password-hint" data-hint>Use at least 8 characters</small>
+</label>
+```
+
+### Error State
+
+Use `data-field="error"` on field containers to reveal and style error messages.
+
+<CodeGroup>
+```html Error State
+<div data-field="error">
+  <label for="error-input">Email</label>
+  <input type="email" aria-invalid="true" aria-describedby="error-message" id="error-input" value="invalid-email" />
+  <div id="error-message" class="error" role="status">Please enter a valid email address.</div>
+</div>
+```
+</CodeGroup>
+
+## Attributes
+
+<ParamField path="data-field" type="string">
+  Field container attribute. Use `data-field="error"` to show error state.
+</ParamField>
+
+<ParamField path="data-hint" type="boolean">
+  Apply to hint text elements (like `<small>`) to style as muted help text.
+</ParamField>
+
+<ParamField path="aria-invalid" type="boolean">
+  Set to `"true"` on inputs to show error styling (red border).
+</ParamField>
+
+<ParamField path="aria-describedby" type="string">
+  ID of the element that describes the input (for hints or errors).
+</ParamField>
+
+## Styling
+
+Form elements use CSS custom properties for theming:
+
+- `--background` - Input background color
+- `--foreground` - Input text color
+- `--input` - Input border color
+- `--muted` - Disabled input background
+- `--muted-foreground` - Placeholder and hint text color
+- `--ring` - Focus ring color
+- `--danger` - Error state color
+- `--primary` - Checked state background (checkbox/radio)
+- `--primary-foreground` - Checked state icon color
+- `--border` - Fieldset border color
+- `--radius-medium` - Input border radius
+- `--radius-small` - Checkbox border radius
+- `--radius-full` - Radio button border radius

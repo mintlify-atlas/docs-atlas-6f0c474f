@@ -1,0 +1,136 @@
+---
+title: 'Accordion'
+description: 'Collapsible sections using native HTML details and summary elements. No JavaScript required.'
+---
+
+Use native `<details>` and `<summary>` elements to create accessible, no-JS accordions. Multiple accordions stack automatically with seamless borders.
+
+## Basic Accordion
+
+<CodeGroup>
+```html HTML
+<details>
+  <summary>What is Oat</summary>
+  <p>Oat is a minimal, semantic-first UI component library with zero dependencies.</p>
+</details>
+
+<details>
+  <summary>How do I use it</summary>
+  <p>Include the CSS and JS files, then write semantic HTML. Most elements are styled by default.</p>
+</details>
+
+<details>
+  <summary>Is it accessible</summary>
+  <p>Yes! It uses semantic HTML and ARIA attributes. Keyboard navigation works out of the box.</p>
+</details>
+```
+</CodeGroup>
+
+## Grouped Accordions
+
+Use the `name` attribute to create radio-button-like behavior where only one item can be open at a time:
+
+<CodeGroup>
+```html HTML
+<details name="same">
+  <summary>This is grouped with the next one</summary>
+  <p>Using the <code>name</code> attribute groups items like radio.</p>
+</details>
+
+<details name="same">
+  <summary>This is grouped with the previous one</summary>
+  <p>Using the <code>name</code> attribute groups items like radio.</p>
+</details>
+```
+</CodeGroup>
+
+<Note>
+  When using the `name` attribute, opening one accordion automatically closes others in the same group.
+</Note>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="No JavaScript" icon="code">
+    Uses native HTML `<details>` and `<summary>` elements - works without any JavaScript
+  </Card>
+  <Card title="Auto-stacking" icon="layer-group">
+    Adjacent accordions automatically merge borders for a seamless appearance
+  </Card>
+  <Card title="Smooth Animation" icon="wand-magic-sparkles">
+    Animated chevron icon rotates when opening/closing with CSS transitions
+  </Card>
+  <Card title="Accessible" icon="universal-access">
+    Semantic HTML with proper keyboard navigation and screen reader support
+  </Card>
+</CardGroup>
+
+## Styling Details
+
+<AccordionGroup>
+  <Accordion title="Container Styling">
+    - Border: 1px solid with theme border color
+    - Border radius: medium (`var(--radius-medium)`)
+    - Adjacent accordions: merged borders and adjusted border radius
+    - Open state: border added below summary
+  </Accordion>
+  
+  <Accordion title="Summary Styling">
+    - Display: flex with space-between layout
+    - Padding: `var(--space-4)`
+    - Font weight: medium
+    - Cursor: pointer
+    - Hover: muted background color
+    - Transition: smooth background color change
+    - Custom chevron icon (replaces default marker)
+  </Accordion>
+  
+  <Accordion title="Content Styling">
+    - Margin: `var(--space-4)` on all sides
+    - Applies to all children except `<summary>`
+  </Accordion>
+  
+  <Accordion title="Chevron Animation">
+    - SVG chevron icon using CSS mask
+    - Rotates 180° when accordion opens
+    - Smooth transition with `var(--transition-fast)`
+    - Color: inherits from text color
+  </Accordion>
+</AccordionGroup>
+
+## Border Stacking
+
+When multiple accordions are adjacent, they automatically stack with shared borders:
+
+- Adjacent accordions share a single border (using `margin-top: -1px`)
+- First accordion: rounded top corners
+- Middle accordions: square corners
+- Last accordion: rounded bottom corners
+
+This creates a seamless, visually connected group.
+
+## Accessibility
+
+- Native `<details>`/`<summary>` provides built-in keyboard support
+- Space/Enter keys toggle accordion open/closed
+- Screen readers announce expanded/collapsed state
+- Focusable with keyboard navigation
+- No ARIA required - semantic HTML handles everything
+
+## Browser Support
+
+The accordion component uses modern CSS features:
+- Native `<details>` element (widely supported)
+- CSS `:has()` selector for border stacking
+- CSS `mask-image` for the chevron icon
+
+All features are supported in modern browsers (Chrome, Firefox, Safari, Edge).
+
+## CSS Variables
+
+- `--border` - Border color
+- `--radius-medium` - Border radius
+- `--space-2`, `--space-4` - Spacing
+- `--font-medium` - Font weight
+- `--muted` - Hover background color
+- `--transition-fast` - Animation speed

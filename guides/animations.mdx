@@ -1,0 +1,391 @@
+---
+title: Animations
+description: Animation utilities and customization in Oat UI
+---
+
+Oat UI includes lightweight, performant animations for modals, dialogs, toasts, and other dynamic components. Animations use modern CSS features like `@starting-style` and the `light-dark()` function.
+
+## Animation Classes
+
+### Pop-in Animation
+
+The `.animate-pop-in` class creates a swinging entrance effect for modals and dialogs:
+
+```css
+.animate-pop-in
+```
+
+**Effect**: Elements swing down from above with a subtle 3D perspective rotation.
+
+**Usage**:
+
+```html
+<dialog class="animate-pop-in">
+  <h2>Modal Title</h2>
+  <p>Modal content...</p>
+</dialog>
+```
+
+**Technical Details**:
+- Duration: `150ms`
+- Easing: `cubic-bezier(0.4, 0, 0.2, 1)` (ease-in-out)
+- Entry: Rotates from `-15deg` with perspective, translates from `-80px` on Z-axis
+- Exit: Reverses the animation when `[data-state="closing"]` is applied
+- Includes backdrop fade
+
+### Slide-in Animation
+
+The `.animate-slide-in` class creates a smooth slide effect for toasts and notifications:
+
+```css
+.animate-slide-in
+```
+
+**Effect**: Elements slide in from the right with a spring-like easing.
+
+**Usage**:
+
+```html
+<oat-toast class="animate-slide-in">
+  <p>Notification message</p>
+</oat-toast>
+```
+
+**Technical Details**:
+- Duration: `150ms`
+- Easing: `cubic-bezier(0.16, 1, 0.3, 1)` (spring easing)
+- Entry: Slides from 100% right (off-screen)
+- Exit: Slides back to 100% right when `[data-state="closing"]` is applied
+
+## Dialog Backdrop Animation
+
+Dialog backdrops automatically fade in and out:
+
+```css
+dialog::backdrop {
+  opacity: 1;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  @starting-style {
+    opacity: 0;
+  }
+}
+```
+
+This provides a smooth overlay fade behind modals and dialogs.
+
+## How Animations Work
+
+Oat's animations use modern CSS features:
+
+### @starting-style
+
+The `@starting-style` at-rule defines where animations begin:
+
+```css
+.animate-pop-in {
+  opacity: 1;
+  transform: perspective(1000px) rotateX(0deg) translateZ(0);
+  
+  @starting-style {
+    /* Where to animate FROM */
+    opacity: 0;
+    transform: perspective(1000px) rotateX(-15deg) translateZ(-80px);
+  }
+}
+```
+
+When an element is added to the DOM, it automatically animates from the `@starting-style` state to the default state.
+
+### Data State Attribute
+
+Exit animations use the `data-state="closing"` attribute:
+
+```css
+.animate-pop-in[data-state="closing"] {
+  opacity: 0;
+  transform: perspective(1000px) rotateX(-15deg) translateZ(-80px);
+}
+```
+
+When closing, JavaScript adds `data-state="closing"` to trigger the exit animation.
+
+### Discrete Animations
+
+For properties like `display` and `overlay`, use `allow-discrete`:
+
+```css
+transition:
+  opacity 150ms cubic-bezier(0.4, 0, 0.2, 1),
+  transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+  overlay 150ms cubic-bezier(0.4, 0, 0.2, 1) allow-discrete,
+  display 150ms cubic-bezier(0.4, 0, 0.2, 1) allow-discrete;
+```
+
+This ensures elements properly animate even when their `display` property changes.
+
+## Customizing Animations
+
+### Adjust Duration
+
+Override animation duration globally or per component:
+
+```css
+/* Global */
+.animate-pop-in {
+  transition-duration: 250ms;
+}
+
+/* Per component */
+dialog.slow-modal.animate-pop-in {
+  transition-duration: 400ms;
+}
+```
+
+### Adjust Easing
+
+Change the easing curve for different animation feels:
+
+```css
+/* Ease-in (starts slow) */
+.animate-pop-in {
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* Ease-out (ends slow) */
+.animate-pop-in {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Spring (bouncy) */
+.animate-pop-in {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+```
+
+### Custom Entry Animation
+
+Modify where elements animate from:
+
+```css
+/* Slide from left instead of rotate */
+.animate-pop-in {
+  @starting-style {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+/* Scale up from center */
+.animate-pop-in {
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+```
+
+### Disable Animations
+
+Respect user preferences with `prefers-reduced-motion`:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .animate-pop-in,
+  .animate-slide-in {
+    transition: none;
+    animation: none;
+  }
+  
+  .animate-pop-in {
+    @starting-style {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+```
+
+Or disable globally:
+
+```css
+.animate-pop-in,
+.animate-slide-in {
+  transition: none !important;
+  animation: none !important;
+}
+```
+
+## Creating Custom Animations
+
+### Example: Fade Animation
+
+```css
+.animate-fade {
+  opacity: 1;
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  @starting-style {
+    opacity: 0;
+  }
+  
+  &[data-state="closing"] {
+    opacity: 0;
+  }
+}
+```
+
+### Example: Scale Animation
+
+```css
+.animate-scale {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  
+  &[data-state="closing"] {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+```
+
+### Example: Slide from Bottom
+
+```css
+.animate-slide-up {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 250ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  
+  @starting-style {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  
+  &[data-state="closing"] {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+```
+
+## Performance Tips
+
+1. **Use transform and opacity**: These properties are GPU-accelerated and don't trigger layout recalculations.
+
+```css
+/* Good - GPU accelerated */
+transition: opacity 200ms, transform 200ms;
+
+/* Avoid - triggers layout */
+transition: width 200ms, height 200ms, left 200ms;
+```
+
+2. **Use will-change sparingly**: Only for elements that will definitely animate.
+
+```css
+.animate-pop-in {
+  will-change: transform, opacity;
+}
+```
+
+3. **Keep durations short**: 150-300ms feels snappy without being jarring.
+
+4. **Respect reduced motion**: Always include `prefers-reduced-motion` support.
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+## Animation Timing Reference
+
+### Easing Functions
+
+```css
+/* Ease-in-out (default) */
+cubic-bezier(0.4, 0, 0.2, 1)
+
+/* Spring (bounce) */
+cubic-bezier(0.16, 1, 0.3, 1)
+
+/* Ease-out */
+cubic-bezier(0, 0, 0.2, 1)
+
+/* Ease-in */
+cubic-bezier(0.4, 0, 1, 1)
+
+/* Sharp */
+cubic-bezier(0.4, 0, 0.6, 1)
+```
+
+### Duration Guidelines
+
+- **50-100ms**: Instant feedback (hover, focus)
+- **150-200ms**: Quick transitions (most UI changes)
+- **250-300ms**: Moderate transitions (page changes)
+- **400-500ms**: Slow, deliberate (large movements)
+
+## Using Transition Variables
+
+Oat provides transition variables for consistency:
+
+```css
+:root {
+  --transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+```
+
+Use them in your custom animations:
+
+```css
+.my-component {
+  transition: opacity var(--transition);
+}
+
+.my-button:hover {
+  transition: transform var(--transition-fast);
+}
+```
+
+## JavaScript Integration
+
+Manually trigger animations with JavaScript:
+
+```javascript
+// Open with animation
+const dialog = document.querySelector('dialog');
+dialog.showModal();
+
+// Close with animation
+dialog.setAttribute('data-state', 'closing');
+setTimeout(() => {
+  dialog.close();
+  dialog.removeAttribute('data-state');
+}, 150); // Match animation duration
+```
+
+## Browser Support
+
+Oat's animations use modern CSS features:
+
+- `@starting-style`: Chrome 117+, Safari 17.5+
+- `light-dark()`: Chrome 123+, Safari 17.5+
+- `allow-discrete`: Chrome 117+, Safari 17.4+
+
+For older browsers, elements will still appear/disappear, just without animation.

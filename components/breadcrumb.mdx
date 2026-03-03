@@ -1,0 +1,153 @@
+---
+title: Breadcrumb
+description: Simple navigation hierarchy using semantic HTML and ordered lists
+---
+
+Breadcrumb navigation shows the user's location within the site hierarchy. It uses semantic HTML with `<nav>` and ordered lists.
+
+## Basic Usage
+
+Use a semantic breadcrumb `<nav>` with an ordered list and `aria-current="page"` for the active item.
+
+```html
+<nav aria-label="Breadcrumb">
+  <ol class="unstyled hstack" style="font-size: var(--text-7)">
+    <li><a href="#" class="unstyled">Home</a></li>
+    <li aria-hidden="true">/</li>
+    <li><a href="#" class="unstyled">Projects</a></li>
+    <li aria-hidden="true">/</li>
+    <li><a href="#" class="unstyled">Oat Docs</a></li>
+    <li aria-hidden="true">/</li>
+    <li><a href="#" class="unstyled" aria-current="page"><strong>Breadcrumb</strong></a></li>
+  </ol>
+</nav>
+```
+
+## Structure
+
+<Steps>
+  <Step title="Wrap in nav">
+    Use `<nav aria-label="Breadcrumb">` for semantic navigation
+  </Step>
+  <Step title="Use ordered list">
+    Breadcrumbs represent a hierarchy, so use `<ol>` instead of `<ul>`
+  </Step>
+  <Step title="Add links">
+    Each breadcrumb item should be a link, except optionally the last one
+  </Step>
+  <Step title="Mark current page">
+    Add `aria-current="page"` to the current page link
+  </Step>
+  <Step title="Add separators">
+    Use `<li aria-hidden="true">/</li>` for visual separators
+  </Step>
+</Steps>
+
+## Classes Used
+
+<ParamField path="unstyled" type="class">
+  Removes default list styling and link underlines
+</ParamField>
+
+<ParamField path="hstack" type="class">
+  Creates a horizontal stack layout with appropriate spacing
+</ParamField>
+
+## Accessibility
+
+<AccordionGroup>
+  <Accordion title="ARIA Label">
+    The `aria-label="Breadcrumb"` on the `<nav>` element helps screen readers identify the navigation type.
+  </Accordion>
+  
+  <Accordion title="Current Page">
+    Use `aria-current="page"` on the last link to indicate the current page location. This is more semantic than using `aria-disabled` or removing the link.
+  </Accordion>
+  
+  <Accordion title="Separator Visibility">
+    Separators use `aria-hidden="true"` so screen readers don't announce them, providing a cleaner experience.
+  </Accordion>
+  
+  <Accordion title="Ordered List">
+    Using `<ol>` instead of `<ul>` better represents the hierarchical nature of breadcrumbs.
+  </Accordion>
+</AccordionGroup>
+
+## Custom Separators
+
+You can use different separator characters or icons:
+
+```html
+<!-- Arrow separator -->
+<nav aria-label="Breadcrumb">
+  <ol class="unstyled hstack" style="font-size: var(--text-7)">
+    <li><a href="#" class="unstyled">Home</a></li>
+    <li aria-hidden="true">&rarr;</li>
+    <li><a href="#" class="unstyled">Projects</a></li>
+    <li aria-hidden="true">&rarr;</li>
+    <li><a href="#" class="unstyled" aria-current="page"><strong>Current</strong></a></li>
+  </ol>
+</nav>
+```
+
+```html
+<!-- Chevron separator -->
+<nav aria-label="Breadcrumb">
+  <ol class="unstyled hstack" style="font-size: var(--text-7)">
+    <li><a href="#" class="unstyled">Home</a></li>
+    <li aria-hidden="true">&gt;</li>
+    <li><a href="#" class="unstyled">Projects</a></li>
+    <li aria-hidden="true">&gt;</li>
+    <li><a href="#" class="unstyled" aria-current="page"><strong>Current</strong></a></li>
+  </ol>
+</nav>
+```
+
+## Styling
+
+The breadcrumb uses utility classes and CSS custom properties:
+
+```html
+<nav aria-label="Breadcrumb">
+  <ol class="unstyled hstack" style="font-size: var(--text-7)">
+    <!-- items -->
+  </ol>
+</nav>
+```
+
+<Tip>
+Adjust the font size using CSS custom properties like `var(--text-6)` or `var(--text-8)` to match your design.
+</Tip>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Keep it Simple" icon="minimize">
+    Don't include too many levels - typically 3-5 levels max
+  </Card>
+  <Card title="Make Links Clear" icon="link">
+    Each breadcrumb should clearly indicate what page it links to
+  </Card>
+  <Card title="Current Page Optional" icon="location-dot">
+    You can make the current page a non-clickable `<span>` instead of a link
+  </Card>
+  <Card title="Mobile Friendly" icon="mobile">
+    Consider showing only the parent page on mobile to save space
+  </Card>
+</CardGroup>
+
+## Non-Clickable Current Page
+
+If you prefer the current page to not be a link:
+
+```html
+<nav aria-label="Breadcrumb">
+  <ol class="unstyled hstack" style="font-size: var(--text-7)">
+    <li><a href="#" class="unstyled">Home</a></li>
+    <li aria-hidden="true">/</li>
+    <li><a href="#" class="unstyled">Projects</a></li>
+    <li aria-hidden="true">/</li>
+    <li aria-current="page"><strong>Current Page</strong></li>
+  </ol>
+</nav>
+```

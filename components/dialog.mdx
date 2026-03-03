@@ -1,0 +1,167 @@
+---
+title: "Dialog"
+description: "Modal dialogs using native <dialog> with command/commandfor."
+---
+
+Fully semantic, zero-JavaScript modal dialogs using the native `<dialog>` element. Use `commandfor` and `command="show-modal"` attributes to open dialogs declaratively. Focus trapping, z-index management, and keyboard shortcuts all work out of the box.
+
+## Basic Usage
+
+```html
+<button commandfor="demo-dialog" command="show-modal">Open dialog</button>
+
+<dialog id="demo-dialog" closedby="any">
+  <form method="dialog">
+    <header>
+      <h3>Title</h3>
+      <p>This is a dialog description.</p>
+    </header>
+    <div>
+      <p>Dialog content goes here. You can put any HTML inside.</p>
+      <p>Click outside or press Escape to close.</p>
+    </div>
+    <footer>
+      <button type="button" commandfor="demo-dialog" command="close" class="outline">
+        Cancel
+      </button>
+      <button value="confirm">Confirm</button>
+    </footer>
+  </form>
+</dialog>
+```
+
+## Structure
+
+Dialogs support a semantic structure with three main sections:
+
+- **`<header>`** - Title and optional description
+- **`<div>`**, **`<p>`**, or **`<section>`** - Main content area with auto-scroll
+- **`<footer>`** - Action buttons aligned to the right
+
+These sections can be direct children of `<dialog>` or wrapped in a `<form method="dialog">`.
+
+## With Form Fields
+
+Forms inside dialogs work naturally. Use `method="dialog"` to close the dialog on submit:
+
+```html
+<button commandfor="demo-dialog-form" command="show-modal">Open form dialog</button>
+
+<dialog id="demo-dialog-form">
+  <form method="dialog">
+    <header>
+      <h3>Edit form</h3>
+    </header>
+    <div class="vstack">
+      <label>Name <input name="name" required></label>
+      <label>Email <input name="email" type="email"></label>
+    </div>
+    <footer>
+      <button type="button" commandfor="demo-dialog-form" command="close" class="outline">
+        Cancel
+      </button>
+      <button value="save">Save</button>
+    </footer>
+  </form>
+</dialog>
+```
+
+## Commands
+
+### Opening a Dialog
+
+Use `commandfor` with `command="show-modal"` to open a dialog:
+
+```html
+<button commandfor="my-dialog" command="show-modal">Open</button>
+```
+
+### Closing a Dialog
+
+Use `command="close"` to close from inside:
+
+```html
+<button commandfor="my-dialog" command="close">Cancel</button>
+```
+
+Or use `method="dialog"` on a form:
+
+```html
+<form method="dialog">
+  <button>Close</button>
+</form>
+```
+
+## Handling Return Values
+
+Buttons with a `value` attribute pass that value when closing:
+
+```html
+<button value="confirm">Confirm</button>
+<button value="cancel">Cancel</button>
+```
+
+Listen to the `close` event to get the return value:
+
+```js
+const dialog = document.querySelector("#demo-dialog");
+dialog.addEventListener('close', (e) => {
+  console.log(dialog.returnValue); // "confirm" or "cancel"
+});
+```
+
+Or use inline event handler:
+
+```html
+<dialog id="my-dialog" onclose="console.log(this.returnValue)">
+  <!-- dialog content -->
+</dialog>
+```
+
+## Closing Behavior
+
+Control how the dialog can be closed with the `closedby` attribute:
+
+```html
+<!-- Close by any method (click outside, Escape key, or buttons) -->
+<dialog closedby="any">
+
+<!-- Only close via buttons/programmatic methods -->
+<dialog closedby="none">
+
+<!-- Browser default (Escape key + buttons) -->
+<dialog>
+```
+
+## Styling
+
+Dialogs include:
+- Centered positioning with responsive max-width (32rem)
+- Smooth scale and fade animations
+- Backdrop blur/overlay effect
+- Auto-scroll for content that exceeds viewport height (max 85vh)
+- Rounded corners and drop shadow
+- Proper z-index management
+
+## Opening Programmatically
+
+While the `commandfor` attribute provides zero-JavaScript behavior, you can also open dialogs with JavaScript:
+
+```js
+const dialog = document.querySelector('#my-dialog');
+dialog.showModal(); // Opens as modal (with backdrop)
+dialog.show();      // Opens as non-modal (no backdrop)
+```
+
+## Accessibility
+
+The native `<dialog>` element provides:
+- Automatic focus trapping
+- Escape key to close
+- Focus restoration when closed
+- Screen reader announcements
+- Proper ARIA semantics
+
+<Note>
+  Always include a way to close the dialog, either through a close button, form submission, or `closedby="any"` to allow clicking the backdrop.
+</Note>

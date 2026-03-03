@@ -1,0 +1,154 @@
+---
+title: 'Grid'
+description: '12-column responsive grid system using CSS Grid'
+---
+
+A flexible 12-column grid system built with CSS Grid. Use `.container`, `.row`, and `.col-{n}` classes to create responsive layouts.
+
+## Basic Usage
+
+Wrap your content in a `.container`, create rows with `.row`, and specify column widths with `.col-{n}` where n is 1-12.
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-4">col-4</div>
+    <div class="col-4">col-4</div>
+    <div class="col-4">col-4</div>
+  </div>
+</div>
+```
+
+## Equal Width Columns
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-6">col-6</div>
+    <div class="col-6">col-6</div>
+  </div>
+</div>
+```
+
+## Different Column Widths
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-3">col-3</div>
+    <div class="col-6">col-6</div>
+    <div class="col-3">col-3</div>
+  </div>
+</div>
+```
+
+## Column Offsets
+
+Use `.offset-{n}` classes to push columns to the right (supports offset-1 through offset-6).
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-4 offset-2">col-4 offset-2</div>
+    <div class="col-4">col-4</div>
+  </div>
+</div>
+```
+
+## Column End
+
+Use `.col-end` to make a column span to the end of the grid.
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-3">col-3</div>
+    <div class="col-4 col-end">col-4 col-end</div>
+  </div>
+</div>
+```
+
+## Complete Example
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-4">col-4</div>
+    <div class="col-4">col-4</div>
+    <div class="col-4">col-4</div>
+  </div>
+  <div class="row">
+    <div class="col-6">col-6</div>
+    <div class="col-6">col-6</div>
+  </div>
+  <div class="row">
+    <div class="col-3">col-3</div>
+    <div class="col-6">col-6</div>
+    <div class="col-3">col-3</div>
+  </div>
+  <div class="row">
+    <div class="col-4 offset-2">col-4 offset-2</div>
+    <div class="col-4">col-4</div>
+  </div>
+  <div class="row">
+    <div class="col-3">col-3</div>
+    <div class="col-4 col-end">col-4 col-end</div>
+  </div>
+</div>
+```
+
+## CSS Classes
+
+<ParamField path=".container" type="class">
+  Constrains content to a maximum width and centers it. Max width: 1280px.
+</ParamField>
+
+<ParamField path=".row" type="class">
+  Creates a grid container with 12 columns and configurable gap spacing.
+</ParamField>
+
+<ParamField path=".col-{n}" type="class">
+  Specifies column span (1-12). Example: `.col-4` spans 4 columns.
+</ParamField>
+
+<ParamField path=".offset-{n}" type="class">
+  Offsets a column by n columns (1-6). Pushes the column to the right.
+</ParamField>
+
+<ParamField path=".col-end" type="class">
+  Makes a column span to the end of the grid, regardless of its width.
+</ParamField>
+
+## CSS Variables
+
+<ResponseField name="--grid-cols" type="number" default="12">
+  Number of columns in the grid
+</ResponseField>
+
+<ResponseField name="--grid-gap" type="length" default="1.5rem">
+  Gap between grid columns
+</ResponseField>
+
+<ResponseField name="--container-max" type="length" default="1280px">
+  Maximum width of the container
+</ResponseField>
+
+<ResponseField name="--container-pad" type="length" default="1rem">
+  Horizontal padding of the container
+</ResponseField>
+
+<ResponseField name="--span" type="number">
+  Custom property for controlling column span. Set inline for custom spans.
+</ResponseField>
+
+## Responsive Behavior
+
+On screens 768px and below:
+- Grid changes to 4 columns
+- Gap reduces to 1rem
+- All columns span full width by default
+- Offsets are removed
+
+<Note>
+  The grid system automatically stacks columns on mobile devices for better responsive behavior.
+</Note>

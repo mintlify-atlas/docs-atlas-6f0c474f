@@ -1,0 +1,141 @@
+---
+title: "Spinner"
+description: "Loading indicators with aria-busy for any element."
+---
+
+Use `aria-busy="true"` on any element to show a loading spinner. Size with `data-spinner` attribute.
+
+## Basic Usage
+
+```html
+<div aria-busy="true"></div>
+```
+
+## Sizes
+
+<CodeGroup>
+```html Small
+<div aria-busy="true" data-spinner="small"></div>
+```
+
+```html Default
+<div aria-busy="true"></div>
+```
+
+```html Large
+<div aria-busy="true" data-spinner="large"></div>
+```
+</CodeGroup>
+
+## Multiple Sizes Example
+
+```html
+<div class="hstack" style="gap: var(--space-8)">
+  <div aria-busy="true" data-spinner="small"></div>
+  <div aria-busy="true"></div>
+  <div aria-busy="true" data-spinner="large"></div>
+</div>
+```
+
+## In Buttons
+
+Spinners work inside buttons for loading states:
+
+```html
+<button aria-busy="true" data-spinner="small" disabled>
+  Loading
+</button>
+```
+
+<Note>
+  Always disable buttons with `disabled` attribute when showing a loading spinner to prevent multiple submissions.
+</Note>
+
+## Overlay Spinner
+
+Add `data-spinner="overlay"` to dim the container contents and overlay the spinner on top:
+
+```html
+<article class="card" aria-busy="true" data-spinner="large overlay">
+  <header>
+    <h3>Card Title</h3>
+    <p>Card description goes here.</p>
+  </header>
+  <p>This is the card content. It can contain any HTML.</p>
+  <footer class="flex gap-2 mt-4">
+    <button class="outline">Cancel</button>
+    <button>Save</button>
+  </footer>
+</article>
+```
+
+### Overlay Behavior
+
+- Dims all child elements to 30% opacity
+- Disables pointer events on children
+- Centers spinner with absolute positioning
+- Works with any container size
+
+## Dynamic Loading States
+
+Toggle loading state with JavaScript:
+
+```js
+const button = document.querySelector('button');
+
+// Start loading
+button.setAttribute('aria-busy', 'true');
+button.setAttribute('data-spinner', 'small');
+button.disabled = true;
+
+// End loading
+button.removeAttribute('aria-busy');
+button.removeAttribute('data-spinner');
+button.disabled = false;
+```
+
+### With Fetch Example
+
+```js
+const container = document.querySelector('#content');
+
+async function loadData() {
+  container.setAttribute('aria-busy', 'true');
+  container.setAttribute('data-spinner', 'overlay');
+  
+  try {
+    const response = await fetch('/api/data');
+    const data = await response.json();
+    // Update UI with data
+  } finally {
+    container.removeAttribute('aria-busy');
+    container.removeAttribute('data-spinner');
+  }
+}
+```
+
+## Styling
+
+Spinners include:
+- Circular rotating animation
+- Primary color accent
+- Muted background color
+- Smooth 1-second rotation
+- Three size variants (small, default, large)
+
+## Accessibility
+
+The `aria-busy="true"` attribute:
+- Announces loading state to screen readers
+- Indicates the element is being updated
+- Works with all assistive technologies
+
+For better accessibility, consider adding `aria-label`:
+
+```html
+<div aria-busy="true" aria-label="Loading content"></div>
+```
+
+<Info>
+  For skeleton loading placeholders, see the [Skeleton](/components/skeleton) component.
+</Info>

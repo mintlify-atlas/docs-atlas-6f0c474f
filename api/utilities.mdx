@@ -1,0 +1,376 @@
+---
+title: Utilities
+description: Utility functions and helpers in Oat UI
+---
+
+Oat UI includes several utility features that enhance the functionality of standard HTML elements and provide progressive enhancements.
+
+## Tooltip Enhancement
+
+Oat UI automatically converts standard HTML `title` attributes into styled tooltips with better accessibility support.
+
+### How It Works
+
+The tooltip utility:
+1. Finds all elements with a `title` attribute
+2. Converts the `title` to a `data-tooltip` attribute for custom styling
+3. Adds an `aria-label` if one doesn't exist
+4. Removes the original `title` to prevent browser default tooltips
+5. Watches for new elements added to the DOM via MutationObserver
+
+### Usage
+
+```html
+<!-- Before JavaScript loads (progressive enhancement) -->
+<button title="Save your changes">Save</button>
+
+<!-- After JavaScript loads (automatically transformed) -->
+<button data-tooltip="Save your changes" aria-label="Save your changes">Save</button>
+```
+
+### Examples
+
+#### Basic Tooltip
+
+```html
+<button title="Delete item">🗑️</button>
+<a href="#" title="Learn more about this feature">Help</a>
+<span title="Last updated: 2 hours ago">Updated recently</span>
+```
+
+#### Icon Buttons
+
+```html
+<div class="toolbar">
+  <button title="Bold"><strong>B</strong></button>
+  <button title="Italic"><em>I</em></button>
+  <button title="Underline"><u>U</u></button>
+  <button title="Strike through"><s>S</s></button>
+</div>
+```
+
+#### With Existing ARIA Label
+
+```html
+<!-- aria-label is preserved, data-tooltip is added -->
+<button title="Settings" aria-label="Open settings panel">
+  ⚙️
+</button>
+```
+
+### Styling Tooltips
+
+Style tooltips using the `[data-tooltip]` attribute selector:
+
+```css
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem;
+  background: #333;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+}
+```
+
+### Progressive Enhancement
+
+The tooltip system works as progressive enhancement:
+
+<Check>**With JavaScript:** Custom styled tooltips with better accessibility</Check>
+<Check>**Without JavaScript:** Browser default `title` tooltips still work</Check>
+
+### Accessibility Benefits
+
+1. **Screen readers:** Automatically adds `aria-label` for better screen reader support
+2. **Keyboard users:** Tooltips work with keyboard focus (using CSS `:focus`)
+3. **Touch devices:** Removes problematic browser tooltips on touch screens
+
+## Sidebar Toggle
+
+A lightweight utility for handling sidebar show/hide functionality in layouts.
+
+### How It Works
+
+The sidebar utility toggles the `data-sidebar-open` attribute on the layout container when a toggle button is clicked, and automatically dismisses the sidebar on mobile when clicking outside.
+
+### Usage
+
+```html
+<div data-sidebar-layout>
+  <aside data-sidebar>
+    <nav>
+      <!-- Sidebar content -->
+    </nav>
+  </aside>
+  
+  <main>
+    <button data-sidebar-toggle>☰ Menu</button>
+    <!-- Main content -->
+  </main>
+</div>
+```
+
+### Attributes
+
+<ParamField path="data-sidebar-layout" type="attribute">
+  Applied to the container element that wraps both sidebar and main content. The `data-sidebar-open` attribute is toggled on this element.
+</ParamField>
+
+<ParamField path="data-sidebar" type="attribute">
+  Applied to the sidebar element itself. Used to identify the sidebar for click-outside detection.
+</ParamField>
+
+<ParamField path="data-sidebar-toggle" type="attribute">
+  Applied to button(s) that toggle the sidebar visibility.
+</ParamField>
+
+### Examples
+
+#### Basic Sidebar Layout
+
+```html
+<div data-sidebar-layout class="layout">
+  <aside data-sidebar class="sidebar">
+    <h2>Navigation</h2>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#">Settings</a>
+      <a href="#">Profile</a>
+    </nav>
+  </aside>
+  
+  <main class="main">
+    <header>
+      <button data-sidebar-toggle class="menu-btn">
+        ☰ Menu
+      </button>
+      <h1>Dashboard</h1>
+    </header>
+    <div class="content">
+      <!-- Page content -->
+    </div>
+  </main>
+</div>
+```
+
+#### Multiple Toggle Buttons
+
+```html
+<div data-sidebar-layout>
+  <aside data-sidebar>
+    <button data-sidebar-toggle class="close-btn">✕</button>
+    <!-- Sidebar content -->
+  </aside>
+  
+  <main>
+    <button data-sidebar-toggle class="open-btn">Open Menu</button>
+    <!-- Main content -->
+  </main>
+</div>
+```
+
+### Styling
+
+Use the `data-sidebar-open` attribute to style the open/closed states:
+
+```css
+.layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}
+
+.sidebar {
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+}
+
+/* When sidebar is open */
+[data-sidebar-open] .sidebar {
+  transform: translateX(0);
+}
+
+/* Mobile: sidebar as overlay */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    z-index: 100;
+    background: white;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+}
+```
+
+### Mobile Behavior
+
+On screens narrower than 768px, clicking outside the sidebar automatically closes it:
+
+```javascript
+// Automatically handled by Oat UI
+// No additional code needed
+```
+
+<Note>
+The 768px breakpoint matches common mobile/tablet breakpoints. If you need a different breakpoint, you'll need to modify the source code.
+</Note>
+
+## Command Polyfill
+
+Oat UI includes a polyfill for the `commandfor` attribute, which provides an alternative to JavaScript for opening and closing dialogs (mainly for Safari compatibility).
+
+### Usage
+
+```html
+<!-- Opens dialog when button is clicked -->
+<button commandfor="my-dialog" command="show-modal">Open Dialog</button>
+
+<dialog id="my-dialog">
+  <h2>Dialog Content</h2>
+  <button commandfor="my-dialog" command="close">Close</button>
+</dialog>
+```
+
+### Commands
+
+<ParamField path="show-modal" type="command">
+  Opens the dialog as a modal (with backdrop)
+</ParamField>
+
+<ParamField path="close" type="command">
+  Closes the dialog
+</ParamField>
+
+<ParamField path="toggle" type="command" default>
+  Toggles the dialog open/closed state (default if `command` attribute is omitted)
+</ParamField>
+
+### Examples
+
+#### Modal Dialog
+
+```html
+<button commandfor="confirm-dialog" command="show-modal">
+  Delete Item
+</button>
+
+<dialog id="confirm-dialog">
+  <h2>Confirm Deletion</h2>
+  <p>Are you sure you want to delete this item?</p>
+  <div class="actions">
+    <button commandfor="confirm-dialog" command="close">Cancel</button>
+    <button class="btn-danger" onclick="deleteItem()">Delete</button>
+  </div>
+</dialog>
+```
+
+#### Toggle Dialog
+
+```html
+<!-- Omitting 'command' defaults to toggle behavior -->
+<button commandfor="settings-dialog">⚙️ Settings</button>
+
+<dialog id="settings-dialog">
+  <h2>Settings</h2>
+  <!-- Settings content -->
+  <button commandfor="settings-dialog">Close</button>
+</dialog>
+```
+
+### Browser Support
+
+The polyfill automatically activates only in browsers that don't support the native `commandfor` attribute:
+
+<Check>**Native support:** Uses browser implementation (Chrome, Edge)</Check>
+<Check>**Polyfill:** Automatically activated (Safari, Firefox)</Check>
+
+<Note>
+The polyfill only works with `<dialog>` elements. Other use cases of `commandfor` are not supported.
+</Note>
+
+## Unique ID Generation
+
+The `uid()` method is available on all `OtBase` components for generating unique IDs:
+
+```javascript
+class MyComponent extends OtBase {
+  init() {
+    const id = this.uid();
+    console.log(id); // e.g., "x7k2m9p1"
+  }
+}
+```
+
+See [Web Components](/api/web-components#uid) for details.
+
+## DOM Utilities
+
+All `OtBase` components include convenient DOM query methods:
+
+### $(selector)
+
+Shorthand for `querySelector()` scoped to the component:
+
+```javascript
+const button = this.$('button');
+const header = this.$('.header');
+```
+
+### $$(selector)
+
+Shorthand for `querySelectorAll()` that returns an array:
+
+```javascript
+const items = this.$$('[role="menuitem"]');
+items.forEach(item => console.log(item));
+```
+
+See [Web Components](/api/web-components#dom-query-methods) for complete documentation.
+
+## Custom Event Utilities
+
+The `emit()` method provides an easy way to dispatch custom events:
+
+```javascript
+class MyComponent extends OtBase {
+  selectItem(item) {
+    this.emit('item-selected', { item });
+  }
+}
+```
+
+See [Web Components](/api/web-components#emit) for complete documentation.
+
+## Best Practices
+
+<Check>**Progressive Enhancement** - All utilities work as enhancements; core functionality works without JavaScript</Check>
+
+<Check>**Accessibility First** - Utilities automatically add ARIA attributes and screen reader support</Check>
+
+<Check>**Performance** - MutationObserver used efficiently to watch for dynamic content</Check>
+
+<Check>**No Dependencies** - All utilities use native browser APIs</Check>

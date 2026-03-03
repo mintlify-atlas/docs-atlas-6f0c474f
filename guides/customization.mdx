@@ -1,0 +1,275 @@
+---
+title: Customization
+description: Learn how to customize Oat UI to match your brand and design preferences
+---
+
+Oat UI is built with CSS variables, making it easy to customize the look and feel of your application without modifying the source code.
+
+## Overriding CSS Variables
+
+The easiest way to customize Oat is by overriding CSS variables in your own stylesheet. All theme variables are defined on the `:root` selector and can be overridden globally or scoped to specific elements.
+
+### Global Customization
+
+Create a custom stylesheet and override variables globally:
+
+```css
+:root {
+  /* Brand colors */
+  --primary: #0066cc;
+  --primary-foreground: #ffffff;
+  
+  /* Custom spacing */
+  --space-4: 1.5rem;
+  
+  /* Custom border radius */
+  --radius-medium: 0.5rem;
+  --radius-large: 1rem;
+  
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+```
+
+### Dark Mode Customization
+
+Oat uses the `light-dark()` CSS function for automatic theme switching. You can customize both light and dark mode values:
+
+```css
+:root {
+  --background: light-dark(#fafafa, #0a0a0a);
+  --foreground: light-dark(#0a0a0a, #fafafa);
+  --primary: light-dark(#0066cc, #3399ff);
+}
+```
+
+The system automatically switches based on the user's `prefers-color-scheme` setting.
+
+### Component-Specific Customization
+
+You can scope variable overrides to specific components:
+
+```css
+/* Custom button styling */
+button.brand-button {
+  --primary: #ff6b35;
+  --primary-foreground: #ffffff;
+  --radius-medium: 2rem;
+}
+
+/* Custom card styling */
+card.featured {
+  --card: #f8f9fa;
+  --card-foreground: #212529;
+  --shadow-medium: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+```
+
+## Custom Color Schemes
+
+Create a complete custom color scheme by overriding all color variables:
+
+```css
+:root {
+  /* Base colors */
+  --background: light-dark(#ffffff, #1a1a1a);
+  --foreground: light-dark(#1a1a1a, #f5f5f5);
+  
+  /* Component colors */
+  --card: light-dark(#f8f9fa, #2d2d2d);
+  --card-foreground: light-dark(#1a1a1a, #f5f5f5);
+  
+  /* Accent colors */
+  --primary: light-dark(#0066cc, #3399ff);
+  --primary-foreground: light-dark(#ffffff, #1a1a1a);
+  --secondary: light-dark(#6c757d, #adb5bd);
+  --secondary-foreground: light-dark(#ffffff, #1a1a1a);
+  
+  /* Semantic colors */
+  --danger: light-dark(#dc3545, #ff6b6b);
+  --danger-foreground: light-dark(#ffffff, #1a1a1a);
+  --success: light-dark(#28a745, #51cf66);
+  --success-foreground: light-dark(#ffffff, #1a1a1a);
+  --warning: light-dark(#ffc107, #ffd43b);
+  --warning-foreground: #1a1a1a;
+  
+  /* Borders */
+  --border: light-dark(#dee2e6, #495057);
+  --ring: light-dark(#0066cc, #3399ff);
+}
+```
+
+## Custom Typography
+
+Customize font families, sizes, and weights:
+
+```css
+:root {
+  /* Font families */
+  --font-sans: 'Helvetica Neue', system-ui, sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, monospace;
+  
+  /* Font sizes */
+  --text-1: 3rem;
+  --text-2: 2.5rem;
+  --text-3: 2rem;
+  --text-4: 1.5rem;
+  --text-5: 1.25rem;
+  --text-6: 1rem;
+  --text-7: 0.875rem;
+  --text-8: 0.75rem;
+  
+  /* Font weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  
+  /* Line height */
+  --leading-normal: 1.6;
+}
+```
+
+## Custom Spacing Scale
+
+Adjust the spacing scale to match your design system:
+
+```css
+:root {
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-8: 3rem;     /* 48px */
+  --space-10: 4rem;    /* 64px */
+  --space-12: 6rem;    /* 96px */
+}
+```
+
+## Custom Shadows
+
+Modify shadow styles for different depth levels:
+
+```css
+:root {
+  --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-large: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+```
+
+## Custom Transitions
+
+Adjust animation timing:
+
+```css
+:root {
+  --transition-fast: 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+```
+
+## Loading Custom Fonts
+
+When using custom fonts, load them before overriding font variables:
+
+```html
+<head>
+  <!-- Load fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Oat UI -->
+  <link rel="stylesheet" href="oat.min.css">
+  
+  <!-- Your custom styles -->
+  <link rel="stylesheet" href="custom.css">
+</head>
+```
+
+```css
+/* custom.css */
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+```
+
+## Component-Level Customization
+
+You can also customize individual component instances:
+
+```html
+<button style="--primary: #ff6b35; --radius-medium: 2rem;">
+  Custom Button
+</button>
+
+<card style="--card: #f0f9ff; --border: #bae6fd;">
+  <h3>Custom Card</h3>
+  <p>This card has custom colors.</p>
+</card>
+```
+
+## Best Practices
+
+1. **Use CSS variables**: Don't override component CSS directly. Always use CSS variables for customization.
+2. **Maintain consistency**: Keep your customizations consistent across light and dark modes.
+3. **Test accessibility**: Ensure color contrasts meet WCAG guidelines when customizing colors.
+4. **Document your theme**: Keep a reference of your custom variables for team consistency.
+5. **Use semantic names**: If creating new variables, follow Oat's naming conventions.
+
+## Complete Example
+
+Here's a complete custom theme:
+
+```css
+/* custom-theme.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  
+  /* Brand colors */
+  --primary: light-dark(#0066cc, #3399ff);
+  --primary-foreground: light-dark(#ffffff, #0a0a0a);
+  
+  /* Background */
+  --background: light-dark(#f8f9fa, #0f0f0f);
+  --foreground: light-dark(#212529, #f8f9fa);
+  
+  /* Components */
+  --card: light-dark(#ffffff, #1a1a1a);
+  --card-foreground: light-dark(#212529, #f8f9fa);
+  
+  /* Borders & Radius */
+  --border: light-dark(#dee2e6, #343a40);
+  --radius-medium: 0.5rem;
+  --radius-large: 1rem;
+  
+  /* Spacing adjustments */
+  --space-4: 1.25rem;
+  --space-6: 2rem;
+}
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Theme Example</title>
+  
+  <!-- Oat UI -->
+  <link rel="stylesheet" href="oat.min.css">
+  
+  <!-- Custom theme -->
+  <link rel="stylesheet" href="custom-theme.css">
+</head>
+<body>
+  <!-- Your content here -->
+</body>
+</html>
+```

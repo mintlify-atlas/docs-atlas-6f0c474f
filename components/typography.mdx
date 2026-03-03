@@ -1,0 +1,227 @@
+---
+title: 'Typography'
+description: 'Headings, paragraphs, lists, code blocks, and text elements. All styled automatically with no classes required.'
+icon: 'text'
+---
+
+Base text elements are styled automatically. No classes needed. All typography follows semantic HTML best practices.
+
+## Headings
+
+<CodeGroup>
+```html HTML
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+```
+</CodeGroup>
+
+## Paragraphs & Inline Text
+
+<CodeGroup>
+```html HTML
+<p>This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, and <a href="#">a link</a>.</p>
+
+<p>Here's some <code>inline code</code> and more text.</p>
+```
+</CodeGroup>
+
+## Code Blocks
+
+<CodeGroup>
+```html HTML
+<pre><code>function hello() {
+  console.log('Hello, World!');
+}</code></pre>
+```
+</CodeGroup>
+
+## Blockquotes
+
+<CodeGroup>
+```html HTML
+<blockquote>
+  This is a blockquote. It's styled automatically.
+</blockquote>
+```
+</CodeGroup>
+
+## Lists
+
+### Unordered Lists
+
+<CodeGroup>
+```html HTML
+<ul>
+  <li>Unordered list item 1</li>
+  <li>Unordered list item 2</li>
+  <li>Unordered list item 3</li>
+</ul>
+```
+</CodeGroup>
+
+### Ordered Lists
+
+<CodeGroup>
+```html HTML
+<ol>
+  <li>Ordered list item 1</li>
+  <li>Ordered list item 2</li>
+  <li>Ordered list item 3</li>
+</ol>
+```
+</CodeGroup>
+
+## Horizontal Rule
+
+<CodeGroup>
+```html HTML
+<hr>
+```
+</CodeGroup>
+
+## Typography Styles
+
+<CardGroup cols={2}>
+  <Card title="Headings" icon="heading">
+    Six levels of headings (h1-h6) with automatic sizing and spacing
+  </Card>
+  <Card title="Text Formatting" icon="bold">
+    Strong, emphasis, links, and inline code with proper contrast
+  </Card>
+  <Card title="Code" icon="code">
+    Inline code and code blocks with monospace font
+  </Card>
+  <Card title="Lists" icon="list">
+    Ordered and unordered lists with proper indentation
+  </Card>
+</CardGroup>
+
+## Inline Elements
+
+<AccordionGroup>
+  <Accordion title="Text Emphasis">
+    - `<strong>` - Bold text with semantic meaning for importance
+    - `<em>` - Italic text with semantic meaning for emphasis
+    - `<b>` - Bold text for visual styling only
+    - `<i>` - Italic text for visual styling only
+  </Accordion>
+  
+  <Accordion title="Code & Technical">
+    - `<code>` - Inline code snippets with monospace font
+    - `<pre>` - Preformatted text blocks
+    - `<kbd>` - Keyboard input
+    - `<samp>` - Sample output
+    - `<var>` - Variables
+  </Accordion>
+  
+  <Accordion title="Links">
+    - `<a>` - Hyperlinks with underline and color
+    - Hover state with transition
+    - Visited state styling
+    - Focus outline for accessibility
+  </Accordion>
+  
+  <Accordion title="Other Elements">
+    - `<mark>` - Highlighted text
+    - `<small>` - Fine print
+    - `<del>` - Deleted text
+    - `<ins>` - Inserted text
+    - `<sub>` - Subscript
+    - `<sup>` - Superscript
+  </Accordion>
+</AccordionGroup>
+
+## Complete Example
+
+<CodeGroup>
+```html HTML
+<article>
+  <h1>Article Title</h1>
+  <p>This is the introduction paragraph with <strong>important text</strong> and <a href="#">a link</a>.</p>
+  
+  <h2>Section Heading</h2>
+  <p>Here's a paragraph with <code>inline code</code> and <em>emphasized text</em>.</p>
+  
+  <h3>Features</h3>
+  <ul>
+    <li>Feature one</li>
+    <li>Feature two</li>
+    <li>Feature three</li>
+  </ul>
+  
+  <h3>Code Example</h3>
+  <pre><code>const greeting = 'Hello, World!';
+console.log(greeting);</code></pre>
+  
+  <blockquote>
+    A relevant quote that adds context to the article.
+  </blockquote>
+  
+  <hr>
+  
+  <h2>Conclusion</h2>
+  <p>Final thoughts and summary.</p>
+</article>
+```
+</CodeGroup>
+
+## Semantic HTML
+
+Oat UI encourages semantic HTML for better accessibility and SEO:
+
+<CardGroup cols={2}>
+  <Card title="Use Headings Hierarchically" icon="layer-group">
+    Start with `<h1>` and use heading levels in order (don't skip levels)
+  </Card>
+  <Card title="Strong vs Bold" icon="weight-hanging">
+    Use `<strong>` for importance, `<b>` for visual styling only
+  </Card>
+  <Card title="Em vs Italic" icon="italic">
+    Use `<em>` for emphasis, `<i>` for visual styling only
+  </Card>
+  <Card title="Lists for Lists" icon="list-check">
+    Use `<ul>` or `<ol>` for lists, not `<div>` elements
+  </Card>
+</CardGroup>
+
+## Accessibility
+
+- Proper heading hierarchy for screen readers
+- Semantic elements convey meaning, not just appearance
+- Link text should be descriptive (not "click here")
+- Code blocks use `<pre><code>` for proper announcement
+- Lists use proper `<ul>`/`<ol>` structure
+- Sufficient color contrast for text
+- Focus states on interactive elements
+
+## Best Practices
+
+<Check>Use semantic HTML elements that match the content meaning</Check>
+<Check>Maintain proper heading hierarchy (h1 → h2 → h3, etc.)</Check>
+<Check>Use `<strong>` and `<em>` for semantic meaning, not styling</Check>
+<Check>Write descriptive link text</Check>
+<Check>Use `<code>` for inline code, `<pre><code>` for blocks</Check>
+
+<Warning>
+  Don't skip heading levels (e.g., h1 directly to h3)
+</Warning>
+
+<Warning>
+  Don't use headings for styling - use CSS classes instead
+</Warning>
+
+## CSS Variables
+
+Typography uses the standard Oat UI CSS variables:
+
+- `--text-1` through `--text-9` - Font sizes (h1 uses larger, body uses middle range)
+- `--leading-*` - Line height values
+- `--font-normal`, `--font-medium`, `--font-bold` - Font weights
+- `--foreground` - Main text color
+- `--muted-foreground` - Secondary text color
+- `--primary` - Link color
+- `--border` - Border color for `<hr>`

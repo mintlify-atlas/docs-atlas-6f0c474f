@@ -1,0 +1,165 @@
+---
+title: Tabs
+description: Tabbed interface using a custom web component with keyboard navigation and ARIA support
+---
+
+The Tabs component provides an accessible tabbed interface with automatic keyboard navigation. It uses the `<ot-tabs>` web component to manage tab state and panel visibility.
+
+## Basic Usage
+
+Wrap tab buttons and panels in `<ot-tabs>`. Use `role="tablist"`, `role="tab"`, and `role="tabpanel"`.
+
+```html
+<ot-tabs>
+  <div role="tablist">
+    <button role="tab">Account</button>
+    <button role="tab">Password</button>
+    <button role="tab">Notifications</button>
+  </div>
+  <div role="tabpanel">
+    <h3>Account Settings</h3>
+    <p>Manage your account information here.</p>
+  </div>
+  <div role="tabpanel">
+    <h3>Password Settings</h3>
+    <p>Change your password here.</p>
+  </div>
+  <div role="tabpanel">
+    <h3>Notification Settings</h3>
+    <p>Configure your notification preferences.</p>
+  </div>
+</ot-tabs>
+```
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Keyboard Navigation" icon="keyboard">
+    Use Arrow Left/Right to navigate between tabs
+  </Card>
+  <Card title="ARIA Support" icon="universal-access">
+    Automatic aria-controls, aria-labelledby, and aria-selected management
+  </Card>
+  <Card title="Auto IDs" icon="hashtag">
+    Generates unique IDs for tabs and panels if not provided
+  </Card>
+  <Card title="Custom Events" icon="bolt">
+    Emits ot-tab-change event on tab change
+  </Card>
+</CardGroup>
+
+## Web Component API
+
+### Properties
+
+<ParamField path="activeIndex" type="number">
+  Get or set the currently active tab index (0-based)
+</ParamField>
+
+### Events
+
+<ParamField path="ot-tab-change" type="CustomEvent">
+  Fired when the active tab changes. Event detail includes:
+  - `index` - The index of the newly active tab
+  - `tab` - The tab element that was activated
+</ParamField>
+
+## JavaScript Usage
+
+### Setting Active Tab
+
+```javascript
+const tabs = document.querySelector('ot-tabs');
+
+// Set the second tab as active
+tabs.activeIndex = 1;
+
+// Get current active index
+console.log(tabs.activeIndex); // 1
+```
+
+### Listening to Tab Changes
+
+```javascript
+const tabs = document.querySelector('ot-tabs');
+
+tabs.addEventListener('ot-tab-change', (e) => {
+  console.log('Tab changed to index:', e.detail.index);
+  console.log('Tab element:', e.detail.tab);
+});
+```
+
+## HTML Structure
+
+<Steps>
+  <Step title="Wrap in ot-tabs">
+    The `<ot-tabs>` element is required as the outer container
+  </Step>
+  <Step title="Add tablist">
+    A single `<div role="tablist">` containing all tab buttons
+  </Step>
+  <Step title="Add tab buttons">
+    Each `<button role="tab">` represents a clickable tab
+  </Step>
+  <Step title="Add panels">
+    Each `<div role="tabpanel">` contains the content for its corresponding tab
+  </Step>
+</Steps>
+
+## Initial Active Tab
+
+To set a specific tab as initially active, add `aria-selected="true"` to the desired tab button:
+
+```html
+<ot-tabs>
+  <div role="tablist">
+    <button role="tab">Tab 1</button>
+    <button role="tab" aria-selected="true">Tab 2</button>
+    <button role="tab">Tab 3</button>
+  </div>
+  <div role="tabpanel">Content 1</div>
+  <div role="tabpanel">Content 2 (shown by default)</div>
+  <div role="tabpanel">Content 3</div>
+</ot-tabs>
+```
+
+<Note>
+If no tab has `aria-selected="true"`, the first tab will be active by default.
+</Note>
+
+## Accessibility
+
+The Tabs component automatically handles:
+
+- **ARIA attributes**: Sets `aria-controls`, `aria-labelledby`, and `aria-selected`
+- **Keyboard navigation**: Arrow keys move between tabs
+- **Focus management**: Active tab receives focus on keyboard navigation
+- **Tab indexing**: Only the active tab is focusable via Tab key
+
+<Warning>
+Ensure each tab has a corresponding panel. The component will log a warning if tabs or panels are missing.
+</Warning>
+
+## Styling
+
+The component uses CSS custom properties for theming:
+
+```css
+[role="tablist"] {
+  background-color: var(--muted);
+  border-radius: var(--radius-medium);
+  padding: var(--space-1);
+  gap: var(--space-1);
+}
+
+[role="tab"] {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-7);
+  font-weight: var(--font-medium);
+}
+
+[role="tab"][aria-selected="true"] {
+  background-color: var(--background);
+  box-shadow: var(--shadow-small);
+}
+```

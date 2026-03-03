@@ -1,0 +1,70 @@
+---
+title: "Alert"
+description: "Alert messages using role='alert' for important notifications."
+---
+
+Use `role="alert"` for alert styling. Set `data-variant` for success, warning, or error/danger alerts.
+
+## Basic Usage
+
+<CodeGroup>
+```html Default Alert
+<div role="alert">
+  <strong>Info</strong> This is a default alert message.
+</div>
+```
+
+```html Success Alert
+<div role="alert" data-variant="success">
+  <strong>Success!</strong> Your changes have been saved.
+</div>
+```
+
+```html Warning Alert
+<div role="alert" data-variant="warning">
+  <strong>Warning!</strong> Please review before continuing.
+</div>
+```
+
+```html Error Alert
+<div role="alert" data-variant="error">
+  <strong>Error!</strong> Something went wrong.
+</div>
+```
+</CodeGroup>
+
+## Variants
+
+Alerts support the following variants through the `data-variant` attribute:
+
+- **Default** - No variant specified, uses default background and border styling
+- **Success** - Green styling for successful operations (`data-variant="success"`)
+- **Warning** - Yellow/orange styling for warnings (`data-variant="warning"`)
+- **Error/Danger** - Red styling for errors (`data-variant="error"` or `data-variant="danger"`)
+
+## Styling
+
+Alerts have built-in styling with:
+- Flexbox layout with gap spacing
+- Responsive padding
+- Border radius for rounded corners
+- Color-aware backgrounds that adapt to light/dark mode
+- Variant colors that mix with transparency for subtle backgrounds
+
+## With Links
+
+Links inside alerts inherit the variant color:
+
+```html
+<div role="alert" data-variant="warning">
+  <strong>Warning!</strong> Please <a href="#">review the documentation</a> before continuing.
+</div>
+```
+
+## Accessibility
+
+The `role="alert"` attribute ensures screen readers announce the message immediately when it appears, making it suitable for important, time-sensitive information.
+
+<Note>
+  Use alerts sparingly for important messages that require immediate attention. For less urgent notifications, consider using the [Toast](/components/toast) component instead.
+</Note>

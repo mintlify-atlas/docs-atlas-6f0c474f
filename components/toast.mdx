@@ -1,0 +1,163 @@
+---
+title: "Toast"
+description: "Notification toasts with placement, stacking, and auto-dismiss."
+---
+
+Show toast notifications with `ot.toast(message, title?, options?)`. Toasts appear temporarily to provide feedback without interrupting the user's workflow.
+
+## Basic Usage
+
+<CodeGroup>
+```html Success Toast
+<button onclick="ot.toast('Action completed successfully', 'All good', { variant: 'success' })">
+  Show Success
+</button>
+```
+
+```html Danger Toast
+<button onclick="ot.toast('Something went wrong', 'Oops', { variant: 'danger' })">
+  Show Error
+</button>
+```
+
+```html Warning Toast
+<button onclick="ot.toast('Please review this warning', 'Warning', { variant: 'warning' })">
+  Show Warning
+</button>
+```
+
+```html Info Toast
+<button onclick="ot.toast('New notification', 'For your attention')">
+  Show Info
+</button>
+```
+</CodeGroup>
+
+## JavaScript API
+
+### Basic Method
+
+```js
+ot.toast(message, title?, options?)
+```
+
+**Parameters:**
+- `message` (string) - The toast message content
+- `title` (string, optional) - The toast title
+- `options` (object, optional) - Configuration options
+
+**Example:**
+```js
+ot.toast('Changes saved successfully', 'Success', {
+  variant: 'success',
+  placement: 'top-right',
+  duration: 4000
+});
+```
+
+### Options
+
+| Option      | Type   | Default       | Description                                    |
+| ----------- | ------ | ------------- | ---------------------------------------------- |
+| `variant`   | string | `''`          | `'success'`, `'danger'`, or `'warning'`        |
+| `placement` | string | `'top-right'` | Position on screen (see placements below)      |
+| `duration`  | number | `4000`        | Auto-dismiss time in milliseconds (0 = never)  |
+
+## Placement
+
+Toasts can be positioned in 6 different locations:
+
+```js
+ot.toast('Top left', '', { placement: 'top-left' })
+ot.toast('Top center', '', { placement: 'top-center' })
+ot.toast('Top right', '', { placement: 'top-right' })      // default
+ot.toast('Bottom left', '', { placement: 'bottom-left' })
+ot.toast('Bottom center', '', { placement: 'bottom-center' })
+ot.toast('Bottom right', '', { placement: 'bottom-right' })
+```
+
+<Note>
+  Toasts stack vertically at each placement. Bottom placements show newest toasts at the bottom.
+</Note>
+
+## Custom HTML Content
+
+Use `ot.toast.el(element, options?)` to show toasts with custom HTML content.
+
+### From a Template
+
+```html
+<template id="undo-toast">
+  <output class="toast" data-variant="success">
+    <h6 class="toast-title">Changes saved</h6>
+    <p>Your document has been updated.</p>
+    <button data-variant="secondary" class="small" onclick="this.closest('.toast').remove()">
+      Okay
+    </button>
+  </output>
+</template>
+
+<button onclick="ot.toast.el(document.querySelector('#undo-toast'), { duration: 8000 })">
+  Toast with action
+</button>
+```
+
+### Dynamic Element
+
+```js
+const el = document.createElement('output');
+el.className = 'toast';
+el.setAttribute('data-variant', 'warning');
+el.innerHTML = '<h6 class="toast-title">Warning</h6><p>Custom content here</p>';
+ot.toast.el(el);
+```
+
+<Info>
+  The element is cloned before display, so templates can be reused multiple times.
+</Info>
+
+## Clearing Toasts
+
+Clear all toasts or toasts at a specific placement:
+
+```js
+ot.toast.clear()              // Clear all toasts
+ot.toast.clear('top-right')   // Clear toasts at specific placement
+```
+
+## Variants
+
+### Success
+Green accent color for successful operations:
+```js
+ot.toast('Operation completed', 'Success', { variant: 'success' });
+```
+
+### Danger
+Red accent color for errors:
+```js
+ot.toast('Failed to save', 'Error', { variant: 'danger' });
+```
+
+### Warning
+Yellow/orange accent color for warnings:
+```js
+ot.toast('Low storage space', 'Warning', { variant: 'warning' });
+```
+
+## Styling
+
+Toasts include:
+- Card-style background with subtle shadow
+- Color-coded left border based on variant
+- Smooth enter/exit animations
+- Responsive max-width (28rem) and min-width (20rem)
+- Auto-stacking with proper spacing
+
+## Accessibility
+
+Toasts use `role="status"` or `role="alert"` for screen reader announcements. The close button includes proper ARIA attributes for keyboard navigation.
+
+<Note>
+  For full API documentation including advanced usage and events, see the [Toast API reference](/api/toast-api).
+</Note>

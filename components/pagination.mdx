@@ -1,0 +1,199 @@
+---
+title: Pagination
+description: Pagination navigation bars using buttons and semantic HTML
+---
+
+Pagination allows users to navigate through multiple pages of content. Oat UI's pagination uses semantic navigation with button menus.
+
+## Basic Usage
+
+Pagination uses the existing button menu markup with `<nav>` and `<menu class="buttons">`.
+
+```html
+<nav aria-label="Pagination">
+  <menu class="buttons">
+    <li><a href="#" class="button outline small">&larr; Previous</a></li>
+    <li><a href="#" class="button outline small">1</a></li>
+    <li><a href="#" class="button outline small">2</a></li>
+    <li><a href="#" class="button small" aria-current="page">3</a></li>
+    <li><a href="#" class="button outline small">4</a></li>
+    <li><a href="#" class="button outline small">5</a></li>
+    <li><a href="#" class="button outline small">Next &rarr;</a></li>
+  </menu>
+</nav>
+```
+
+## Structure
+
+<Steps>
+  <Step title="Wrap in nav">
+    Use `<nav aria-label="Pagination">` for semantic navigation
+  </Step>
+  <Step title="Use menu element">
+    Use `<menu class="buttons">` to create a button group
+  </Step>
+  <Step title="Add list items">
+    Each page link is wrapped in `<li>`
+  </Step>
+  <Step title="Style as buttons">
+    Use `class="button outline small"` for page links
+  </Step>
+  <Step title="Mark current page">
+    Remove `outline` class and add `aria-current="page"` to the active page
+  </Step>
+</Steps>
+
+## Button Classes
+
+<ParamField path="button" type="class" required>
+  Base button styling
+</ParamField>
+
+<ParamField path="outline" type="class">
+  Outline variant for inactive pages
+</ParamField>
+
+<ParamField path="small" type="class">
+  Smaller button size, recommended for pagination
+</ParamField>
+
+## Simple Pagination
+
+For a minimal previous/next navigation:
+
+```html
+<nav aria-label="Pagination">
+  <menu class="buttons">
+    <li><a href="#" class="button outline small">&larr; Previous</a></li>
+    <li><a href="#" class="button outline small">Next &rarr;</a></li>
+  </menu>
+</nav>
+```
+
+## With Page Info
+
+Combine pagination with text to show the current page range:
+
+```html
+<nav aria-label="Pagination">
+  <menu class="buttons">
+    <li><a href="#" class="button outline small">&larr; Previous</a></li>
+    <li><span style="padding: 0 var(--space-3); display: flex; align-items: center;">Page 3 of 10</span></li>
+    <li><a href="#" class="button outline small">Next &rarr;</a></li>
+  </menu>
+</nav>
+```
+
+## Compact Pagination
+
+Show only a subset of pages with ellipsis:
+
+```html
+<nav aria-label="Pagination">
+  <menu class="buttons">
+    <li><a href="#" class="button outline small">&larr;</a></li>
+    <li><a href="#" class="button outline small">1</a></li>
+    <li><span style="padding: 0 var(--space-2); display: flex; align-items: center;">...</span></li>
+    <li><a href="#" class="button outline small">8</a></li>
+    <li><a href="#" class="button small" aria-current="page">9</a></li>
+    <li><a href="#" class="button outline small">10</a></li>
+    <li><span style="padding: 0 var(--space-2); display: flex; align-items: center;">...</span></li>
+    <li><a href="#" class="button outline small">99</a></li>
+    <li><a href="#" class="button outline small">&rarr;</a></li>
+  </menu>
+</nav>
+```
+
+## Disabled State
+
+Disable Previous/Next buttons when at the first or last page:
+
+```html
+<nav aria-label="Pagination">
+  <menu class="buttons">
+    <li><button class="button outline small" disabled>&larr; Previous</button></li>
+    <li><a href="#" class="button small" aria-current="page">1</a></li>
+    <li><a href="#" class="button outline small">2</a></li>
+    <li><a href="#" class="button outline small">3</a></li>
+    <li><a href="#" class="button outline small">Next &rarr;</a></li>
+  </menu>
+</nav>
+```
+
+<Note>
+When a button should be disabled, use `<button>` instead of `<a>` so you can use the `disabled` attribute.
+</Note>
+
+## Accessibility
+
+<AccordionGroup>
+  <Accordion title="ARIA Label">
+    The `aria-label="Pagination"` on the `<nav>` element helps screen readers identify this as pagination navigation.
+  </Accordion>
+  
+  <Accordion title="Current Page">
+    Use `aria-current="page"` on the active page button to indicate the current page to assistive technologies.
+  </Accordion>
+  
+  <Accordion title="Disabled Buttons">
+    Use the `disabled` attribute on Previous/Next buttons when they're not applicable (first/last page).
+  </Accordion>
+  
+  <Accordion title="Descriptive Text">
+    Previous/Next buttons should include text labels, not just arrow symbols, for clarity.
+  </Accordion>
+</AccordionGroup>
+
+## Button Sizes
+
+You can adjust pagination size by using different button size classes:
+
+```html
+<!-- Extra small -->
+<nav aria-label="Pagination">
+  <menu class="buttons">
+    <li><a href="#" class="button outline xs">1</a></li>
+    <li><a href="#" class="button xs" aria-current="page">2</a></li>
+    <li><a href="#" class="button outline xs">3</a></li>
+  </menu>
+</nav>
+
+<!-- Default size -->
+<nav aria-label="Pagination">
+  <menu class="buttons">
+    <li><a href="#" class="button outline">1</a></li>
+    <li><a href="#" class="button" aria-current="page">2</a></li>
+    <li><a href="#" class="button outline">3</a></li>
+  </menu>
+</nav>
+```
+
+<Tip>
+The `small` size class is recommended for most pagination use cases as it provides good balance between clickability and space efficiency.
+</Tip>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Clear Current Page" icon="location-dot">
+    Make the current page visually distinct using the solid button style
+  </Card>
+  <Card title="Limit Page Numbers" icon="list-ol">
+    Don't show all pages if there are many - use ellipsis to truncate
+  </Card>
+  <Card title="Mobile Friendly" icon="mobile">
+    On mobile, consider showing fewer page numbers or just prev/next
+  </Card>
+  <Card title="Consistent Sizing" icon="arrows-left-right">
+    Use the same button size for all pagination items
+  </Card>
+</CardGroup>
+
+## No Special CSS Required
+
+Pagination doesn't use any special markup or classes - it reuses the existing button menu system. This means:
+
+- No additional CSS to load
+- Consistent styling with other button groups
+- Easy to customize using existing button variants
+- Works with all button modifiers (colors, sizes, etc.)

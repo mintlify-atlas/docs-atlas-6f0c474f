@@ -1,0 +1,195 @@
+---
+title: 'Dropdown'
+description: 'Dropdown menus and popovers using the native Popover API with automatic positioning and keyboard navigation'
+icon: 'chevron-down'
+---
+
+<Warning>
+  **Web Component Required**
+  
+  This component requires the `<ot-dropdown>` web component. Make sure to include the JavaScript file.
+</Warning>
+
+Wrap your trigger and menu in `<ot-dropdown>`. Use `popovertarget` on the trigger button and `popover` on the target element. Menu items should use `role="menuitem"` for proper accessibility.
+
+## Menu Dropdown
+
+<CodeGroup>
+```html HTML
+<ot-dropdown>
+  <button popovertarget="demo-menu" class="outline">
+    Options
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  </button>
+  <menu popover id="demo-menu">
+    <button role="menuitem">Profile</button>
+    <button role="menuitem">Settings</button>
+    <button role="menuitem">Help</button>
+    <hr>
+    <button role="menuitem">Logout</button>
+  </menu>
+</ot-dropdown>
+```
+</CodeGroup>
+
+## Popover Dropdown
+
+`<ot-dropdown>` can also be used to show popover content like confirmation dialogs:
+
+<CodeGroup>
+```html HTML
+<ot-dropdown>
+  <button popovertarget="demo-confirm" class="outline">
+    Confirm
+  </button>
+  <article class="card" popover id="demo-confirm">
+    <header>
+      <h4>Are you sure?</h4>
+      <p>This action cannot be undone.</p>
+    </header>
+    <br />
+    <footer>
+      <button class="outline small" popovertarget="demo-confirm">Cancel</button>
+      <button data-variant="danger" class="small" popovertarget="demo-confirm">Delete</button>
+    </footer>
+  </article>
+</ot-dropdown>
+```
+</CodeGroup>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Auto-positioning" icon="arrows-up-down-left-right">
+    Automatically positions dropdown to stay within viewport bounds, flipping if needed
+  </Card>
+  <Card title="Keyboard Navigation" icon="keyboard">
+    Arrow up/down to navigate menu items, Enter to select, Escape to close
+  </Card>
+  <Card title="ARIA Support" icon="universal-access">
+    Manages `aria-expanded` state and menu item roles for screen readers
+  </Card>
+  <Card title="Native Popover API" icon="window-restore">
+    Uses the native Popover API for better performance and accessibility
+  </Card>
+</CardGroup>
+
+## How It Works
+
+### HTML Attributes
+
+- `popovertarget="menu-id"` - Add to trigger button, links to popover by ID
+- `popover` - Add to menu/content element
+- `id="menu-id"` - Add to popover element, must match popovertarget
+- `role="menuitem"` - Add to each menu item button for accessibility
+
+### Web Component
+
+The `<ot-dropdown>` web component provides:
+
+1. **Automatic positioning** - Calculates trigger position and positions popover accordingly
+2. **Viewport awareness** - Flips popover position if it would overflow the viewport
+3. **Scroll handling** - Updates position on scroll to keep popover aligned
+4. **Keyboard navigation** - Arrow keys navigate menu items, wrapping at edges
+5. **Focus management** - Auto-focuses first item on open, returns focus to trigger on close
+6. **ARIA state** - Sets `aria-expanded` on trigger based on open/closed state
+
+## Styling Details
+
+<AccordionGroup>
+  <Accordion title="Popover Container">
+    - Position: fixed (relative to viewport)
+    - Min width: 12rem
+    - Background: `var(--background)`
+    - Border: 1px solid `var(--border)`
+    - Border radius: `var(--radius-medium)`
+    - Box shadow: `var(--shadow-medium)`
+    - Smooth opacity and transform transitions (150ms)
+  </Accordion>
+  
+  <Accordion title="Menu Items">
+    - Display: flex with left alignment
+    - Gap: `var(--space-2)` for icons
+    - Full width buttons
+    - Padding: `var(--space-2)` vertical, `var(--space-3)` horizontal
+    - Font size: `var(--text-7)`
+    - Border radius: `var(--radius-small)`
+    - Hover/focus: accent background color
+  </Accordion>
+  
+  <Accordion title="Animations">
+    - Entry: fades in and slides down 4px
+    - Exit: fades out and slides up 4px
+    - Duration: 150ms with ease-out timing
+    - Uses `@starting-style` for smooth entry animations
+  </Accordion>
+</AccordionGroup>
+
+## Keyboard Navigation
+
+<ResponseField name="Arrow Down" type="key">
+  Move focus to next menu item (wraps to first)
+</ResponseField>
+
+<ResponseField name="Arrow Up" type="key">
+  Move focus to previous menu item (wraps to last)
+</ResponseField>
+
+<ResponseField name="Enter" type="key">
+  Activate focused menu item
+</ResponseField>
+
+<ResponseField name="Escape" type="key">
+  Close dropdown and return focus to trigger
+</ResponseField>
+
+<ResponseField name="Tab" type="key">
+  Close dropdown (native popover behavior)
+</ResponseField>
+
+## Accessibility
+
+- Uses native Popover API for proper modal behavior
+- `role="menuitem"` on menu items for screen reader support
+- `aria-expanded` attribute automatically managed on trigger
+- Focus trapped within menu when open
+- Focus returns to trigger when closed
+- Keyboard navigation with arrow keys
+- ESC key closes dropdown
+
+## JavaScript API
+
+The `<ot-dropdown>` component extends `OtBase` and provides:
+
+```javascript
+// Internal methods (not typically called directly)
+init()           // Initializes event listeners and positioning
+ontoggle(e)      // Handles open/close state changes
+onkeydown(e)     // Handles keyboard navigation
+cleanup()        // Removes scroll/resize listeners
+```
+
+Source: `/home/daytona/workspace/source/src/js/dropdown.js:1-75`
+
+## Browser Support
+
+Requires support for:
+- Native Popover API
+- CSS `@starting-style`
+- `light-dark()` color function
+- Custom elements (web components)
+
+Supported in modern browsers: Chrome 114+, Edge 114+, Safari 17+
+
+## CSS Variables
+
+- `--background` - Popover background
+- `--border` - Border color
+- `--radius-medium`, `--radius-small` - Border radius values
+- `--shadow-medium` - Box shadow
+- `--space-1`, `--space-2`, `--space-3` - Spacing
+- `--text-7` - Font size
+- `--foreground` - Text color
+- `--accent` - Hover/focus background

@@ -1,0 +1,106 @@
+---
+title: "Progress"
+description: "Progress bars using the native <progress> element."
+---
+
+Use the native `<progress>` element to show progress of ongoing operations.
+
+## Basic Usage
+
+```html
+<progress value="60" max="100"></progress>
+<progress value="30" max="100"></progress>
+<progress value="90" max="100"></progress>
+```
+
+## Attributes
+
+### value
+
+The current progress value:
+
+```html
+<progress value="75" max="100"></progress>
+```
+
+### max
+
+The maximum value (defaults to 1 if not specified):
+
+```html
+<progress value="0.7" max="1"></progress>
+```
+
+### Indeterminate State
+
+Omit the `value` attribute to show an indeterminate/loading state:
+
+```html
+<progress max="100"></progress>
+```
+
+## Dynamic Progress
+
+Update progress dynamically with JavaScript:
+
+```js
+const progress = document.querySelector('progress');
+progress.value = 50;
+
+// Animate progress
+let value = 0;
+setInterval(() => {
+  value += 10;
+  if (value <= 100) {
+    progress.value = value;
+  }
+}, 500);
+```
+
+## Styling
+
+Progress bars include:
+- Full width by default
+- Customizable height via `--bar-height` CSS variable
+- Rounded corners (pill shape)
+- Primary color fill
+- Muted background
+- Smooth transitions
+
+### Custom Height
+
+```html
+<progress value="60" max="100" style="--bar-height: 8px;"></progress>
+<progress value="60" max="100" style="--bar-height: 16px;"></progress>
+```
+
+### Custom Width
+
+```html
+<progress value="60" max="100" style="width: 200px;"></progress>
+```
+
+## Use Cases
+
+- **File uploads** - Show upload progress
+- **Form completion** - Indicate how much of a form is filled
+- **Loading states** - Display loading progress for known durations
+- **Goal tracking** - Show progress toward a goal
+
+## Accessibility
+
+The `<progress>` element is automatically accessible with:
+- Proper ARIA role
+- Screen reader announcements of value changes
+- Semantic HTML meaning
+
+Add a label for better accessibility:
+
+```html
+<label for="upload-progress">Upload progress</label>
+<progress id="upload-progress" value="45" max="100"></progress>
+```
+
+<Note>
+  For static measurements within a known range, use the [Meter](/components/meter) component instead.
+</Note>

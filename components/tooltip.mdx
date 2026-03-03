@@ -1,0 +1,187 @@
+---
+title: 'Tooltip'
+description: 'Smooth tooltips using the native title attribute with automatic conversion and styling'
+icon: 'message'
+---
+
+<Warning>
+  **Web Component Required**
+  
+  This component requires the tooltip JavaScript for automatic `title` attribute conversion. Works with progressive enhancement - tooltips display as native browser tooltips without JavaScript.
+</Warning>
+
+Use the standard `title` attribute on any element to render a smooth, styled tooltip. The JavaScript automatically converts `title` attributes to `data-tooltip` for custom styling.
+
+## Basic Tooltips
+
+<CodeGroup>
+```html HTML
+<button title="Save your changes">Save</button>
+<button title="Delete this item" data-variant="danger">Delete</button>
+<a href="#" title="View your profile">Profile</a>
+```
+</CodeGroup>
+
+## Replaced Elements
+
+Replaced elements like `<img>`, `<iframe>`, `<video>`, etc. need to be wrapped in a parent element with the `title` attribute:
+
+<CodeGroup>
+```html HTML
+<span title="Images need a parent with title">
+  <img src="https://oat.ink/logo.svg" height="32" />
+</span>
+```
+</CodeGroup>
+
+<Note>
+  [Replaced elements](https://developer.mozilla.org/en-US/docs/Glossary/Replaced_elements) are elements whose content is outside the scope of CSS styling (like `<img>`, `<video>`, `<iframe>`, etc.). They require a wrapper element for tooltips to work properly.
+</Note>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Progressive Enhancement" icon="arrow-up-right-dots">
+    Works without JavaScript - falls back to native browser tooltips
+  </Card>
+  <Card title="Automatic Conversion" icon="wand-magic-sparkles">
+    JavaScript automatically converts `title` to `data-tooltip` for custom styling
+  </Card>
+  <Card title="ARIA Support" icon="universal-access">
+    Automatically adds `aria-label` if not present for screen reader support
+  </Card>
+  <Card title="Smooth Animations" icon="sparkles">
+    Fade and slide transitions with 700ms delay on hover
+  </Card>
+</CardGroup>
+
+## How It Works
+
+### JavaScript Enhancement
+
+The tooltip script runs on page load and continuously monitors the DOM:
+
+1. Finds all elements with `title` attribute
+2. Converts `title` to `data-tooltip`
+3. Adds `aria-label` if not already present
+4. Removes original `title` attribute to prevent browser tooltip
+5. Watches for new elements and applies enhancement automatically
+
+```javascript
+// Automatic conversion example
+<button title="Save changes">Save</button>
+// Becomes:
+<button data-tooltip="Save changes" aria-label="Save changes">Save</button>
+```
+
+### Progressive Enhancement
+
+Without JavaScript:
+- Browser's native tooltip displays
+- Functionality works, but without custom styling
+
+With JavaScript:
+- Custom styled tooltip with smooth animations
+- Better positioning and appearance
+- Enhanced accessibility with `aria-label`
+
+## Styling Details
+
+<AccordionGroup>
+  <Accordion title="Tooltip Box">
+    - Content: comes from `data-tooltip` attribute
+    - Position: centered above element with 10px offset
+    - Padding: `var(--space-2)` vertical, `var(--space-3)` horizontal
+    - Font size: `var(--text-7)`
+    - Background: `var(--foreground)`
+    - Color: `var(--background)` (inverted for contrast)
+    - Border radius: `var(--radius-medium)`
+    - White-space: nowrap (single line)
+    - Z-index: 1000
+  </Accordion>
+  
+  <Accordion title="Tooltip Arrow">
+    - Triangle shape using borders
+    - Color: matches tooltip background (`var(--foreground)`)
+    - Size: 8px border width
+    - Position: centered below tooltip box
+    - Points downward toward element
+  </Accordion>
+  
+  <Accordion title="Animations">
+    - Initial state: opacity 0, translated up 4px
+    - Hover state: opacity 1, translated to normal position
+    - Delay: 700ms before showing
+    - Duration: smooth transition with `var(--transition-fast)`
+    - Applies to opacity, transform, and visibility
+  </Accordion>
+  
+  <Accordion title="Positioning">
+    - Horizontal: centered using `left: 50%` and `translateX(-50%)`
+    - Vertical: above element with `bottom: calc(100% + 10px)`
+    - Arrow: 5px offset from element with `bottom: calc(100% - 5px)`
+    - Z-index: 1000 to appear above other content
+  </Accordion>
+</AccordionGroup>
+
+## Behavior
+
+<ResponseField name="Hover" type="trigger">
+  Shows tooltip after 700ms delay with fade-in animation
+</ResponseField>
+
+<ResponseField name="Focus" type="trigger">
+  Shows tooltip for keyboard users when element receives focus
+</ResponseField>
+
+<ResponseField name="Leave" type="trigger">
+  Hides tooltip immediately with fade-out animation
+</ResponseField>
+
+## Accessibility
+
+- Automatically adds `aria-label` for screen readers
+- Works with keyboard focus (`:focus-visible`)
+- Pointer events disabled on tooltip to prevent interference
+- Progressive enhancement ensures functionality without JavaScript
+- Semantic `title` attribute provides fallback
+
+## Dynamic Content
+
+The tooltip script uses a MutationObserver to automatically handle:
+- New elements added to the DOM
+- Changes to `title` attributes
+- Dynamically loaded content
+
+No manual initialization needed - just add a `title` attribute and it works.
+
+## JavaScript API
+
+The tooltip enhancement runs automatically. No API methods to call - just use the `title` attribute:
+
+```html
+<!-- This is all you need -->
+<button title="Your tooltip text">Button</button>
+```
+
+Source: `/home/daytona/workspace/source/src/js/tooltip.js:1-37`
+
+## Limitations
+
+<Warning>
+  - Tooltips are always positioned **above** the element (no bottom/left/right positioning)
+  - Text is always single-line (`white-space: nowrap`)
+  - No support for HTML content in tooltips
+  - Replaced elements (`<img>`, `<iframe>`, etc.) need a wrapper element
+</Warning>
+
+For more complex tooltip positioning or multi-line content, consider using the dropdown component with `popover` attribute.
+
+## CSS Variables
+
+- `--space-2`, `--space-3` - Padding values
+- `--text-7` - Font size
+- `--foreground` - Tooltip background color
+- `--background` - Tooltip text color
+- `--radius-medium` - Border radius
+- `--transition-fast` - Animation duration

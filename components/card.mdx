@@ -1,0 +1,127 @@
+---
+title: 'Card'
+description: 'Card containers with semantic HTML'
+---
+
+The Card component provides a boxed container with consistent styling. Cards are ideal for grouping related content and actions.
+
+## Basic Usage
+
+Use the `.card` class on any element to create a card. The `<article>` tag is recommended for semantic HTML.
+
+```html
+<article class="card">
+  <header>
+    <h3>Card Title</h3>
+    <p>Card description goes here.</p>
+  </header>
+  <p>This is the card content. It can contain any HTML.</p>
+  <footer class="flex gap-2 mt-4">
+    <button class="outline">Cancel</button>
+    <button>Save</button>
+  </footer>
+</article>
+```
+
+## Card with Header
+
+```html
+<article class="card">
+  <header>
+    <h3>Card Title</h3>
+    <p>Card description goes here.</p>
+  </header>
+  <p>This is the card content. It can contain any HTML.</p>
+</article>
+```
+
+## Card with Footer
+
+```html
+<article class="card">
+  <p>This is the card content.</p>
+  <footer class="flex gap-2 mt-4">
+    <button class="outline">Cancel</button>
+    <button>Save</button>
+  </footer>
+</article>
+```
+
+## Simple Card
+
+```html
+<article class="card">
+  <p>This is a simple card with just content.</p>
+</article>
+```
+
+## Card Grid Layout
+
+Combine cards with the grid system for layouts:
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+      <article class="card">
+        <h3>Card 1</h3>
+        <p>Content for card 1</p>
+      </article>
+    </div>
+    <div class="col-4">
+      <article class="card">
+        <h3>Card 2</h3>
+        <p>Content for card 2</p>
+      </article>
+    </div>
+    <div class="col-4">
+      <article class="card">
+        <h3>Card 3</h3>
+        <p>Content for card 3</p>
+      </article>
+    </div>
+  </div>
+</div>
+```
+
+## CSS Classes
+
+<ParamField path=".card" type="class">
+  Applies card styling with background, border, shadow, and padding.
+</ParamField>
+
+## Styling Details
+
+The `.card` class applies:
+
+<ResponseField name="Background" type="style">
+  Uses `var(--card)` color token for background
+</ResponseField>
+
+<ResponseField name="Foreground" type="style">
+  Uses `var(--card-foreground)` color token for text
+</ResponseField>
+
+<ResponseField name="Border" type="style">
+  1px solid border using `var(--border)` color token
+</ResponseField>
+
+<ResponseField name="Border Radius" type="style">
+  Medium radius using `var(--radius-medium)`
+</ResponseField>
+
+<ResponseField name="Shadow" type="style">
+  Small shadow using `var(--shadow-small)`
+</ResponseField>
+
+<ResponseField name="Padding" type="style">
+  Consistent padding using `var(--space-6)`
+</ResponseField>
+
+<ResponseField name="Overflow" type="style">
+  Set to hidden to contain content
+</ResponseField>
+
+<Tip>
+  Cards work with any HTML element, but using `<article>` provides better semantic meaning for screen readers and SEO.
+</Tip>

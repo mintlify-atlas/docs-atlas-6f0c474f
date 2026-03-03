@@ -1,0 +1,138 @@
+---
+title: Installation
+description: Learn how to install Oat UI in your project using CDN, npm, or direct download.
+---
+
+<Note>
+  **Important:** Oat UI is currently sub v1 and is likely to have breaking changes until it hits v1.
+</Note>
+
+There are three ways to install Oat UI in your project:
+
+## CDN (Recommended for Quick Start)
+
+The fastest way to get started is to include the CSS and JS files directly from a CDN in your HTML:
+
+<CodeGroup>
+
+```html unpkg
+<link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css">
+<script src="https://unpkg.com/@knadh/oat/oat.min.js" defer></script>
+```
+
+```html jsDelivr
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@knadh/oat/oat.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@knadh/oat/oat.min.js" defer></script>
+```
+
+</CodeGroup>
+
+<Tip>
+  Add the `defer` attribute to the script tag to ensure it loads after the HTML is parsed.
+</Tip>
+
+## npm
+
+If you're using a build tool or bundler, you can install Oat UI via npm:
+
+<Steps>
+  <Step title="Install the package">
+    Run the following command in your project directory:
+    
+    ```bash
+    npm install @knadh/oat
+    ```
+  </Step>
+  
+  <Step title="Import in your project">
+    Import the minified files in your JavaScript:
+    
+    ```javascript
+    import '@knadh/oat/oat.min.css';
+    import '@knadh/oat/oat.min.js';
+    ```
+    
+    <Tip>
+      You can also import individual component files from `@knadh/oat/css` and `@knadh/oat/js` if you want to reduce bundle size and only include specific components.
+    </Tip>
+  </Step>
+</Steps>
+
+### Package Details
+
+<CodeGroup>
+
+```json package.json
+{
+  "name": "@knadh/oat",
+  "version": "0.x.x",
+  "description": "Ultra-lightweight, zero dependency, semantic HTML/CSS/JS UI library",
+  "main": "oat.min.js",
+  "style": "oat.min.css",
+  "files": [
+    "oat.min.css",
+    "oat.min.js",
+    "css",
+    "js"
+  ]
+}
+```
+
+</CodeGroup>
+
+## Direct Download
+
+You can download the CSS and JS files directly from GitHub and host them yourself:
+
+<Steps>
+  <Step title="Download the files">
+    Use wget or curl to download the minified files:
+    
+    ```bash
+    wget https://raw.githubusercontent.com/knadh/oat/refs/heads/gh-pages/oat.min.css
+    wget https://raw.githubusercontent.com/knadh/oat/refs/heads/gh-pages/oat.min.js
+    ```
+  </Step>
+  
+  <Step title="Include in your HTML">
+    Place the files in your project directory and reference them:
+    
+    ```html
+    <link rel="stylesheet" href="./oat.min.css">
+    <script src="./oat.min.js" defer></script>
+    ```
+  </Step>
+</Steps>
+
+## File Sizes
+
+Oat UI is incredibly lightweight:
+
+| File | Size (minified) | Size (gzipped) |
+|------|----------------|----------------|
+| CSS  | ~20KB          | ~6KB           |
+| JS   | ~8KB           | ~2.2KB         |
+| **Total** | **~28KB** | **~8KB** |
+
+<Info>
+  This includes all components, styles, and interactive functionality. No additional dependencies required!
+</Info>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Quick Start"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Build your first page with Oat UI
+  </Card>
+  <Card
+    title="Components"
+    icon="grid-3x3"
+    href="/components/button"
+  >
+    Explore all available components
+  </Card>
+</CardGroup>

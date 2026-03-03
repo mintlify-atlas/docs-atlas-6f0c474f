@@ -1,0 +1,390 @@
+---
+title: Toast API
+description: Complete API reference for toast notifications in Oat UI
+---
+
+The toast API provides an easy way to display temporary notification messages to users. Toasts automatically appear, animate in, and dismiss after a configurable duration.
+
+## Quick Start
+
+```javascript
+// Simple message
+ot.toast('Saved!');
+
+// With title
+ot.toast('Action completed successfully', 'All good');
+
+// With options
+ot.toast('Operation completed.', 'Success', { 
+  variant: 'success',
+  placement: 'top-right',
+  duration: 5000 
+});
+```
+
+## ot.toast()
+
+Displays a text-based toast notification with optional title and styling.
+
+```javascript
+ot.toast(message, title, options)
+```
+
+<ParamField path="message" type="string" required>
+  The main message text to display in the toast
+</ParamField>
+
+<ParamField path="title" type="string">
+  Optional title text displayed above the message
+</ParamField>
+
+<ParamField path="options" type="object">
+  Configuration options for the toast
+
+  <Expandable title="options properties">
+    <ParamField path="variant" type="string" default="info">
+      Visual style variant. Options:
+      - `info` - Blue informational style (default)
+      - `success` - Green success style
+      - `warning` - Yellow warning style
+      - `danger` - Red error style
+    </ParamField>
+
+    <ParamField path="placement" type="string" default="top-right">
+      Screen position for the toast. Options:
+      - `top-left`
+      - `top-center`
+      - `top-right` (default)
+      - `bottom-left`
+      - `bottom-center`
+      - `bottom-right`
+    </ParamField>
+
+    <ParamField path="duration" type="number" default="4000">
+      Time in milliseconds before the toast automatically dismisses. Set to `0` for toasts that don't auto-dismiss.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+**Returns:** `HTMLElement` - The toast element that was created
+
+### Examples
+
+#### Basic Message
+
+```javascript
+ot.toast('Your changes have been saved');
+```
+
+#### With Title
+
+```javascript
+ot.toast('Your profile has been updated successfully', 'Profile Updated');
+```
+
+#### Success Toast
+
+```javascript
+ot.toast('File uploaded successfully', 'Success', {
+  variant: 'success',
+  duration: 3000
+});
+```
+
+#### Error Toast
+
+```javascript
+ot.toast('Failed to connect to server', 'Connection Error', {
+  variant: 'danger',
+  placement: 'top-center',
+  duration: 6000
+});
+```
+
+#### Warning Toast
+
+```javascript
+ot.toast('Your session will expire in 5 minutes', 'Warning', {
+  variant: 'warning',
+  placement: 'bottom-center'
+});
+```
+
+#### Persistent Toast
+
+```javascript
+// Duration: 0 means the toast won't auto-dismiss
+ot.toast('Please review this important message', 'Action Required', {
+  variant: 'warning',
+  duration: 0
+});
+```
+
+## ot.toast.el()
+
+Displays a custom HTML element or template as a toast. Use this for toasts with complex markup, buttons, or custom styling.
+
+```javascript
+ot.toast.el(element, options)
+```
+
+<ParamField path="element" type="HTMLElement | HTMLTemplateElement" required>
+  The element or template to display as a toast. If a `<template>` element is provided, its content will be cloned.
+</ParamField>
+
+<ParamField path="options" type="object">
+  Configuration options
+
+  <Expandable title="options properties">
+    <ParamField path="placement" type="string" default="top-right">
+      Screen position for the toast. Options:
+      - `top-left`
+      - `top-center`
+      - `top-right` (default)
+      - `bottom-left`
+      - `bottom-center`
+      - `bottom-right`
+    </ParamField>
+
+    <ParamField path="duration" type="number" default="4000">
+      Time in milliseconds before the toast automatically dismisses. Set to `0` for toasts that don't auto-dismiss.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+**Returns:** `HTMLElement` - The toast element that was created
+
+### Examples
+
+#### From Template Element
+
+```html
+<template id="custom-toast">
+  <div class="my-toast" data-variant="success">
+    <strong>Success!</strong>
+    <p>Your action was completed.</p>
+    <button onclick="this.closest('.toast').remove()">Dismiss</button>
+  </div>
+</template>
+
+<script>
+  const template = document.querySelector('#custom-toast');
+  ot.toast.el(template, { duration: 0 });
+</script>
+```
+
+#### From Regular Element
+
+```javascript
+// Create a custom toast element
+const toast = document.createElement('div');
+toast.innerHTML = `
+  <div class="custom-notification">
+    <img src="/avatar.png" alt="User">
+    <div>
+      <strong>New Message</strong>
+      <p>You have a new message from John</p>
+    </div>
+  </div>
+`;
+
+ot.toast.el(toast, {
+  placement: 'bottom-right',
+  duration: 6000
+});
+```
+
+#### With Action Button
+
+```html
+<template id="undo-toast">
+  <output data-variant="info">
+    <div class="toast-message">Item deleted</div>
+    <button class="btn-link" onclick="undoDelete()">Undo</button>
+  </output>
+</template>
+
+<script>
+  function deleteItem(id) {
+    // Delete logic here...
+    
+    const template = document.querySelector('#undo-toast');
+    ot.toast.el(template, {
+      placement: 'bottom-center',
+      duration: 5000
+    });
+  }
+
+  function undoDelete() {
+    // Undo logic here...
+  }
+</script>
+```
+
+#### Dynamic Content
+
+```javascript
+function showUserNotification(user) {
+  const element = document.createElement('output');
+  element.setAttribute('data-variant', 'info');
+  element.innerHTML = `
+    <h6 class="toast-title">${user.name} joined</h6>
+    <div class="toast-message">${user.email}</div>
+  `;
+
+  ot.toast.el(element, {
+    placement: 'top-right',
+    duration: 4000
+  });
+}
+
+showUserNotification({ name: 'Jane Doe', email: 'jane@example.com' });
+```
+
+<Note>
+When using `<template>` elements, the element's `id` attribute is automatically removed from the clone to prevent duplicate IDs.
+</Note>
+
+## ot.toast.clear()
+
+Removes all visible toasts from the screen, or toasts from a specific placement.
+
+```javascript
+ot.toast.clear(placement)
+```
+
+<ParamField path="placement" type="string">
+  Optional placement to clear. If omitted, all toasts from all placements are cleared. Options:
+  - `top-left`
+  - `top-center`
+  - `top-right`
+  - `bottom-left`
+  - `bottom-center`
+  - `bottom-right`
+</ParamField>
+
+**Returns:** `void`
+
+### Examples
+
+#### Clear All Toasts
+
+```javascript
+// Remove all toasts from screen
+ot.toast.clear();
+```
+
+#### Clear Specific Placement
+
+```javascript
+// Only clear toasts in the top-right corner
+ot.toast.clear('top-right');
+
+// Clear bottom toasts
+ot.toast.clear('bottom-center');
+```
+
+#### Clear on Navigation
+
+```javascript
+// Clear all toasts when navigating to a new page
+window.addEventListener('beforeunload', () => {
+  ot.toast.clear();
+});
+```
+
+#### Clear After User Action
+
+```javascript
+document.querySelector('#dismiss-all').addEventListener('click', () => {
+  ot.toast.clear();
+  ot.toast('All notifications dismissed', null, { variant: 'info' });
+});
+```
+
+## Toast Behavior
+
+### Auto-dismiss
+
+By default, toasts automatically dismiss after 4000ms (4 seconds). The timer is paused when the user hovers over the toast and resumes when they move their cursor away.
+
+```javascript
+// Custom duration
+ot.toast('Quick message', null, { duration: 2000 }); // 2 seconds
+
+// No auto-dismiss
+ot.toast('Important: Read this carefully', null, { duration: 0 });
+```
+
+### Animation
+
+Toasts use CSS transitions for smooth enter and exit animations. The transition duration is controlled by the `--transition` CSS custom property.
+
+### Stacking
+
+Multiple toasts at the same placement are stacked vertically. New toasts appear at the top of the stack.
+
+```javascript
+ot.toast('First notification');
+ot.toast('Second notification');
+ot.toast('Third notification');
+// All three will stack in the top-right corner
+```
+
+### Container Management
+
+Toast containers are automatically created and managed. Each placement gets its own container that uses the Popover API for optimal positioning and layering.
+
+## Styling Toasts
+
+Toasts can be styled using CSS. The structure of a default toast is:
+
+```html
+<div class="toast-container" popover data-placement="top-right">
+  <output class="toast" data-variant="info">
+    <h6 class="toast-title">Title</h6>
+    <div class="toast-message">Message</div>
+  </output>
+</div>
+```
+
+### Custom Variants
+
+You can create custom toast variants by adding CSS:
+
+```css
+.toast[data-variant="custom"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+```
+
+```javascript
+ot.toast('Custom styled toast', 'Custom', { variant: 'custom' });
+```
+
+## Best Practices
+
+<Check>**Keep messages concise** - Toasts should display brief, scannable information</Check>
+
+<Check>**Use appropriate variants** - Match the variant to the message type (success, error, warning, info)</Check>
+
+<Check>**Don't overuse** - Too many toasts can overwhelm users</Check>
+
+<Check>**Consider duration** - Important messages should stay on screen longer</Check>
+
+<Check>**Make critical actions undoable** - Use persistent toasts (duration: 0) with action buttons for destructive operations</Check>
+
+<Warning>**Don't use for critical errors** - Use modal dialogs for errors that require user acknowledgment</Warning>
+
+<Warning>**Avoid for form validation** - Show validation errors inline near form fields instead</Warning>
+
+## Accessibility
+
+Toasts use the `<output>` element, which is automatically announced by screen readers as a live region. The messages are announced as they appear without interrupting the user's current task.
+
+```javascript
+// This will be announced by screen readers
+ot.toast('Form submitted successfully', 'Success', { variant: 'success' });
+```

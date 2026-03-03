@@ -1,0 +1,177 @@
+---
+title: "Skeleton"
+description: "Loading placeholders with shimmer animation."
+---
+
+Use `.skeleton` with `role="status"` for loading placeholders. Add `.line` for text skeletons or `.box` for image/avatar skeletons.
+
+## Basic Usage
+
+<CodeGroup>
+```html Line Skeleton
+<div role="status" class="skeleton line"></div>
+```
+
+```html Box Skeleton
+<div role="status" class="skeleton box"></div>
+```
+</CodeGroup>
+
+## Line Skeletons
+
+Use `.skeleton.line` to create text loading placeholders:
+
+```html
+<div role="status" class="skeleton line"></div>
+<div role="status" class="skeleton line"></div>
+<div role="status" class="skeleton line" style="width: 60%"></div>
+```
+
+Lines are:
+- Full width by default (100%)
+- 1rem height
+- Stacked with bottom margin
+
+## Box Skeletons
+
+Use `.skeleton.box` for square placeholders (avatars, thumbnails, etc.):
+
+```html
+<div role="status" class="skeleton box"></div>
+```
+
+Boxes are:
+- 4rem × 4rem square by default
+- Can be resized with inline styles
+
+## Skeleton Card
+
+Combine skeletons to create loading cards:
+
+```html
+<article style="display: flex; gap: var(--space-3); padding: var(--space-6);">
+  <div role="status" class="skeleton box"></div>
+  <div style="flex: 1; display: flex; flex-direction: column; gap: var(--space-1);">
+    <div role="status" class="skeleton line"></div>
+    <div role="status" class="skeleton line" style="width: 60%"></div>
+  </div>
+</article>
+```
+
+## Custom Sizes
+
+Customize skeleton dimensions with inline styles:
+
+```html
+<!-- Custom line width -->
+<div role="status" class="skeleton line" style="width: 200px;"></div>
+
+<!-- Custom box size -->
+<div role="status" class="skeleton box" style="width: 100px; height: 100px;"></div>
+
+<!-- Custom line height -->
+<div role="status" class="skeleton line" style="height: 2rem;"></div>
+```
+
+## Multiple Lines
+
+Create paragraph skeletons with multiple lines:
+
+```html
+<div role="status" class="skeleton line"></div>
+<div role="status" class="skeleton line"></div>
+<div role="status" class="skeleton line"></div>
+<div role="status" class="skeleton line" style="width: 80%"></div>
+```
+
+## Layout Examples
+
+### Profile Skeleton
+
+```html
+<div style="display: flex; gap: var(--space-4); align-items: center;">
+  <div role="status" class="skeleton box" style="width: 64px; height: 64px; border-radius: var(--radius-full);"></div>
+  <div style="flex: 1;">
+    <div role="status" class="skeleton line" style="width: 150px;"></div>
+    <div role="status" class="skeleton line" style="width: 200px;"></div>
+  </div>
+</div>
+```
+
+### List Skeleton
+
+```html
+<div>
+  <div role="status" class="skeleton line"></div>
+  <div role="status" class="skeleton line"></div>
+  <div role="status" class="skeleton line"></div>
+  <div role="status" class="skeleton line" style="width: 70%"></div>
+</div>
+```
+
+### Grid Skeleton
+
+```html
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4);">
+  <div role="status" class="skeleton box" style="width: 100%; height: 120px;"></div>
+  <div role="status" class="skeleton box" style="width: 100%; height: 120px;"></div>
+  <div role="status" class="skeleton box" style="width: 100%; height: 120px;"></div>
+</div>
+```
+
+## Animation
+
+Skeletons include a smooth shimmer animation:
+- Left-to-right gradient sweep
+- 2-second duration
+- Infinite loop
+- Light/dark mode aware colors
+
+## Styling
+
+Skeletons use:
+- Muted background color
+- Animated gradient overlay
+- Rounded corners (medium radius)
+- Auto-stacking with margin
+- Color-mix for subtle shimmer effect
+
+## Dynamic Loading
+
+Show skeletons while loading data:
+
+```js
+const container = document.querySelector('#content');
+
+// Show skeleton
+container.innerHTML = `
+  <div role="status" class="skeleton line"></div>
+  <div role="status" class="skeleton line"></div>
+  <div role="status" class="skeleton line" style="width: 60%"></div>
+`;
+
+// Load data
+const data = await fetch('/api/data').then(r => r.json());
+
+// Replace skeleton with real content
+container.innerHTML = data.map(item => `
+  <p>${item.text}</p>
+`).join('');
+```
+
+## Accessibility
+
+The `role="status"` attribute:
+- Announces loading state to screen readers
+- Indicates dynamic content area
+- Provides semantic meaning
+
+Consider adding `aria-label` for clarity:
+
+```html
+<div role="status" class="skeleton line" aria-label="Loading content"></div>
+```
+
+<Info>
+  For spinning loaders, see the [Spinner](/components/spinner) component.
+</Info>

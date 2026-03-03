@@ -1,0 +1,141 @@
+---
+title: 'Badge'
+description: 'Inline badge, tag, and pill labels with multiple color variants'
+---
+
+Use the `.badge` class to create inline labels, tags, or status indicators. Badges come with six built-in variants for different semantic purposes.
+
+## Variants
+
+<CodeGroup>
+```html HTML
+<span class="badge">Default</span>
+<span class="badge secondary">Secondary</span>
+<span class="badge outline">Outline</span>
+<span class="badge success">Success</span>
+<span class="badge warning">Warning</span>
+<span class="badge danger">Danger</span>
+```
+</CodeGroup>
+
+## Variant Styles
+
+<CardGroup cols={2}>
+  <Card title="Default" icon="circle">
+    Primary background with primary foreground color. Use for primary actions or default states.
+  </Card>
+  <Card title="Secondary" icon="circle">
+    Secondary background with secondary foreground color. Use for secondary information or alternative states.
+  </Card>
+  <Card title="Outline" icon="circle">
+    Transparent background with border. Use for neutral or less prominent badges.
+  </Card>
+  <Card title="Success" icon="circle-check">
+    Green color scheme. Use for success states, active status, or positive indicators.
+  </Card>
+  <Card title="Warning" icon="triangle-exclamation">
+    Yellow/orange color scheme. Use for warnings, pending states, or caution indicators.
+  </Card>
+  <Card title="Danger" icon="circle-xmark">
+    Red color scheme. Use for errors, inactive status, or critical alerts.
+  </Card>
+</CardGroup>
+
+## With Icons
+
+Badges have built-in gap spacing for icons or other inline elements:
+
+<CodeGroup>
+```html HTML
+<span class="badge success">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M20 6L9 17l-5-5"/>
+  </svg>
+  Active
+</span>
+
+<span class="badge danger">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M18 6L6 18M6 6l12 12"/>
+  </svg>
+  Inactive
+</span>
+```
+</CodeGroup>
+
+## In Tables
+
+Badges work great for status columns in tables:
+
+<CodeGroup>
+```html HTML
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Alice Johnson</td>
+        <td><span class="badge success">Active</span></td>
+      </tr>
+      <tr>
+        <td>Bob Smith</td>
+        <td><span class="badge warning">Pending</span></td>
+      </tr>
+      <tr>
+        <td>Carol White</td>
+        <td><span class="badge danger">Inactive</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+```
+</CodeGroup>
+
+## Styling Details
+
+<AccordionGroup>
+  <Accordion title="Layout & Spacing">
+    - Display: inline-flex with centered alignment
+    - Gap: `var(--space-1)` between children
+    - Padding: `var(--space-1)` vertical, `var(--space-4)` horizontal
+    - Border radius: fully rounded (`var(--radius-full)`)
+  </Accordion>
+  
+  <Accordion title="Typography">
+    - Font size: `var(--text-8)` (small)
+    - Font weight: medium (`var(--font-medium)`)
+    - Line height: normal
+  </Accordion>
+  
+  <Accordion title="Color Variants">
+    - **Default**: Uses `--primary` and `--primary-foreground`
+    - **Secondary**: Uses `--secondary` and `--secondary-foreground`
+    - **Outline**: Transparent background with `--border` border
+    - **Success/Warning/Danger**: Uses color mixing with theme-aware transparency (10% in light mode, 30% in dark mode)
+  </Accordion>
+</AccordionGroup>
+
+## Theme Support
+
+The success, warning, and danger variants automatically adjust their opacity based on light/dark mode:
+
+- **Light mode**: 10% color mix for subtle backgrounds
+- **Dark mode**: 30% color mix for better visibility
+
+This ensures optimal contrast in both themes without manual color adjustments.
+
+## CSS Variables
+
+- `--space-1`, `--space-4` - Spacing
+- `--text-8` - Font size
+- `--font-medium` - Font weight
+- `--radius-full` - Border radius
+- `--primary`, `--primary-foreground` - Default colors
+- `--secondary`, `--secondary-foreground` - Secondary colors
+- `--foreground`, `--border` - Outline colors
+- `--success`, `--warning`, `--danger` - Semantic colors
