@@ -312,58 +312,7 @@ The polyfill automatically activates only in browsers that don't support the nat
 The polyfill only works with `<dialog>` elements. Other use cases of `commandfor` are not supported.
 </Note>
 
-## Unique ID Generation
 
-The `uid()` method is available on all `OtBase` components for generating unique IDs:
-
-```javascript
-class MyComponent extends OtBase {
-  init() {
-    const id = this.uid();
-    console.log(id); // e.g., "x7k2m9p1"
-  }
-}
-```
-
-See [Web Components](/api/web-components#uid) for details.
-
-## DOM Utilities
-
-All `OtBase` components include convenient DOM query methods:
-
-### $(selector)
-
-Shorthand for `querySelector()` scoped to the component:
-
-```javascript
-const button = this.$('button');
-const header = this.$('.header');
-```
-
-### $$(selector)
-
-Shorthand for `querySelectorAll()` that returns an array:
-
-```javascript
-const items = this.$$('[role="menuitem"]');
-items.forEach(item => console.log(item));
-```
-
-See [Web Components](/api/web-components#dom-query-methods) for complete documentation.
-
-## Custom Event Utilities
-
-The `emit()` method provides an easy way to dispatch custom events:
-
-```javascript
-class MyComponent extends OtBase {
-  selectItem(item) {
-    this.emit('item-selected', { item });
-  }
-}
-```
-
-See [Web Components](/api/web-components#emit) for complete documentation.
 
 ## Best Practices
 
