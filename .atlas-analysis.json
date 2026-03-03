@@ -1,0 +1,121 @@
+{
+  "projectType": "frontend",
+  "projectName": "Oat UI",
+  "projectDescription": "Ultra-lightweight, zero dependency, semantic HTML/CSS/JS UI component library",
+  "theme": "willow",
+  "primaryColor": "#574747",
+  "lightColor": "#f4f4f5",
+  "darkColor": "#27272a",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "introduction",
+          "installation",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Core Concepts",
+        "pages": [
+          "concepts/semantic-html",
+          "concepts/theming",
+          "concepts/styling"
+        ]
+      },
+      {
+        "group": "Layout",
+        "pages": [
+          "components/grid",
+          "components/card"
+        ]
+      },
+      {
+        "group": "Forms & Inputs",
+        "pages": [
+          "components/button",
+          "components/form",
+          "components/switch"
+        ]
+      },
+      {
+        "group": "Navigation",
+        "pages": [
+          "components/tabs",
+          "components/breadcrumb",
+          "components/pagination",
+          "components/sidebar"
+        ]
+      },
+      {
+        "group": "Feedback",
+        "pages": [
+          "components/alert",
+          "components/toast",
+          "components/dialog",
+          "components/progress",
+          "components/spinner",
+          "components/skeleton",
+          "components/meter"
+        ]
+      },
+      {
+        "group": "Data Display",
+        "pages": [
+          "components/table",
+          "components/badge",
+          "components/accordion",
+          "components/dropdown",
+          "components/tooltip",
+          "components/typography"
+        ]
+      },
+      {
+        "group": "JavaScript API",
+        "pages": [
+          "api/web-components",
+          "api/toast-api",
+          "api/utilities"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "guides/customization",
+          "guides/css-variables",
+          "guides/animations",
+          "guides/best-practices"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Zero dependencies and ultra-lightweight (~8KB minified + gzipped)",
+    "Semantic HTML with automatic styling",
+    "Built-in light and dark theme support",
+    "Web Components for dynamic functionality",
+    "Comprehensive component library",
+    "CSS variables for easy customization",
+    "Accessible and responsive by default"
+  ],
+  "publicApiSurface": [
+    "OtBase (base web component class)",
+    "ot.toast() (toast notification function)",
+    "ot.toast.el() (custom toast element)",
+    "ot.toast.clear() (clear toasts)",
+    "<ot-dropdown> (dropdown web component)",
+    "<ot-tabs> (tabs web component)",
+    "<ot-sidebar> (sidebar web component)",
+    "<ot-tooltip> (tooltip web component)",
+    "CSS: Button variants (primary, secondary, danger, outline, ghost)",
+    "CSS: Form elements (input, select, textarea, checkbox, radio)",
+    "CSS: Layout utilities (grid, card, stack)",
+    "CSS: Feedback components (alert, dialog, progress, spinner, skeleton)",
+    "CSS: Navigation (tabs, breadcrumb, pagination, sidebar)",
+    "CSS: Data display (table, badge, accordion, tooltip)",
+    "CSS: Utility classes (.small, .large, .outline, .ghost)",
+    "CSS Variables: --primary, --secondary, --danger, --success, --warning",
+    "CSS Variables: --space-*, --radius-*, --text-*, --font-*"
+  ]
+}
